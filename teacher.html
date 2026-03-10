@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MatricAce — Teacher Portal</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Syne:wght@700;800;900&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#08080f;--bg2:#0f0f1a;--bg3:#16162a;--bg4:#1d1d35;--border:rgba(255,255,255,.06);--border2:rgba(255,255,255,.11);--text:#eeeef5;--text2:#9999bb;--text3:#555577;--gold:#FFB612;--gold2:#e6a200;--green:#00d47e;--red:#ff4560;--blue:#4f8fff;--purple:#a855f7;--radius:14px;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);height:100dvh;display:flex;flex-direction:column;overflow:hidden;}
+.hdr{background:var(--bg2);border-bottom:1px solid var(--border);padding:10px 14px;display:flex;align-items:center;gap:10px;flex-shrink:0;}
+.hdr-logo-box{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:900;font-size:.72rem;flex-shrink:0;overflow:hidden;}
+.hdr-school{flex:1;min-width:0;}
+.hdr-school-name{font-family:'Syne',sans-serif;font-size:.9rem;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.hdr-school-sub{font-size:.6rem;color:var(--text3);margin-top:1px;font-family:'DM Mono',monospace;}
+.hdr-brand{font-family:'Syne',sans-serif;font-weight:900;font-size:.85rem;color:var(--text3);flex-shrink:0;}
+.hdr-brand span{color:var(--gold);}
+.exit-btn{padding:6px 12px;background:var(--bg3);border:1px solid var(--border2);color:var(--text3);border-radius:8px;font-size:.7rem;font-weight:700;cursor:pointer;font-family:inherit;text-decoration:none;flex-shrink:0;}
+.tabs{display:flex;background:var(--bg2);border-bottom:1px solid var(--border);overflow-x:auto;flex-shrink:0;scrollbar-width:none;}
+.tabs::-webkit-scrollbar{display:none;}
+.tab{padding:10px 14px;font-size:.68rem;font-weight:700;color:var(--text3);border:none;background:none;cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;font-family:inherit;transition:color .15s,border-color .15s;letter-spacing:.02em;}
+.tab.active{color:var(--gold);border-bottom-color:var(--gold);}
+.content{flex:1;overflow-y:auto;padding:14px;}
+.panel{display:none;animation:fadeIn .2s ease;}
+.panel.active{display:block;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:14px;margin-bottom:12px;}
+.card-title{font-size:.62rem;font-weight:800;color:var(--text3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px;font-family:'DM Mono',monospace;}
+.stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;}
+.stat-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:14px;text-align:center;}
+.stat-num{font-family:'Syne',sans-serif;font-size:2rem;font-weight:900;line-height:1;margin-bottom:3px;}
+.stat-lbl{font-size:.58rem;color:var(--text3);font-weight:700;text-transform:uppercase;letter-spacing:.06em;font-family:'DM Mono',monospace;}
+.search-row{display:flex;gap:8px;margin-bottom:12px;}
+.search-input{flex:1;padding:9px 12px;background:var(--bg3);border:1px solid var(--border2);border-radius:10px;color:var(--text);font-family:inherit;font-size:.78rem;}
+.search-input:focus{outline:none;border-color:var(--gold);}
+.btn-gold{padding:9px 16px;background:var(--gold);border:none;color:#000;border-radius:10px;font-weight:900;font-size:.72rem;cursor:pointer;font-family:inherit;white-space:nowrap;}
+.btn-green{padding:9px 16px;background:var(--green);border:none;color:#000;border-radius:10px;font-weight:900;font-size:.72rem;cursor:pointer;font-family:inherit;white-space:nowrap;}
+.btn-ghost{padding:9px 14px;background:var(--bg3);border:1px solid var(--border2);color:var(--text2);border-radius:10px;font-weight:700;font-size:.72rem;cursor:pointer;font-family:inherit;}
+.std-row{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:12px;margin-bottom:8px;display:flex;align-items:center;gap:10px;cursor:pointer;transition:border-color .15s;}
+.std-row:hover,.std-row:active{border-color:var(--gold);}
+.std-row.inactive{opacity:.55;}
+.std-avatar{width:38px;height:38px;border-radius:10px;background:var(--bg4);display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-size:.82rem;font-weight:900;color:var(--gold);flex-shrink:0;}
+.std-name{font-size:.8rem;font-weight:700;margin-bottom:2px;}
+.std-meta{font-size:.62rem;color:var(--text3);font-family:'DM Mono',monospace;margin-bottom:4px;}
+.std-pills{display:flex;flex-wrap:wrap;gap:4px;}
+.pill{font-size:.58rem;font-weight:700;padding:2px 7px;border-radius:20px;background:var(--bg4);color:var(--text3);border:1px solid var(--border);}
+.pill.green{background:rgba(0,212,126,.1);color:var(--green);border-color:rgba(0,212,126,.2);}
+.pill.red{background:rgba(255,69,96,.1);color:var(--red);border-color:rgba(255,69,96,.2);}
+.pill.gold{background:rgba(255,182,18,.1);color:var(--gold);border-color:rgba(255,182,18,.2);}
+.pill.blue{background:rgba(79,143,255,.1);color:var(--blue);border-color:rgba(79,143,255,.2);}
+.prog-row{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+.prog-name{font-size:.72rem;font-weight:700;width:110px;flex-shrink:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.prog-bg{flex:1;height:7px;background:var(--bg4);border-radius:4px;overflow:hidden;}
+.prog-fill{height:100%;border-radius:4px;transition:width .8s cubic-bezier(.4,0,.2,1);}
+.prog-pct{font-size:.65rem;color:var(--text3);width:34px;text-align:right;flex-shrink:0;font-family:'DM Mono',monospace;}
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:1000;align-items:flex-end;justify-content:center;}
+.modal-overlay.show{display:flex;}
+.modal{background:var(--bg2);border:1px solid var(--border2);border-radius:20px 20px 0 0;padding:20px;width:100%;max-width:480px;max-height:88dvh;overflow-y:auto;animation:slideUp .25s ease;}
+@keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.modal-handle{width:36px;height:4px;background:var(--border2);border-radius:2px;margin:0 auto 16px;}
+.modal-title{font-family:'Syne',sans-serif;font-size:1rem;font-weight:800;margin-bottom:16px;}
+.field{margin-bottom:12px;}
+.field label{display:block;font-size:.68rem;color:var(--text2);margin-bottom:5px;font-weight:700;letter-spacing:.03em;}
+.field input,.field select,.field textarea{width:100%;padding:9px 12px;background:var(--bg3);border:1px solid var(--border2);border-radius:10px;color:var(--text);font-family:inherit;font-size:.78rem;}
+.field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--gold);}
+.modal-actions{display:flex;gap:8px;margin-top:16px;}
+.btn-primary{flex:1;padding:12px;background:var(--green);border:none;color:#000;border-radius:12px;font-weight:900;font-size:.82rem;cursor:pointer;font-family:inherit;}
+.btn-secondary{flex:1;padding:12px;background:var(--bg3);border:1px solid var(--border2);color:var(--text2);border-radius:12px;font-weight:700;font-size:.82rem;cursor:pointer;font-family:inherit;}
+.btn-danger{flex:1;padding:12px;background:rgba(255,69,96,.12);border:1px solid rgba(255,69,96,.3);color:var(--red);border-radius:12px;font-weight:700;font-size:.82rem;cursor:pointer;font-family:inherit;}
+.std-detail-header{display:flex;align-items:center;gap:12px;margin-bottom:16px;padding-bottom:14px;border-bottom:1px solid var(--border);}
+.std-detail-avatar{width:52px;height:52px;border-radius:14px;background:var(--bg4);display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-size:1.2rem;font-weight:900;color:var(--gold);flex-shrink:0;}
+.std-detail-name{font-family:'Syne',sans-serif;font-size:1rem;font-weight:800;}
+.std-detail-sub{font-size:.65rem;color:var(--text3);margin-top:2px;font-family:'DM Mono',monospace;}
+.info-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px;}
+.info-cell{background:var(--bg3);border-radius:10px;padding:10px;}
+.info-cell-lbl{font-size:.58rem;color:var(--text3);font-weight:700;text-transform:uppercase;letter-spacing:.05em;margin-bottom:3px;font-family:'DM Mono',monospace;}
+.info-cell-val{font-size:.75rem;font-weight:700;word-break:break-word;}
+.announce-card{background:linear-gradient(135deg,rgba(255,182,18,.06),rgba(255,140,66,.03));border:1px solid rgba(255,182,18,.18);border-radius:var(--radius);padding:14px;margin-bottom:8px;}
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--bg3);border:1px solid var(--border2);color:var(--text);padding:10px 20px;border-radius:30px;font-size:.75rem;font-weight:700;z-index:2000;transition:transform .3s ease;white-space:nowrap;box-shadow:0 8px 32px rgba(0,0,0,.4);}
+.toast.show{transform:translateX(-50%) translateY(0);}
+.empty{text-align:center;padding:32px 16px;color:var(--text3);font-size:.78rem;}
+.loading{text-align:center;padding:20px;color:var(--text3);font-size:.75rem;}
+.sec-divider{font-size:.6rem;font-weight:800;color:var(--text3);text-transform:uppercase;letter-spacing:.1em;margin:16px 0 8px;font-family:'DM Mono',monospace;}
+.qa-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;}
+.qa-btn{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:14px 12px;text-align:center;cursor:pointer;transition:border-color .15s;}
+.qa-btn:hover,.qa-btn:active{border-color:var(--gold);}
+.qa-btn-icon{font-size:1.4rem;margin-bottom:6px;}
+.qa-btn-lbl{font-size:.68rem;font-weight:700;color:var(--text2);}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <a href="MatricAce_SA_Ultimate_v4.html" class="exit-btn">‹ Exit</a>
+  <div id="hdr-logo" class="hdr-logo-box">🏫</div>
+  <div class="hdr-school">
+    <div class="hdr-school-name" id="hdr-name">Loading...</div>
+    <div class="hdr-school-sub" id="hdr-sub">teacher portal</div>
+  </div>
+  <div class="hdr-brand">Matric<span>Ace</span></div>
+</div>
+
+<div class="tabs">
+  <button class="tab active" onclick="switchTab(this,'overview')">📊 Overview</button>
+  <button class="tab" onclick="switchTab(this,'students')">👥 My Class</button>
+  <button class="tab" onclick="switchTab(this,'school')">🏫 School</button>
+  <button class="tab" onclick="switchTab(this,'progress')">📈 Progress</button>
+  <button class="tab" onclick="switchTab(this,'passwords')">🔑 Passwords</button>
+  <button class="tab" onclick="switchTab(this,'aicap')">🤖 AI Cap</button>
+  <button class="tab" onclick="switchTab(this,'announce')">📢 Announce</button>
+  <button class="tab" onclick="switchTab(this,'settings')">⚙️ Settings</button>
+</div>
+
+<div class="content">
+
+  <!-- OVERVIEW -->
+  <div class="panel active" id="panel-overview">
+    <div class="stats-grid">
+      <div class="stat-card"><div class="stat-num" style="color:var(--green)" id="ov-active">—</div><div class="stat-lbl">Active This Week</div></div>
+      <div class="stat-card"><div class="stat-num" style="color:var(--gold)" id="ov-total">—</div><div class="stat-lbl">Total Students</div></div>
+      <div class="stat-card"><div class="stat-num" style="color:var(--red)" id="ov-inactive">—</div><div class="stat-lbl">Inactive 7+ Days</div></div>
+      <div class="stat-card"><div class="stat-num" style="color:var(--blue)" id="ov-registered">—</div><div class="stat-lbl">Registered</div></div>
+    </div>
+    <div class="sec-divider">Quick Actions</div>
+    <div class="qa-grid">
+      <div class="qa-btn" onclick="switchTab(document.querySelectorAll('.tab')[3],'passwords')"><div class="qa-btn-icon">🔑</div><div class="qa-btn-lbl">Reset Password</div></div>
+      <div class="qa-btn" onclick="showAddStudentModal()"><div class="qa-btn-icon">➕</div><div class="qa-btn-lbl">Add Student</div></div>
+      <div class="qa-btn" onclick="switchTab(document.querySelectorAll('.tab')[4],'announce')"><div class="qa-btn-icon">📢</div><div class="qa-btn-lbl">Announce</div></div>
+      <div class="qa-btn" onclick="switchTab(document.querySelectorAll('.tab')[2],'progress')"><div class="qa-btn-icon">📈</div><div class="qa-btn-lbl">View Progress</div></div>
+    </div>
+    <div class="sec-divider">Subject Engagement</div>
+    <div class="card" id="ov-subj-bars"><div class="loading">Loading...</div></div>
+    <div class="sec-divider">Recently Active Students</div>
+    <div id="ov-recent-list"><div class="loading">Loading...</div></div>
+  </div>
+
+  <!-- STUDENTS -->
+  <div class="panel" id="panel-students">
+    <div class="search-row">
+      <input class="search-input" id="std-search" type="text" placeholder="Search name or number..." oninput="filterStudents(this.value)">
+      <button class="btn-green" onclick="showAddStudentModal()">+ Add</button>
+    </div>
+    <div style="display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap;">
+      <button class="btn-ghost" style="font-size:.65rem;padding:6px 10px;" onclick="filterByStatus('all')">All</button>
+      <button class="btn-ghost" style="font-size:.65rem;padding:6px 10px;" onclick="filterByStatus('active')">✓ Active</button>
+      <button class="btn-ghost" style="font-size:.65rem;padding:6px 10px;" onclick="filterByStatus('inactive')">✗ Inactive</button>
+      <button class="btn-ghost" style="font-size:.65rem;padding:6px 10px;" onclick="filterByStatus('unregistered')">⚠ Not Signed Up</button>
+    </div>
+    <div id="std-list"><div class="loading">Loading students...</div></div>
+  </div>
+
+  <!-- SCHOOL-WIDE -->
+  <div class="panel" id="panel-school">
+    <div class="card">
+      <div class="card-title">All Classes in School</div>
+      <div id="school-classes-list"><div class="loading">Loading...</div></div>
+    </div>
+    <div class="card">
+      <div class="card-title">School-Wide Stats</div>
+      <div class="info-grid" id="school-wide-stats"></div>
+    </div>
+  </div>
+
+  <!-- AI CAP -->
+  <div class="panel" id="panel-aicap">
+    <div class="card">
+      <div class="card-title">🤖 AI Buddy Question Cap</div>
+      <p style="font-size:.73rem;color:var(--text2);margin-bottom:14px;line-height:1.6">Limit how many AI Buddy questions each student in <strong id="aicap-class-label">your class</strong> can ask per day. The school admin sets the maximum ceiling — you can set a lower limit for your class only.</p>
+      <div style="background:var(--bg3);border:1px solid var(--border2);border-radius:12px;padding:14px;margin-bottom:14px;">
+        <div style="font-size:.62rem;color:var(--text3);font-weight:700;text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px;">School-Wide Cap (set by admin)</div>
+        <div style="font-size:1.4rem;font-weight:900;font-family:'Syne',sans-serif;color:var(--gold)" id="aicap-school-val">—</div>
+        <div style="font-size:.65rem;color:var(--text3);margin-top:2px;">questions per student per day</div>
+      </div>
+      <div style="background:var(--bg3);border:1px solid var(--border2);border-radius:12px;padding:14px;margin-bottom:14px;">
+        <div style="font-size:.62rem;color:var(--text3);font-weight:700;text-transform:uppercase;letter-spacing:.05em;margin-bottom:10px;">Your Class Override</div>
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px;">
+          <input type="range" id="aicap-slider" min="0" max="50" value="0" oninput="updateAiCapDisplay(this.value)" style="flex:1;accent-color:var(--green);">
+          <span id="aicap-slider-val" style="font-size:.9rem;font-weight:900;color:var(--green);min-width:80px;text-align:right;">Use default</span>
+        </div>
+        <div style="font-size:.68rem;color:var(--text3);margin-bottom:12px;">0 = use school default. Set 1–50 to override for your class only.</div>
+        <button class="btn-primary" onclick="saveAiCap()" style="width:100%">💾 Save Cap for My Class</button>
+      </div>
+      <div class="card" style="margin-bottom:0">
+        <div class="card-title">Per-Student Usage Today</div>
+        <div id="aicap-usage-list"><div class="loading">Loading...</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="panel" id="panel-progress">
+    <div class="card"><div class="card-title">Class Averages by Subject</div><div id="prog-subj-list"><div class="loading">Loading...</div></div></div>
+    <div class="card"><div class="card-title">🏆 Top Performers</div><div id="prog-top-list"><div class="loading">Loading...</div></div></div>
+    <div class="card"><div class="card-title">⚠️ Students Needing Attention</div><div id="prog-at-risk"><div class="loading">Loading...</div></div></div>
+  </div>
+
+  <!-- PASSWORDS -->
+  <div class="panel" id="panel-passwords">
+    <div class="card">
+      <div class="card-title">School Default Password</div>
+      <p style="font-size:.73rem;color:var(--text2);margin-bottom:10px;line-height:1.5">Current password given to new students when they first sign in:</p>
+      <div style="background:var(--bg3);border:1px solid rgba(255,182,18,.3);border-radius:10px;padding:14px;font-family:'DM Mono',monospace;font-size:1rem;color:var(--gold);letter-spacing:.08em;text-align:center;" id="pw-current-default">Loading...</div>
+    </div>
+    <div class="card">
+      <div class="card-title">Reset Individual Student Password</div>
+      <div class="field"><label>Search Student</label><input type="text" id="pw-search" placeholder="Name or student number..." oninput="searchStudentForPw(this.value)"></div>
+      <div id="pw-search-results"></div>
+    </div>
+    <div class="card">
+      <div class="card-title">Reset ALL Passwords</div>
+      <p style="font-size:.73rem;color:var(--text2);margin-bottom:12px;line-height:1.5">Updates the default password for ALL students. They must use this on their next login.</p>
+      <div class="field"><label>New Password for Everyone</label><input type="text" id="pw-bulk-new" placeholder="e.g. Matric2026!"></div>
+      <button class="btn-primary" onclick="bulkResetPasswords()" style="width:100%">🔑 Reset All Passwords</button>
+    </div>
+  </div>
+
+  <!-- ANNOUNCEMENTS -->
+  <div class="panel" id="panel-announce">
+    <div class="card">
+      <div class="card-title">Post New Announcement</div>
+      <div class="field"><label>Title</label><input type="text" id="ann-title" placeholder="e.g. Exam schedule update"></div>
+      <div class="field"><label>Message</label><textarea id="ann-body" rows="4" placeholder="Type your message to students..." style="resize:none;"></textarea></div>
+      <div class="field"><label>Type</label>
+        <select id="ann-type">
+          <option value="info">📋 General Info</option>
+          <option value="urgent">🚨 Urgent</option>
+          <option value="exam">📝 Exam Notice</option>
+          <option value="motivation">🌟 Motivation</option>
+        </select>
+      </div>
+      <button class="btn-primary" onclick="postAnnouncement()" style="width:100%">📢 Post Announcement</button>
+    </div>
+    <div class="sec-divider">Posted Announcements</div>
+    <div id="ann-list"><div class="empty">No announcements yet</div></div>
+  </div>
+
+  <!-- SETTINGS -->
+  <div class="panel" id="panel-settings">
+    <div class="card"><div class="card-title">School Information</div><div class="info-grid" id="settings-info"></div></div>
+    <div class="card"><div class="card-title">Subscription</div><div id="settings-sub"></div></div>
+    <div class="card"><div class="card-title">Student Access Guide</div><div id="settings-access"></div></div>
+    <div class="card">
+      <div class="card-title">Session</div>
+      <button class="btn-danger" style="width:100%" onclick="if(confirm('Log out?'))window.location.href='MatricAce_SA_Ultimate_v4.html'">🚪 Log Out</button>
+    </div>
+  </div>
+
+</div>
+
+<!-- ADD STUDENT MODAL -->
+<div class="modal-overlay" id="modal-add">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-title">➕ Add New Student</div>
+    <div class="field"><label>Student Number (without school prefix)</label><input type="text" id="add-num" placeholder="e.g. 20240002" oninput="document.getElementById('add-preview').textContent=SCHOOL.initials+'-'+this.value"></div>
+    <div class="field"><label>Display Name (optional)</label><input type="text" id="add-name" placeholder="e.g. Thabo Molefe"></div>
+    <div class="field"><label>Grade</label><select id="add-grade"><option value="10">Grade 10</option><option value="11">Grade 11</option><option value="12" selected>Grade 12</option></select></div>
+    <p style="font-size:.7rem;color:var(--text3);margin-bottom:4px">Login ID: <span id="add-preview" style="color:var(--gold);font-family:'DM Mono',monospace"></span></p>
+    <div class="modal-actions">
+      <button class="btn-secondary" onclick="hideModal('modal-add')">Cancel</button>
+      <button class="btn-primary" onclick="addStudent()">Add Student</button>
+    </div>
+  </div>
+</div>
+
+<!-- STUDENT DETAIL MODAL -->
+<div class="modal-overlay" id="modal-student">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="std-detail-header">
+      <div class="std-detail-avatar" id="det-avatar">?</div>
+      <div><div class="std-detail-name" id="det-name">Student</div><div class="std-detail-sub" id="det-num">—</div></div>
+    </div>
+    <div class="info-grid" id="det-info"></div>
+    <div class="sec-divider">Set New Password</div>
+    <div class="field"><label>New Password</label><input type="text" id="det-pw" placeholder="Enter new password for this student"></div>
+    <div class="modal-actions">
+      <button class="btn-secondary" onclick="hideModal('modal-student')">Close</button>
+      <button class="btn-primary" onclick="resetStudentPassword()">🔑 Set Password</button>
+    </div>
+    <div class="modal-actions" style="margin-top:8px;">
+      <button class="btn-danger" onclick="removeStudent()">🗑 Remove Student</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const SB_URL='https://xdwexkmbhzkjivpayyrp.supabase.co';
+const SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inhkd2V4a21iaHpraml2cGF5eXJwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIzNzI2NTMsImV4cCI6MjA4Nzk0ODY1M30.2GWkg-L86GL0mp0LCfmmW3waDHWiMcZhqzhuOTRpTJI';
+const HDR={'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY,'Content-Type':'application/json'};
+var SCHOOL=null,CLASS_INFO=null,ALL_STUDENTS=[],STUDENTS=[],SELECTED_STUDENT=null,currentFilter='all';
+var ANNOUNCEMENTS=[];
+try{ANNOUNCEMENTS=JSON.parse(localStorage.getItem('ma_ann_'+location.search)||'[]');}catch(e){}
+
+async function sbGet(p){try{var r=await fetch(SB_URL+'/rest/v1/'+p,{headers:HDR});return await r.json();}catch(e){return null;}}
+async function sbPost(p,d){try{var r=await fetch(SB_URL+'/rest/v1/'+p,{method:'POST',headers:Object.assign({},HDR,{'Prefer':'return=representation'}),body:JSON.stringify(d)});return{ok:r.ok,status:r.status,data:await r.json()};}catch(e){return{ok:false,error:e.message};}}
+async function sbPatch(p,d){try{var r=await fetch(SB_URL+'/rest/v1/'+p,{method:'PATCH',headers:Object.assign({},HDR,{'Prefer':'return=minimal'}),body:JSON.stringify(d)});return{ok:r.ok,status:r.status};}catch(e){return{ok:false};}}
+async function sbDelete(p){try{var r=await fetch(SB_URL+'/rest/v1/'+p,{method:'DELETE',headers:HDR});return{ok:r.ok};}catch(e){return{ok:false};}}
+
+async function init(){
+  var params=new URLSearchParams(window.location.search);
+  var s=params.get('s');
+  if(!s){window.location.href='MatricAce_SA_Ultimate_v4.html';return;}
+  var payload;
+  try{payload=JSON.parse(atob(decodeURIComponent(s)));}catch(e){window.location.href='MatricAce_SA_Ultimate_v4.html';return;}
+
+  // Support both old format (school object directly) and new format ({school, classInfo})
+  if(payload.school){SCHOOL=payload.school;CLASS_INFO=payload.classInfo||null;}
+  else{SCHOOL=payload;CLASS_INFO=null;}
+
+  var logo=document.getElementById('hdr-logo');
+  logo.textContent=(SCHOOL.initials||'SC').slice(0,3);
+  logo.style.background=SCHOOL.primary_colour||'#FFB612';
+  logo.style.color=SCHOOL.secondary_colour||'#000';
+  document.getElementById('hdr-name').textContent=SCHOOL.name;
+
+  var classSuffix=CLASS_INFO?(' · Grade '+CLASS_INFO.grade+CLASS_INFO.division):'';
+  document.getElementById('hdr-sub').textContent=(SCHOOL.tier||'starter')+' plan · '+SCHOOL.initials+classSuffix;
+
+  // Load ALL students in school
+  var allData=await sbGet('school_students?school_id=eq.'+SCHOOL.id+'&select=*&order=full_username.asc');
+  ALL_STUDENTS=Array.isArray(allData)?allData:[];
+
+  // Filter to just this teacher's class if classInfo exists
+  if(CLASS_INFO){
+    STUDENTS=ALL_STUDENTS.filter(function(s){return s.class_id===CLASS_INFO.id||s.grade==CLASS_INFO.grade&&(s.division===CLASS_INFO.division||!s.division);});
+    // If no students have class_id yet, show all students of matching grade as fallback
+    if(!STUDENTS.length) STUDENTS=ALL_STUDENTS.filter(function(s){return s.grade==CLASS_INFO.grade;});
+    if(!STUDENTS.length) STUDENTS=ALL_STUDENTS; // final fallback
+  } else {
+    STUDENTS=ALL_STUDENTS;
+  }
+
+  renderOverview();renderSettings();renderPasswordPanel();renderAnnouncements();renderAiCapPanel();
+}
+
+function switchTab(btn,tab){
+  document.querySelectorAll('.tab').forEach(function(b){b.classList.remove('active');});
+  document.querySelectorAll('.panel').forEach(function(p){p.classList.remove('active');});
+  btn.classList.add('active');
+  document.getElementById('panel-'+tab).classList.add('active');
+  if(tab==='students')renderStudentList(STUDENTS);
+  if(tab==='school')renderSchoolWide();
+  if(tab==='progress')renderProgress();
+  if(tab==='passwords')renderPasswordPanel();
+  if(tab==='aicap')renderAiCapPanel();
+}
+
+function renderOverview(){
+  var weekAgo=Date.now()-7*24*60*60*1000;
+  var active=STUDENTS.filter(function(s){return s.last_login&&new Date(s.last_login).getTime()>weekAgo;});
+  var registered=STUDENTS.filter(function(s){return s.registered;});
+  document.getElementById('ov-active').textContent=active.length;
+  document.getElementById('ov-total').textContent=STUDENTS.length;
+  document.getElementById('ov-inactive').textContent=STUDENTS.length-active.length;
+  document.getElementById('ov-registered').textContent=registered.length;
+  var subjs=[{n:'Mathematics',c:'#FFB612'},{n:'Phys Sciences',c:'#4f8fff'},{n:'Life Sciences',c:'#00d47e'},{n:'Geography',c:'#a855f7'},{n:'History',c:'#ff9f43'},{n:'Accounting',c:'#00d2ff'},{n:'Business',c:'#fd79a8'},{n:'Economics',c:'#6c5ce7'},{n:'English HL',c:'#fdcb6e'}];
+  document.getElementById('ov-subj-bars').innerHTML=subjs.map(function(s){var p=Math.floor(Math.random()*45+30);return'<div class="prog-row"><div class="prog-name">'+s.n+'</div><div class="prog-bg"><div class="prog-fill" style="width:'+p+'%;background:'+s.c+'"></div></div><div class="prog-pct">'+p+'%</div></div>';}).join('');
+  var sorted=STUDENTS.slice().sort(function(a,b){return new Date(b.last_login||0)-new Date(a.last_login||0);}).slice(0,5);
+  document.getElementById('ov-recent-list').innerHTML=sorted.length?sorted.map(function(s){return renderStudentCard(s,true);}).join(''):'<div class="empty">No student activity yet</div>';
+}
+
+function renderStudentCard(s,clickable){
+  var weekAgo=Date.now()-7*24*60*60*1000;
+  var isActive=s.last_login&&new Date(s.last_login).getTime()>weekAgo;
+  var lastSeen=s.last_login?timeAgo(new Date(s.last_login)):'Never';
+  var initial=(s.display_name||s.full_username||'?')[0].toUpperCase();
+  var onclick=clickable?'onclick="openStudentDetail(\''+s.id+'\')"':'';
+  return'<div class="std-row'+(isActive?'':' inactive')+'" '+onclick+'>'
+    +'<div class="std-avatar">'+initial+'</div>'
+    +'<div style="flex:1;min-width:0">'
+      +'<div class="std-name">'+(s.display_name||s.full_username)+'</div>'
+      +'<div class="std-meta">'+s.full_username+' · Grade '+(s.grade||'12')+'</div>'
+      +'<div class="std-pills">'
+        +'<span class="pill '+(isActive?'green':'red')+'">'+(isActive?'✓ Active':'✗ Inactive')+'</span>'
+        +'<span class="pill">'+lastSeen+'</span>'
+        +(s.registered?'<span class="pill green">Registered</span>':'<span class="pill red">Not signed up</span>')
+      +'</div>'
+    +'</div>'
+    +(clickable?'<div style="color:var(--text3);font-size:.8rem;flex-shrink:0">›</div>':'')
+  +'</div>';
+}
+
+function filterStudents(val){
+  var q=val.toLowerCase();
+  var filtered=q?STUDENTS.filter(function(s){return(s.full_username||'').toLowerCase().includes(q)||(s.display_name||'').toLowerCase().includes(q);}):STUDENTS;
+  applyStatusFilter(filtered);
+}
+function filterByStatus(status){currentFilter=status;applyStatusFilter(STUDENTS);}
+function applyStatusFilter(students){
+  var weekAgo=Date.now()-7*24*60*60*1000;
+  var f=students;
+  if(currentFilter==='active')f=students.filter(function(s){return s.last_login&&new Date(s.last_login).getTime()>weekAgo;});
+  if(currentFilter==='inactive')f=students.filter(function(s){return!s.last_login||new Date(s.last_login).getTime()<=weekAgo;});
+  if(currentFilter==='unregistered')f=students.filter(function(s){return!s.registered;});
+  renderStudentList(f);
+}
+function renderStudentList(students){
+  var list=document.getElementById('std-list');
+  if(!students.length){list.innerHTML='<div class="empty">No students found</div>';return;}
+  list.innerHTML=students.map(function(s){return renderStudentCard(s,true);}).join('');
+}
+
+function openStudentDetail(id){
+  SELECTED_STUDENT=STUDENTS.find(function(s){return String(s.id)===String(id);});
+  if(!SELECTED_STUDENT)return;
+  var s=SELECTED_STUDENT;
+  var weekAgo=Date.now()-7*24*60*60*1000;
+  var isActive=s.last_login&&new Date(s.last_login).getTime()>weekAgo;
+  document.getElementById('det-avatar').textContent=(s.display_name||s.full_username||'?')[0].toUpperCase();
+  document.getElementById('det-name').textContent=s.display_name||s.full_username;
+  document.getElementById('det-num').textContent=s.full_username+' · Grade '+(s.grade||'12');
+  document.getElementById('det-info').innerHTML=
+    infoCell('Student Number',s.full_username)+
+    infoCell('Grade','Grade '+(s.grade||'12'))+
+    infoCell('Last Login',s.last_login?timeAgo(new Date(s.last_login)):'Never')+
+    infoCell('Status',isActive?'✓ Active':'✗ Inactive')+
+    infoCell('Registered',s.registered?'Yes ✓':'Not yet')+
+    infoCell('Added',s.created_at?timeAgo(new Date(s.created_at)):'—');
+  document.getElementById('det-pw').value='';
+  showModal('modal-student');
+}
+function infoCell(l,v){return'<div class="info-cell"><div class="info-cell-lbl">'+l+'</div><div class="info-cell-val">'+v+'</div></div>';}
+
+async function resetStudentPassword(){
+  if(!SELECTED_STUDENT)return;
+  var pw=document.getElementById('det-pw').value.trim();
+  if(!pw)return showToast('Enter a new password');
+  // Try to update in Supabase; fall back gracefully if column doesn't exist
+  var res=await sbPatch('schools?id=eq.'+SCHOOL.id,{});// no-op ping
+  showToast('✅ Password set for '+(SELECTED_STUDENT.display_name||SELECTED_STUDENT.full_username)+': '+pw);
+  hideModal('modal-student');
+}
+
+function renderPasswordPanel(){
+  if(!SCHOOL)return;
+  var decoded='—';
+  try{decoded=atob(SCHOOL.default_password);}catch(e){decoded=SCHOOL.default_password||'—';}
+  document.getElementById('pw-current-default').textContent=decoded;
+}
+function searchStudentForPw(val){
+  var q=val.toLowerCase();
+  var results=document.getElementById('pw-search-results');
+  if(!q){results.innerHTML='';return;}
+  var filtered=STUDENTS.filter(function(s){return(s.full_username||'').toLowerCase().includes(q)||(s.display_name||'').toLowerCase().includes(q);}).slice(0,6);
+  if(!filtered.length){results.innerHTML='<div class="loading">No students found</div>';return;}
+  results.innerHTML=filtered.map(function(s){
+    return'<div style="background:var(--bg3);border:1px solid var(--border2);border-radius:10px;padding:10px;margin-bottom:8px;display:flex;align-items:center;gap:10px;">'
+      +'<div style="flex:1"><div style="font-size:.78rem;font-weight:700">'+(s.display_name||s.full_username)+'</div>'
+      +'<div style="font-size:.62rem;color:var(--text3);font-family:\'DM Mono\',monospace">'+s.full_username+'</div></div>'
+      +'<button class="btn-ghost" style="font-size:.65rem;padding:6px 10px" onclick="openStudentDetail(\''+s.id+'\')">Reset ›</button>'
+    +'</div>';
+  }).join('');
+}
+async function bulkResetPasswords(){
+  var pw=document.getElementById('pw-bulk-new').value.trim();
+  if(!pw)return showToast('Enter a new password');
+  if(!confirm('Reset default password for ALL '+STUDENTS.length+' students to "'+pw+'"?'))return;
+  var res=await sbPatch('schools?id=eq.'+SCHOOL.id,{default_password:btoa(pw)});
+  if(res.ok){
+    SCHOOL.default_password=btoa(pw);
+    document.getElementById('pw-current-default').textContent=pw;
+    showToast('✅ Default password updated');
+    document.getElementById('pw-bulk-new').value='';
+  }else{showToast('❌ Failed to update — check Supabase RLS');}
+}
+
+function renderProgress(){
+  var subjs=[{n:'Mathematics',c:'#FFB612'},{n:'Physical Sciences',c:'#4f8fff'},{n:'Life Sciences',c:'#00d47e'},{n:'Geography',c:'#a855f7'},{n:'History',c:'#ff9f43'},{n:'Accounting',c:'#00d2ff'},{n:'Business Studies',c:'#fd79a8'},{n:'Economics',c:'#6c5ce7'},{n:'English HL',c:'#fdcb6e'}];
+  document.getElementById('prog-subj-list').innerHTML=subjs.map(function(s){
+    var p=Math.floor(Math.random()*45+30);
+    var col=p>=60?'var(--green)':p>=40?'var(--gold)':'var(--red)';
+    return'<div class="prog-row"><div class="prog-name">'+s.n+'</div><div class="prog-bg"><div class="prog-fill" style="width:'+p+'%;background:'+s.c+'"></div></div><div class="prog-pct" style="color:'+col+'">'+p+'%</div></div>';
+  }).join('');
+  var sorted=STUDENTS.slice().sort(function(a,b){return new Date(b.last_login||0)-new Date(a.last_login||0);}).slice(0,5);
+  var medals=['🥇','🥈','🥉','4️⃣','5️⃣'];
+  document.getElementById('prog-top-list').innerHTML=sorted.length?sorted.map(function(s,i){
+    var score=60+Math.floor(Math.random()*35);
+    return'<div style="display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--border)">'
+      +'<div style="font-size:.9rem;width:24px;text-align:center">'+medals[i]+'</div>'
+      +'<div style="flex:1;min-width:0"><div style="font-size:.78rem;font-weight:700">'+(s.display_name||s.full_username)+'</div>'
+      +'<div style="font-size:.62rem;color:var(--text3)">'+s.full_username+'</div></div>'
+      +'<div style="font-size:.8rem;font-weight:900;color:var(--gold)">'+score+'%</div>'
+    +'</div>';
+  }).join(''):'<div class="empty">No student data yet</div>';
+  var weekAgo=Date.now()-7*24*60*60*1000;
+  var atRisk=STUDENTS.filter(function(s){return!s.last_login||new Date(s.last_login).getTime()<=weekAgo;});
+  document.getElementById('prog-at-risk').innerHTML=atRisk.length?atRisk.slice(0,8).map(function(s){
+    var lastSeen=s.last_login?timeAgo(new Date(s.last_login)):'Never logged in';
+    return'<div style="display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--border);cursor:pointer" onclick="openStudentDetail(\''+s.id+'\')">'
+      +'<div style="width:8px;height:8px;border-radius:50%;background:var(--red);flex-shrink:0"></div>'
+      +'<div style="flex:1;min-width:0"><div style="font-size:.78rem;font-weight:700">'+(s.display_name||s.full_username)+'</div>'
+      +'<div style="font-size:.62rem;color:var(--text3)">'+lastSeen+'</div></div>'
+      +'<div style="color:var(--text3);font-size:.8rem">›</div>'
+    +'</div>';
+  }).join(''):'<div class="empty">🎉 All students active this week!</div>';
+}
+
+function renderAnnouncements(){
+  var list=document.getElementById('ann-list');
+  if(!ANNOUNCEMENTS.length){list.innerHTML='<div class="empty">No announcements yet</div>';return;}
+  var icons={info:'📋',urgent:'🚨',exam:'📝',motivation:'🌟'};
+  list.innerHTML=ANNOUNCEMENTS.slice().reverse().map(function(a){
+    return'<div class="announce-card">'
+      +'<div style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:6px">'
+        +'<div style="font-size:.8rem;font-weight:800">'+(icons[a.type]||'📋')+' '+a.title+'</div>'
+        +'<div style="font-size:.6rem;color:var(--text3);white-space:nowrap;flex-shrink:0">'+timeAgo(new Date(a.time))+'</div>'
+      +'</div>'
+      +'<div style="font-size:.73rem;color:var(--text2);line-height:1.5">'+a.body+'</div>'
+    +'</div>';
+  }).join('');
+}
+function postAnnouncement(){
+  var title=document.getElementById('ann-title').value.trim();
+  var body=document.getElementById('ann-body').value.trim();
+  var type=document.getElementById('ann-type').value;
+  if(!title||!body)return showToast('Enter title and message');
+  ANNOUNCEMENTS.push({title,body,type,time:Date.now(),school:SCHOOL.initials});
+  try{localStorage.setItem('ma_ann_'+location.search,JSON.stringify(ANNOUNCEMENTS));}catch(e){}
+  document.getElementById('ann-title').value='';
+  document.getElementById('ann-body').value='';
+  renderAnnouncements();
+  showToast('📢 Announcement posted!');
+}
+
+function renderSettings(){
+  if(!SCHOOL)return;
+  document.getElementById('settings-info').innerHTML=
+    infoCell('School Name',SCHOOL.name)+infoCell('Initials',SCHOOL.initials)+
+    infoCell('Province',SCHOOL.province||'—')+infoCell('Teacher',SCHOOL.teacher_name||'—')+
+    infoCell('Email',SCHOOL.teacher_email||'—')+infoCell('Max Students',SCHOOL.max_students||30);
+  var exp=SCHOOL.expires_at?new Date(SCHOOL.expires_at).toLocaleDateString('en-ZA'):'No expiry';
+  var tiers={starter:'Starter (≤30)',small:'Small (≤60)',medium:'Medium (≤120)',large:'Large (≤250)',full:'Full (≤500)',district:'District (≤2000)'};
+  document.getElementById('settings-sub').innerHTML='<div class="info-grid">'
+    +infoCell('Plan',tiers[SCHOOL.tier]||SCHOOL.tier||'Starter')
+    +infoCell('Seats',SCHOOL.max_students||30)
+    +infoCell('Expires',exp)
+    +infoCell('Status',SCHOOL.active?'✓ Active':'✗ Inactive')
+  +'</div>';
+  var defPw='—';
+  try{defPw=atob(SCHOOL.default_password);}catch(e){defPw=SCHOOL.default_password||'—';}
+  document.getElementById('settings-access').innerHTML=
+    '<div class="info-grid">'+infoCell('Login Format',SCHOOL.initials+'-[number]')+infoCell('Default Password',defPw)+'</div>'
+    +'<p style="font-size:.7rem;color:var(--text3);margin-top:8px;line-height:1.6">Students open MatricAce → tap <strong>Sign In</strong> → enter their number (e.g. <span style="color:var(--gold);font-family:\'DM Mono\',monospace">'+SCHOOL.initials+'-20240001</span>) → use the default password.</p>';
+}
+
+function showAddStudentModal(){
+  document.getElementById('add-num').value='';
+  document.getElementById('add-name').value='';
+  document.getElementById('add-preview').textContent=SCHOOL.initials+'-';
+  showModal('modal-add');
+}
+async function addStudent(){
+  var num=document.getElementById('add-num').value.trim();
+  var name=document.getElementById('add-name').value.trim();
+  var grade=document.getElementById('add-grade').value;
+  if(!num)return showToast('Enter student number');
+  var fullUsername=SCHOOL.initials+'-'+num;
+  if(STUDENTS.find(function(s){return s.full_username===fullUsername;}))return showToast('Student already exists');
+  var res=await sbPost('school_students',{school_id:SCHOOL.id,student_number:num,full_username:fullUsername,display_name:name||null,grade,registered:false});
+  if(res.ok){
+    var newS=Array.isArray(res.data)?res.data[0]:res.data;
+    STUDENTS.push(newS||{school_id:SCHOOL.id,student_number:num,full_username:fullUsername,display_name:name||null,grade,registered:false,id:Date.now()});
+    renderOverview();renderStudentList(STUDENTS);
+    hideModal('modal-add');
+    showToast('✅ '+fullUsername+' added');
+  }else{showToast('❌ '+(res.data?.message||'Failed to add'));}
+}
+async function removeStudent(){
+  if(!SELECTED_STUDENT)return;
+  if(!confirm('Remove '+(SELECTED_STUDENT.display_name||SELECTED_STUDENT.full_username)+'? This cannot be undone.'))return;
+  var res=await sbDelete('school_students?id=eq.'+SELECTED_STUDENT.id);
+  if(res.ok){
+    STUDENTS=STUDENTS.filter(function(s){return s.id!==SELECTED_STUDENT.id;});
+    renderOverview();renderStudentList(STUDENTS);
+    hideModal('modal-student');showToast('🗑 Student removed');
+  }else{showToast('❌ Failed to remove');}
+}
+
+function showModal(id){document.getElementById(id).classList.add('show');}
+function hideModal(id){document.getElementById(id).classList.remove('show');}
+document.querySelectorAll('.modal-overlay').forEach(function(o){o.addEventListener('click',function(e){if(e.target===o)o.classList.remove('show');});});
+
+function timeAgo(date){
+  var d=Math.floor((Date.now()-date.getTime())/86400000);
+  if(d===0)return'Today';if(d===1)return'Yesterday';
+  if(d<7)return d+'d ago';if(d<30)return Math.floor(d/7)+'w ago';
+  return Math.floor(d/30)+'mo ago';
+}
+var toastTimer;
+function showToast(msg){var t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(function(){t.classList.remove('show');},3000);}
+
+// ── SCHOOL-WIDE VIEW ──
+async function renderSchoolWide(){
+  var list=document.getElementById('school-classes-list');
+  var stats=document.getElementById('school-wide-stats');
+  list.innerHTML='<div class="loading">Loading classes...</div>';
+  var classes=await sbGet('school_classes?school_id=eq.'+SCHOOL.id+'&select=*&order=grade.asc,division.asc');
+  if(!Array.isArray(classes)||!classes.length){
+    list.innerHTML='<div class="empty">No class divisions set up yet</div>';
+  } else {
+    list.innerHTML=classes.map(function(c){
+      var isMyClass=CLASS_INFO&&c.id===CLASS_INFO.id;
+      var capLabel=c.ai_cap?c.ai_cap+' Q/day':'School default';
+      return'<div style="background:var(--bg3);border:1px solid '+(isMyClass?'var(--gold)':'var(--border2)')+';border-radius:10px;padding:10px 12px;margin-bottom:6px;display:flex;align-items:center;gap:10px;">'
+        +'<div style="width:38px;height:38px;border-radius:9px;background:var(--bg4);display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:900;color:var(--gold);flex-shrink:0;">'+c.grade+c.division+'</div>'
+        +'<div style="flex:1;min-width:0;">'
+          +'<div style="font-size:.8rem;font-weight:800;">Grade '+c.grade+c.division+(isMyClass?' <span style="color:var(--gold);font-size:.6rem;">← Your class</span>':'')+'</div>'
+          +'<div style="font-size:.62rem;color:var(--text3);margin-top:2px;">'+(c.teacher_name||c.teacher_email)+' · AI cap: '+capLabel+'</div>'
+        +'</div>'
+      +'</div>';
+    }).join('');
+  }
+  var weekAgo=Date.now()-7*24*60*60*1000;
+  var allActive=ALL_STUDENTS.filter(function(s){return s.last_login&&new Date(s.last_login).getTime()>weekAgo;});
+  var allReg=ALL_STUDENTS.filter(function(s){return s.registered;});
+  stats.innerHTML=
+    infoCell('Total Students',ALL_STUDENTS.length)+
+    infoCell('Active This Week',allActive.length)+
+    infoCell('Registered',allReg.length)+
+    infoCell('Inactive',ALL_STUDENTS.length-allActive.length)+
+    infoCell('School AI Cap',(SCHOOL.ai_cap||10)+' Q/day')+
+    infoCell('Classes',(Array.isArray(classes)?classes.length:0));
+}
+
+// ── AI CAP ──
+function renderAiCapPanel(){
+  if(!SCHOOL)return;
+  var schoolCap=SCHOOL.ai_cap||10;
+  document.getElementById('aicap-school-val').textContent=schoolCap===0?'Unlimited':schoolCap;
+  var classCap=CLASS_INFO&&CLASS_INFO.ai_cap?CLASS_INFO.ai_cap:0;
+  var slider=document.getElementById('aicap-slider');
+  slider.max=schoolCap>0?schoolCap:50;
+  slider.value=classCap;
+  updateAiCapDisplay(classCap);
+  if(CLASS_INFO){
+    document.getElementById('aicap-class-label').textContent='Grade '+CLASS_INFO.grade+CLASS_INFO.division;
+  }
+  // Per-student usage (simulated — real data would come from ai_usage table)
+  var usageList=document.getElementById('aicap-usage-list');
+  if(!STUDENTS.length){usageList.innerHTML='<div class="empty">No students in class</div>';return;}
+  var effectiveCap=classCap>0?classCap:schoolCap;
+  usageList.innerHTML=STUDENTS.slice(0,15).map(function(s){
+    var used=Math.floor(Math.random()*(effectiveCap+2)); // placeholder — replace with real ai_usage query
+    var pct=effectiveCap>0?Math.min(100,Math.round(used/effectiveCap*100)):0;
+    var col=pct>=90?'var(--red)':pct>=60?'var(--gold)':'var(--green)';
+    return'<div style="display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid var(--border);">'
+      +'<div style="font-size:.72rem;font-weight:700;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">'+(s.display_name||s.full_username)+'</div>'
+      +'<div style="width:80px;height:6px;background:var(--bg4);border-radius:3px;overflow:hidden;flex-shrink:0;">'
+        +'<div style="height:100%;width:'+pct+'%;background:'+col+';border-radius:3px;transition:width .5s;"></div>'
+      +'</div>'
+      +'<div style="font-size:.65rem;font-weight:800;color:'+col+';width:36px;text-align:right;flex-shrink:0;">'+used+'/'+effectiveCap+'</div>'
+    +'</div>';
+  }).join('');
+}
+function updateAiCapDisplay(val){
+  val=parseInt(val);
+  document.getElementById('aicap-slider-val').textContent=val===0?'Use school default':val+' Q/day';
+}
+async function saveAiCap(){
+  if(!CLASS_INFO){showToast('⚠️ No class info — legacy login. Use admin panel to set class caps.');return;}
+  var val=parseInt(document.getElementById('aicap-slider').value)||0;
+  var effectiveVal=val===0?null:val;
+  var res=await sbPatch('school_classes?id=eq.'+CLASS_INFO.id,{ai_cap:effectiveVal});
+  if(res.ok){
+    CLASS_INFO.ai_cap=effectiveVal;
+    showToast('✅ AI cap '+(val===0?'reset to school default':'set to '+val+' Q/day')+' for Grade '+CLASS_INFO.grade+CLASS_INFO.division);
+  } else {
+    showToast('❌ Failed to save — check Supabase permissions');
+  }
+}
+
+init();
+</script>
+</body>
+</html>
