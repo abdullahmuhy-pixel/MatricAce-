@@ -39,7 +39,9 @@ body{padding-top:32px}
     <div class="nav-item active" onclick="switchPanel(this,'overview')"><span class="nav-icon">📊</span><span>Dashboard</span></div>
     <div class="nav-item" onclick="switchPanel(this,'teachers')"><span class="nav-icon">👩‍🏫</span><span>Teachers</span><span class="nav-badge nb-blue" id="tchrCount"></span></div>
     <div class="nav-item" onclick="switchPanel(this,'students')"><span class="nav-icon">🎓</span><span>Students</span><span class="nav-badge nb-blue" id="stuCount"></span></div>
+    <div class="nav-item" onclick="openMigrateModal()"><span class="nav-icon">🔀</span><span>Migrate Students</span></div>
     <div class="nav-item" onclick="switchPanel(this,'classes')"><span class="nav-icon">🏛️</span><span>Classes</span></div>
+    <div class="nav-item" onclick="switchPanel(this,'manage-classes')"><span class="nav-icon">⚙️</span><span>Manage Classes</span></div>
     <div class="nav-item" onclick="switchPanel(this,'subjects')"><span class="nav-icon">📐</span><span>Subjects</span></div>
     <div class="nav-section-label">Management</div>
     <div class="nav-item" onclick="switchPanel(this,'onboard')"><span class="nav-icon">➕</span><span>Add People</span></div>
@@ -152,50 +154,123 @@ body{padding-top:32px}
       <!-- ONBOARD (Add People) -->
       <div class="panel" id="panel-onboard">
         <div class="invite-tabs">
-          <button class="invite-tab active" onclick="setInviteTab(this,'teacher-form')">Add Teacher</button>
-          <button class="invite-tab" onclick="setInviteTab(this,'student-form')">Add Student</button>
-          <button class="invite-tab" onclick="setInviteTab(this,'bulk-form')">Bulk Import</button>
+          <button class="invite-tab active" onclick="setInviteTab(this,'teacher-form')">👩‍🏫 Add Teacher</button>
+          <button class="invite-tab" onclick="setInviteTab(this,'student-form')">🎓 Add Student</button>
+          <button class="invite-tab" onclick="setInviteTab(this,'bulk-form')">📋 Bulk Add Students</button>
         </div>
 
-        <div id="teacher-form" class="card" style="max-width:600px">
-          <div class="card-title" style="margin-bottom:16px">Invite a Teacher</div>
+        <!-- TEACHER FORM -->
+        <div id="teacher-form" class="card" style="max-width:640px">
+          <div class="card-title" style="margin-bottom:16px">Add a Teacher</div>
           <div class="form-grid">
             <div class="ff"><label>Full Name *</label><input type="text" id="tchrName" placeholder="e.g. Mr T. Khumalo"></div>
             <div class="ff"><label>Email Address *</label><input type="email" id="tchrEmail" placeholder="teacher@school.co.za"></div>
             <div class="ff"><label>Subject *</label>
-              <select id="tchrSubject"><option>Mathematics</option><option>Life Sciences</option><option>Physical Sciences</option><option>History</option><option>Geography</option><option>English HL</option><option>Business Studies</option><option>Accounting</option><option>Economics</option></select>
+              <select id="tchrSubject"><option>Mathematics</option><option>Life Sciences</option><option>Physical Sciences</option><option>History</option><option>Geography</option><option>English HL</option><option>Afrikaans HL</option><option>Business Studies</option><option>Accounting</option><option>Economics</option><option>Mathematics Literacy</option><option>CAT</option><option>IT</option><option>Agricultural Sciences</option></select>
             </div>
-            <div class="ff"><label>Assigned Grade</label>
-              <select id="tchrGrade"><option value="12">Grade 12</option><option value="11">Grade 11</option><option value="10">Grade 10</option><option value="">All Grades</option></select>
-            </div>
-            <div class="ff form-row-full"><label>Assign to Class</label><select id="tchrClass"><option value="">— Loading classes —</option></select></div>
+            <div class="ff"><label>Password *</label><input type="text" id="tchrPw" placeholder="Leave blank to auto-generate"></div>
+            <div class="ff form-row-full"><label>Assign to Class *</label><select id="tchrClass"><option value="">— Select a class —</option></select></div>
           </div>
-          <div class="info-box">📧 Teacher will receive their class code, login link, and temporary password via email. They can also access their Teacher Dashboard directly.</div>
-          <button class="btn btn-primary" onclick="addTeacher()">Send Invite →</button>
+          <div class="info-box">🔑 Teacher logs in via the <strong>🏫 School</strong> tab using their email and this password. They'll have full access to their Teacher Dashboard.</div>
+          <button class="btn btn-primary" onclick="addTeacher()">✓ Add Teacher</button>
           <div id="tchrMsg" style="margin-top:10px;font-size:.78rem;font-weight:700"></div>
         </div>
 
-        <div id="student-form" class="card" style="max-width:600px;display:none">
+        <!-- SINGLE STUDENT FORM -->
+        <div id="student-form" class="card" style="max-width:640px;display:none">
           <div class="card-title" style="margin-bottom:16px">Register a Student</div>
           <div class="form-grid">
             <div class="ff"><label>Full Name *</label><input type="text" id="stuName" placeholder="e.g. Thabo Mokoena"></div>
             <div class="ff"><label>Student Number</label><input type="text" id="stuNum" placeholder="Auto-generated if blank"></div>
-            <div class="ff"><label>Grade *</label><select id="stuGrade"><option value="12">Grade 12</option><option value="11">Grade 11</option><option value="10">Grade 10</option></select></div>
-            <div class="ff"><label>Class</label><select id="stuClass"><option value="">— Loading classes —</option></select></div>
+            <div class="ff"><label>Grade *</label>
+              <select id="stuGrade" onchange="filterClassesByGrade('stuClass',this.value)">
+                <option value="12">Grade 12</option><option value="11">Grade 11</option><option value="10">Grade 10</option>
+              </select>
+            </div>
+            <div class="ff"><label>Class *</label><select id="stuClass"><option value="">— Select class —</option></select></div>
+            <div class="ff"><label>Password</label><input type="text" id="stuPw" placeholder="Auto-generated if blank"></div>
           </div>
-          <button class="btn btn-primary" onclick="addStudent()">Create Account →</button>
+          <button class="btn btn-primary" onclick="addStudent()">✓ Create Student Account</button>
           <div id="stuMsg" style="margin-top:10px;font-size:.78rem;font-weight:700"></div>
         </div>
 
-        <div id="bulk-form" class="card" style="max-width:600px;display:none">
-          <div class="card-title" style="margin-bottom:10px">Bulk Import via Spreadsheet</div>
-          <p style="font-size:.8rem;color:var(--text3);margin-bottom:16px;line-height:1.6">Upload a CSV with columns: Name, Grade, Class. We'll create all student accounts automatically.</p>
-          <div style="border:2px dashed var(--border2);border-radius:var(--r);padding:36px;text-align:center;margin-bottom:14px;cursor:pointer;transition:border-color .15s" onmouseover="this.style.borderColor='var(--primary)'" onmouseout="this.style.borderColor='var(--border2)'">
-            <div style="font-size:2rem;margin-bottom:8px">📂</div>
-            <div style="font-size:.85rem;font-weight:700;color:var(--text);margin-bottom:5px">Drop CSV here or click to browse</div>
-            <div style="font-size:.73rem;color:var(--text3)">CSV · Max 1000 rows</div>
+        <!-- BULK STUDENTS FORM -->
+        <div id="bulk-form" class="card" style="max-width:760px;display:none">
+          <div class="card-title" style="margin-bottom:6px">Bulk Add Students to a Class</div>
+          <p style="font-size:.78rem;color:var(--text3);margin-bottom:16px;line-height:1.6">Type or paste a list of student names — one per line. All students will be added to the selected class at once with auto-generated student numbers and passwords.</p>
+
+          <div class="form-grid" style="margin-bottom:14px">
+            <div class="ff"><label>Grade *</label>
+              <select id="bulkGrade" onchange="filterClassesByGrade('bulkClass',this.value)">
+                <option value="12">Grade 12</option><option value="11">Grade 11</option><option value="10">Grade 10</option>
+              </select>
+            </div>
+            <div class="ff"><label>Class *</label><select id="bulkClass"><option value="">— Select class —</option></select></div>
+            <div class="ff"><label>Password for all students</label><input type="text" id="bulkPw" placeholder="e.g. School2025! (same for all, they can change later)"></div>
+            <div class="ff"><label>Student number prefix</label><input type="text" id="bulkPrefix" placeholder="e.g. NRD (→ NRD001, NRD002…)"></div>
           </div>
-          <button class="btn btn-ghost" onclick="showToast('Download template coming soon')">📥 Download Template</button>
+
+          <div class="ff">
+            <label>Student Names * — one per line</label>
+            <textarea id="bulkNames" rows="10" placeholder="Thabo Mokoena&#10;Amahle Nkosi&#10;Keanu Pietersen&#10;Sipho Ndlovu&#10;Nomvula Sithole&#10;..." style="width:100%;resize:vertical;padding:10px 12px;border:1.5px solid var(--border2);border-radius:9px;background:var(--bg);color:var(--text);font-family:'Manrope',sans-serif;font-size:.82rem;outline:none;line-height:1.8"></textarea>
+            <div style="font-size:.68rem;color:var(--text3);margin-top:4px" id="bulkCount">0 students entered</div>
+          </div>
+
+          <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+            <button class="btn btn-primary" onclick="bulkAddStudents()">✓ Add All Students</button>
+            <button class="btn btn-ghost" onclick="downloadTemplate()">📥 Download CSV Template</button>
+            <label class="btn btn-ghost" style="cursor:pointer">📂 Import CSV <input type="file" id="csvFile" accept=".csv,.txt" style="display:none" onchange="importCSV(this)"></label>
+          </div>
+
+          <div id="bulkProgress" style="display:none;margin-top:14px">
+            <div style="font-size:.78rem;font-weight:700;color:var(--text);margin-bottom:8px" id="bulkProgressLabel">Adding students…</div>
+            <div style="height:6px;background:var(--border);border-radius:3px;overflow:hidden">
+              <div id="bulkProgressBar" style="height:100%;background:linear-gradient(90deg,var(--primary),var(--primary-light));border-radius:3px;width:0%;transition:width .3s"></div>
+            </div>
+          </div>
+          <div id="bulkResult" style="margin-top:12px;font-size:.78rem;line-height:1.8"></div>
+        </div>
+      </div>
+
+      <!-- MANAGE CLASSES PANEL -->
+      <div class="panel" id="panel-manage-classes">
+        <div class="card">
+          <div class="card-header">
+            <div><div class="card-title">Manage Classes & Divisions</div><div class="card-sub">Add Grade 10A, 10B, 11A, 11B etc. — each class gets its own teacher</div></div>
+            <button class="btn btn-primary btn-sm" onclick="showAddClassForm()">+ Add Class</button>
+          </div>
+
+          <!-- Add class form (hidden by default) -->
+          <div id="addClassForm" style="display:none;background:var(--bg);border:1.5px solid var(--border2);border-radius:12px;padding:16px;margin-bottom:16px">
+            <div style="font-size:.82rem;font-weight:800;color:var(--text);margin-bottom:12px">New Class</div>
+            <div class="form-grid">
+              <div class="ff"><label>Grade *</label>
+                <select id="newClassGrade">
+                  <option value="10">Grade 10</option><option value="11">Grade 11</option><option value="12">Grade 12</option>
+                </select>
+              </div>
+              <div class="ff"><label>Division *</label>
+                <select id="newClassDiv">
+                  <option value="A">A</option><option value="B">B</option><option value="C">C</option>
+                  <option value="D">D</option><option value="E">E</option><option value="F">F</option>
+                </select>
+              </div>
+              <div class="ff"><label>Teacher Name</label><input type="text" id="newClassTeacher" placeholder="e.g. Mr T. Khumalo (optional)"></div>
+              <div class="ff"><label>Teacher Email</label><input type="email" id="newClassTeacherEmail" placeholder="teacher@school.co.za (optional)"></div>
+              <div class="ff"><label>Teacher Password</label><input type="text" id="newClassTeacherPw" placeholder="Auto-generated if blank"></div>
+              <div class="ff"><label>Primary Subject</label>
+                <select id="newClassSubject"><option value="">— Optional —</option><option>Mathematics</option><option>Life Sciences</option><option>Physical Sciences</option><option>History</option><option>Geography</option><option>English HL</option><option>Business Studies</option><option>Accounting</option></select>
+              </div>
+            </div>
+            <div style="display:flex;gap:8px">
+              <button class="btn btn-primary btn-sm" onclick="addClass()">✓ Create Class</button>
+              <button class="btn btn-ghost btn-sm" onclick="document.getElementById('addClassForm').style.display='none'">Cancel</button>
+            </div>
+            <div id="addClassMsg" style="margin-top:8px;font-size:.75rem;font-weight:700"></div>
+          </div>
+
+          <!-- Classes by grade -->
+          <div id="classesByGrade"><div class="loading"><div class="spinner"></div>Loading classes…</div></div>
         </div>
       </div>
 
@@ -346,9 +421,13 @@ async function init() {
     document.getElementById('settName').value = SCHOOL.name || '';
     document.getElementById('settEmail').value = SCHOOL.teacher_email || '';
 
-    // Populate class dropdowns
-    const opts = CLASSES.map(c => `<option value="${c.id}">Grade ${c.grade}${c.division||''} — ${c.teacher_name||'No teacher'}</option>`).join('');
-    ['tchrClass','stuClass'].forEach(id => { const el = document.getElementById(id); if (el) el.innerHTML = '<option value="">— Select class —</option>'+opts; });
+    // Populate teacher class dropdown (all classes sorted)
+    const sorted = [...CLASSES].sort((a,b) => { if(a.grade!==b.grade) return a.grade-b.grade; return (a.division||'').localeCompare(b.division||''); });
+    const tchrSel = document.getElementById('tchrClass');
+    if (tchrSel) tchrSel.innerHTML = '<option value="">— Select a class —</option>' + sorted.map(c => `<option value="${c.id}">Grade ${c.grade}${c.division||''} — ${c.teacher_name||'No teacher'}</option>`).join('');
+    // Student/bulk dropdowns filtered by grade
+    filterClassesByGrade('stuClass', '12');
+    filterClassesByGrade('bulkClass', '12');
 
     await loadData();
     loadAnnouncements();
@@ -387,6 +466,7 @@ async function loadData() {
   renderStudents();
   renderTeachers();
   renderClasses();
+  renderManageClasses();
   renderGradeTable();
 }
 
@@ -475,40 +555,414 @@ function renderTeachers() {
 }
 
 function renderClasses() {
-  document.getElementById('classList').innerHTML = CLASSES.map((c,i) => {
-    const stuCount = allStudents.filter(s => s.class_id === c.id).length;
-    return `<div style="display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:var(--r);border:1px solid var(--border);background:var(--surface);margin-bottom:8px">
-      <div style="width:38px;height:38px;border-radius:9px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-family:'Outfit',sans-serif;font-size:.85rem;font-weight:800;color:#fff;background:${COLORS[i%COLORS.length]}">G${c.grade}</div>
-      <div style="flex:1">
-        <div style="font-size:.85rem;font-weight:800;color:var(--text)">Grade ${c.grade}${c.division||''}</div>
-        <div style="font-size:.65rem;color:var(--text3);font-family:'JetBrains Mono',monospace">${c.teacher_name||'No teacher assigned'} · ${stuCount} students</div>
-      </div>
-      <span class="pill p-blue">${stuCount} students</span>
-    </div>`;
-  }).join('') || '<div class="empty-state"><div class="empty-state-icon">🏛️</div><div class="empty-state-title">No classes set up yet</div></div>';
+  // Group by grade
+  const grades = [10, 11, 12];
+  let html = '';
+  grades.forEach(g => {
+    const gradeClasses = CLASSES.filter(c => parseInt(c.grade) === g);
+    if (!gradeClasses.length) return;
+    html += `<div style="margin-bottom:18px">
+      <div style="font-size:.68rem;font-weight:800;color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;font-family:'JetBrains Mono',monospace">Grade ${g}</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:8px">`;
+    gradeClasses.sort((a,b) => (a.division||'').localeCompare(b.division||'')).forEach((c,i) => {
+      const stuCount = allStudents.filter(s => s.class_id === c.id).length;
+      html += `<div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px;transition:box-shadow .15s" onmouseover="this.style.boxShadow='var(--shadow)'" onmouseout="this.style.boxShadow='none'">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+          <div style="width:36px;height:36px;border-radius:9px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-family:'Outfit',sans-serif;font-size:.9rem;font-weight:900;color:#fff;background:linear-gradient(135deg,var(--primary),var(--primary-light))">${g}${c.division||''}</div>
+          <div>
+            <div style="font-size:.85rem;font-weight:800;color:var(--text)">Grade ${g}${c.division||''}</div>
+            <div style="font-size:.6rem;color:var(--text3)">${stuCount} student${stuCount!==1?'s':''}</div>
+          </div>
+        </div>
+        <div style="font-size:.7rem;color:var(--text2);margin-bottom:4px">${c.teacher_name ? '👩‍🏫 '+c.teacher_name : '<span style="color:var(--text4)">No teacher assigned</span>'}</div>
+        ${c.teacher_email ? `<div style="font-size:.62rem;color:var(--text3);font-family:'JetBrains Mono',monospace;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${c.teacher_email}</div>` : ''}
+        <div style="display:flex;gap:6px;margin-top:10px">
+          <button class="btn btn-ghost btn-sm" onclick="openTeacherModal('${c.id}')" style="flex:1;justify-content:center">✏️ Teacher</button>
+          <button class="btn btn-ghost btn-sm" onclick="deleteClass('${c.id}','${g}${c.division||''}')" style="color:var(--red);border-color:var(--red-dim)">🗑️</button>
+        </div>
+      </div>`;
+    });
+    html += '</div></div>';
+  });
+  document.getElementById('classList').innerHTML = html || '<div class="empty-state"><div class="empty-state-icon">🏛️</div><div class="empty-state-title">No classes set up yet</div><div class="empty-state-sub">Go to Manage Classes to add Grade 10A, 10B etc.</div></div>';
+  // Also update manage-classes panel
+  renderManageClasses();
+}
+
+function renderManageClasses() {
+  const el = document.getElementById('classesByGrade');
+  if (!el) return;
+  const grades = [10, 11, 12];
+  let html = '';
+  grades.forEach(g => {
+    const gc = CLASSES.filter(c => parseInt(c.grade) === g).sort((a,b)=>(a.division||'').localeCompare(b.division||''));
+    html += `<div style="margin-bottom:20px">
+      <div style="font-size:.75rem;font-weight:800;color:var(--text);margin-bottom:10px;display:flex;align-items:center;gap:8px">
+        <span style="background:var(--primary-dim);color:var(--primary);padding:4px 10px;border-radius:20px;font-family:'JetBrains Mono',monospace">Grade ${g}</span>
+        <span style="color:var(--text3);font-size:.68rem">${gc.length} class${gc.length!==1?'es':''}</span>
+      </div>`;
+    if (gc.length) {
+      html += '<div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse"><thead><tr>';
+      ['Class','Teacher','Email','Students','Actions'].forEach(h => {
+        html += `<th style="font-size:.62rem;font-weight:800;color:var(--text3);text-transform:uppercase;letter-spacing:.8px;padding:8px 10px;border-bottom:1px solid var(--border);text-align:left;font-family:'JetBrains Mono',monospace">${h}</th>`;
+      });
+      html += '</tr></thead><tbody>';
+      gc.forEach(c => {
+        const sc = allStudents.filter(s => s.class_id === c.id).length;
+        html += `<tr>
+          <td style="padding:10px;border-bottom:1px solid var(--border)"><span style="font-weight:800;color:var(--text);font-family:'Outfit',sans-serif">Grade ${g}${c.division||''}</span></td>
+          <td style="padding:10px;border-bottom:1px solid var(--border);font-size:.78rem;color:var(--text2)">${c.teacher_name||'<span style="color:var(--text4)">—</span>'}</td>
+          <td style="padding:10px;border-bottom:1px solid var(--border);font-size:.72rem;color:var(--text3);font-family:'JetBrains Mono',monospace">${c.teacher_email||'—'}</td>
+          <td style="padding:10px;border-bottom:1px solid var(--border)"><span style="font-weight:800;color:var(--primary)">${sc}</span></td>
+          <td style="padding:10px;border-bottom:1px solid var(--border)">
+            <div style="display:flex;gap:6px">
+              <button class="btn btn-ghost btn-sm" onclick="editClass('${c.id}')">Edit</button>
+              <button class="btn btn-ghost btn-sm" onclick="deleteClass('${c.id}','${g}${c.division||''}')" style="color:var(--red)">Delete</button>
+            </div>
+          </td>
+        </tr>`;
+      });
+      html += '</tbody></table></div>';
+    } else {
+      html += '<div style="font-size:.78rem;color:var(--text3);padding:10px 0">No classes for Grade '+g+' yet.</div>';
+    }
+    html += '</div>';
+  });
+  el.innerHTML = html || '<div class="empty-state"><div class="empty-state-icon">🏛️</div><div class="empty-state-title">No classes yet</div><div class="empty-state-sub">Click "+ Add Class" above to create your first class</div></div>';
+}
+
+function filterClassesByGrade(selectId, grade) {
+  const sel = document.getElementById(selectId);
+  if (!sel) return;
+  const filtered = CLASSES.filter(c => String(c.grade) === String(grade));
+  sel.innerHTML = '<option value="">— Select class —</option>' + filtered.sort((a,b)=>(a.division||'').localeCompare(b.division||'')).map(c =>
+    `<option value="${c.id}">Grade ${c.grade}${c.division||''} — ${c.teacher_name||'No teacher'}</option>`
+  ).join('');
+}
+
+function showAddClassForm() {
+  const f = document.getElementById('addClassForm');
+  f.style.display = f.style.display === 'none' ? 'block' : 'none';
+}
+
+async function addClass() {
+  const grade = document.getElementById('newClassGrade').value;
+  const div = document.getElementById('newClassDiv').value;
+  const teacher = document.getElementById('newClassTeacher').value.trim();
+  const teacherEmail = document.getElementById('newClassTeacherEmail').value.trim();
+  const subject = document.getElementById('newClassSubject').value;
+  const msg = document.getElementById('addClassMsg');
+  let teacherPw = document.getElementById('newClassTeacherPw').value.trim();
+  if (!teacherPw && teacherEmail) teacherPw = 'Matric'+Math.floor(1000+Math.random()*9000)+'!';
+  // Check duplicate
+  const exists = CLASSES.find(c => String(c.grade)===String(grade) && c.division===div);
+  if (exists) { msg.textContent='❌ Grade '+grade+div+' already exists'; msg.style.color='var(--red)'; return; }
+  const data = {
+    school_id: SCHOOL.id,
+    grade: parseInt(grade),
+    division: div,
+    teacher_name: teacher || null,
+    teacher_email: teacherEmail || null,
+    teacher_password: teacherPw ? btoa(teacherPw) : null,
+    subjects: subject ? [subject] : null
+  };
+  msg.textContent = 'Creating…'; msg.style.color = 'var(--text3)';
+  const res = await sbPost('school_classes', data);
+  if (res && res[0]) {
+    msg.textContent = '✅ Grade '+grade+div+' created!' + (teacherEmail ? ' Teacher password: '+teacherPw : '');
+    msg.style.color = 'var(--green)';
+    showToast('✅ Grade '+grade+div+' created','success');
+    document.getElementById('newClassTeacher').value='';
+    document.getElementById('newClassTeacherEmail').value='';
+    document.getElementById('newClassTeacherPw').value='';
+    await loadData();
+  } else {
+    msg.textContent = '❌ Could not create class — check Supabase permissions';
+    msg.style.color = 'var(--red)';
+  }
+}
+
+// ── Teacher Modal ─────────────────────────────────────────────
+function openTeacherModal(classId) {
+  const c = CLASSES.find(x => x.id === classId);
+  if (!c) return;
+  document.getElementById('tmClassId').value = classId;
+  document.getElementById('teacherModalTitle').textContent = 'Edit Teacher — Grade '+c.grade+(c.division||'');
+  document.getElementById('teacherModalSub').textContent = c.teacher_name ? c.teacher_name + ' · ' + (c.teacher_email||'') : 'No teacher assigned';
+  document.getElementById('tmName').value = c.teacher_name || '';
+  document.getElementById('tmEmail').value = c.teacher_email || '';
+  document.getElementById('tmPw').value = '';
+  document.getElementById('tmMsg').textContent = '';
+  // Warning if removing from active class
+  const stuCount = allStudents.filter(s => s.class_id === classId).length;
+  const warn = document.getElementById('tmWarning');
+  warn.style.display = stuCount > 0 ? 'block' : 'none';
+  warn.textContent = '⚠️ This class has '+stuCount+' student(s). Removing the teacher will only affect the teacher login, not the students.';
+  // Populate "move to class" dropdown (other classes)
+  const sel = document.getElementById('tmNewClass');
+  sel.innerHTML = '<option value="">— Keep in current class —</option>' +
+    CLASSES.filter(x => x.id !== classId).sort((a,b)=>{
+      if(a.grade!==b.grade) return a.grade-b.grade;
+      return (a.division||'').localeCompare(b.division||'');
+    }).map(x => `<option value="${x.id}">Grade ${x.grade}${x.division||''} — ${x.teacher_name||'No teacher'}</option>`).join('');
+  document.getElementById('teacherModal').style.display = 'flex';
+}
+
+function closeTeacherModal() {
+  document.getElementById('teacherModal').style.display = 'none';
+}
+
+async function saveTeacherChanges() {
+  const classId = document.getElementById('tmClassId').value;
+  const name = document.getElementById('tmName').value.trim();
+  const email = document.getElementById('tmEmail').value.trim();
+  const pw = document.getElementById('tmPw').value.trim();
+  const newClassId = document.getElementById('tmNewClass').value;
+  const msg = document.getElementById('tmMsg');
+  msg.textContent = 'Saving…'; msg.style.color = 'var(--text3)';
+  // If moving teacher to different class
+  if (newClassId) {
+    // Remove from current class
+    const clearOk = await sbPatch('school_classes?id=eq.'+classId, {teacher_name:null, teacher_email:null, teacher_password:null});
+    // Add to new class
+    const updateData = {teacher_name:name||null, teacher_email:email||null};
+    if (pw) updateData.teacher_password = btoa(pw);
+    const moveOk = await sbPatch('school_classes?id=eq.'+newClassId, updateData);
+    if (clearOk && moveOk) {
+      const targetClass = CLASSES.find(x => x.id === newClassId);
+      msg.textContent = '✅ '+name+' moved to Grade '+(targetClass?.grade||'')+(targetClass?.division||'');
+      msg.style.color = 'var(--green)';
+      showToast('✅ Teacher moved to new class','success');
+      await loadData();
+      setTimeout(closeTeacherModal, 1500);
+    } else { msg.textContent = '❌ Update failed'; msg.style.color = 'var(--red)'; }
+    return;
+  }
+  // Update in current class
+  const updateData = {teacher_name:name||null, teacher_email:email||null};
+  if (pw) updateData.teacher_password = btoa(pw);
+  const ok = await sbPatch('school_classes?id=eq.'+classId, updateData);
+  if (ok) {
+    msg.textContent = '✅ Teacher updated!' + (pw ? ' New password: '+pw : '');
+    msg.style.color = 'var(--green)';
+    showToast('✅ Teacher updated','success');
+    await loadData();
+    setTimeout(closeTeacherModal, 1500);
+  } else { msg.textContent = '❌ Update failed'; msg.style.color = 'var(--red)'; }
+}
+
+async function removeTeacherFromClass() {
+  const classId = document.getElementById('tmClassId').value;
+  const c = CLASSES.find(x => x.id === classId);
+  const label = 'Grade '+(c?.grade||'')+(c?.division||'');
+  if (!confirm('Remove teacher from '+label+'? The class will have no teacher assigned.')) return;
+  const ok = await sbPatch('school_classes?id=eq.'+classId, {teacher_name:null, teacher_email:null, teacher_password:null});
+  if (ok) {
+    showToast('✅ Teacher removed from '+label,'success');
+    await loadData();
+    closeTeacherModal();
+  } else showToast('❌ Failed to remove teacher','error');
+}
+
+async function deleteClass(classId, label) {
+  const stuCount = allStudents.filter(s => s.class_id === classId).length;
+  if (!confirm('Delete Grade '+label+'?\n\n'+stuCount+' student(s) will be unassigned but NOT deleted. This cannot be undone.')) return;
+  // Unassign students first
+  if (stuCount > 0) {
+    await sbPatch('school_students?class_id=eq.'+classId, {class_id: null});
+  }
+  const r = await fetch(SUPA_URL+'/rest/v1/school_classes?id=eq.'+classId, {method:'DELETE', headers:H});
+  if (r.ok) { showToast('✅ Grade '+label+' deleted','success'); await loadData(); }
+  else showToast('❌ Delete failed','error');
+}
+
+// ── Migrate Modal ─────────────────────────────────────────────
+function openMigrateModal() {
+  loadPromoteOptions();
+  loadMoveClassOptions();
+  loadGraduateOptions();
+  document.getElementById('migrateModal').style.display = 'flex';
+}
+function closeMigrateModal() {
+  document.getElementById('migrateModal').style.display = 'none';
+  document.getElementById('migMsg').textContent = '';
+}
+function setMigTab(btn, tab) {
+  document.querySelectorAll('.mig-tab').forEach(b => {
+    b.style.color = 'var(--text3)'; b.style.borderBottomColor = 'transparent';
+  });
+  btn.style.color = 'var(--primary)'; btn.style.borderBottomColor = 'var(--primary)';
+  document.querySelectorAll('.mig-section').forEach(s => s.style.display = 'none');
+  document.getElementById('mig-'+tab).style.display = 'block';
+}
+
+function loadPromoteOptions() {
+  const fromGrade = parseInt(document.getElementById('promFromGrade').value);
+  const toGrade = fromGrade + 1;
+  document.getElementById('promToGrade').value = 'Grade '+toGrade;
+  // From classes
+  const fromSel = document.getElementById('promFromClass');
+  const fromClasses = CLASSES.filter(c => parseInt(c.grade)===fromGrade).sort((a,b)=>(a.division||'').localeCompare(b.division||''));
+  fromSel.innerHTML = '<option value="">All classes in Grade '+fromGrade+'</option>' +
+    fromClasses.map(c => `<option value="${c.id}">Grade ${c.grade}${c.division||''} (${allStudents.filter(s=>s.class_id===c.id).length} students)</option>`).join('');
+  // To classes
+  const toSel = document.getElementById('promToClass');
+  const toClasses = CLASSES.filter(c => parseInt(c.grade)===toGrade).sort((a,b)=>(a.division||'').localeCompare(b.division||''));
+  toSel.innerHTML = '<option value="">— Select target class —</option>' +
+    toClasses.map(c => `<option value="${c.id}">Grade ${c.grade}${c.division||''} — ${c.teacher_name||'No teacher'}</option>`).join('');
+  updatePromoteCount();
+}
+
+function updatePromoteCount() {
+  const fromGrade = parseInt(document.getElementById('promFromGrade').value);
+  const fromClassId = document.getElementById('promFromClass').value;
+  let students = allStudents.filter(s => parseInt(s.grade)===fromGrade);
+  if (fromClassId) students = students.filter(s => s.class_id===fromClassId);
+  document.getElementById('promStudentCount').textContent = students.length+' student(s) will be promoted.';
+}
+document.getElementById('promFromGrade')?.addEventListener('change', loadPromoteOptions);
+document.getElementById('promFromClass')?.addEventListener('change', updatePromoteCount);
+
+async function promoteStudents() {
+  const fromGrade = parseInt(document.getElementById('promFromGrade').value);
+  const toGrade = fromGrade + 1;
+  const fromClassId = document.getElementById('promFromClass').value;
+  const toClassId = document.getElementById('promToClass').value;
+  const msg = document.getElementById('migMsg');
+  if (!toClassId) { msg.textContent='❌ Select a target class'; msg.style.color='var(--red)'; return; }
+  let students = allStudents.filter(s => parseInt(s.grade)===fromGrade);
+  if (fromClassId) students = students.filter(s => s.class_id===fromClassId);
+  if (!students.length) { msg.textContent='❌ No students found in selected class'; msg.style.color='var(--red)'; return; }
+  msg.textContent='Promoting '+students.length+' students…'; msg.style.color='var(--text3)';
+  let done=0, failed=0;
+  for (const s of students) {
+    const ok = await sbPatch('school_students?id=eq.'+s.id, {grade: toGrade, class_id: toClassId});
+    if (ok) done++; else failed++;
+  }
+  msg.innerHTML = `✅ ${done} student(s) promoted to Grade ${toGrade}${failed>0?` · <span style="color:var(--red)">${failed} failed</span>`:''}`;
+  msg.style.color = 'var(--green)';
+  showToast('✅ '+done+' students promoted to Grade '+toGrade,'success');
+  await loadData();
+  loadPromoteOptions();
+}
+
+function loadMoveClassOptions() {
+  const sorted = [...CLASSES].sort((a,b)=>{ if(a.grade!==b.grade) return a.grade-b.grade; return (a.division||'').localeCompare(b.division||''); });
+  const opts = sorted.map(c => `<option value="${c.id}">Grade ${c.grade}${c.division||''} — ${c.teacher_name||'No teacher'} (${allStudents.filter(s=>s.class_id===c.id).length} students)</option>`).join('');
+  ['moveFromClass','moveToClass'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.innerHTML = '<option value="">— Select class —</option>' + opts;
+  });
+}
+
+function loadMoveStudents() {
+  const classId = document.getElementById('moveFromClass').value;
+  const list = document.getElementById('moveStudentList');
+  if (!classId) { list.innerHTML='<div style="font-size:.78rem;color:var(--text3)">Select a source class</div>'; return; }
+  const students = allStudents.filter(s => s.class_id===classId);
+  if (!students.length) { list.innerHTML='<div style="font-size:.78rem;color:var(--text3)">No students in this class</div>'; return; }
+  list.innerHTML = students.map(s =>
+    `<label style="display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--border);cursor:pointer;font-size:.78rem;color:var(--text)">
+      <input type="checkbox" class="move-stu-cb" value="${s.id}" onchange="updateMoveCount()" style="width:15px;height:15px;accent-color:var(--primary)">
+      <span>${s.display_name||s.full_username}</span>
+      <span style="font-size:.65rem;color:var(--text3);font-family:'JetBrains Mono',monospace;margin-left:auto">Grade ${s.grade}</span>
+    </label>`
+  ).join('');
+  updateMoveCount();
+}
+
+function updateMoveCount() {
+  const checked = document.querySelectorAll('.move-stu-cb:checked').length;
+  document.getElementById('moveSelCount').textContent = checked+' selected';
+}
+function selectAllMoveStudents(val) {
+  document.querySelectorAll('.move-stu-cb').forEach(cb => { cb.checked=val; });
+  updateMoveCount();
+}
+
+async function moveStudents() {
+  const toClassId = document.getElementById('moveToClass').value;
+  const msg = document.getElementById('migMsg');
+  const selected = [...document.querySelectorAll('.move-stu-cb:checked')].map(cb=>cb.value);
+  if (!toClassId) { msg.textContent='❌ Select a target class'; msg.style.color='var(--red)'; return; }
+  if (!selected.length) { msg.textContent='❌ Select at least one student'; msg.style.color='var(--red)'; return; }
+  const toClass = CLASSES.find(c=>c.id===toClassId);
+  msg.textContent='Moving '+selected.length+' students…'; msg.style.color='var(--text3)';
+  let done=0, failed=0;
+  for (const id of selected) {
+    const s = allStudents.find(x=>x.id===id);
+    const ok = await sbPatch('school_students?id=eq.'+id, {class_id:toClassId, grade:toClass?.grade||s?.grade});
+    if (ok) done++; else failed++;
+  }
+  msg.innerHTML = `✅ ${done} student(s) moved to Grade ${toClass?.grade||''}${toClass?.division||''}${failed>0?` · <span style="color:var(--red)">${failed} failed</span>`:''}`;
+  msg.style.color='var(--green)';
+  showToast('✅ '+done+' students moved','success');
+  await loadData();
+  loadMoveClassOptions();
+  document.getElementById('moveStudentList').innerHTML='<div style="font-size:.78rem;color:var(--text3)">Select a source class</div>';
+}
+
+function loadGraduateOptions() {
+  const grade12Classes = CLASSES.filter(c=>parseInt(c.grade)===12).sort((a,b)=>(a.division||'').localeCompare(b.division||''));
+  const sel = document.getElementById('gradClass');
+  const total12 = allStudents.filter(s=>parseInt(s.grade)===12).length;
+  sel.innerHTML = `<option value="all_grade12">All Grade 12 students (${total12})</option>` +
+    grade12Classes.map(c => {
+      const cnt = allStudents.filter(s=>s.class_id===c.id).length;
+      return `<option value="${c.id}">Grade 12${c.division||''} — ${cnt} students</option>`;
+    }).join('');
+  document.getElementById('gradStudentCount').textContent = 'Total Grade 12 students: '+total12;
+}
+
+async function graduateStudents() {
+  const target = document.getElementById('gradClass').value;
+  const msg = document.getElementById('migMsg');
+  let students = [];
+  if (target==='all_grade12') {
+    students = allStudents.filter(s=>parseInt(s.grade)===12);
+  } else {
+    students = allStudents.filter(s=>s.class_id===target);
+  }
+  if (!students.length) { msg.textContent='❌ No students found'; msg.style.color='var(--red)'; return; }
+  if (!confirm('Graduate '+students.length+' student(s)? They will be marked as graduated and removed from class rosters.')) return;
+  msg.textContent='Graduating '+students.length+' students…'; msg.style.color='var(--text3)';
+  let done=0, failed=0;
+  for (const s of students) {
+    const ok = await sbPatch('school_students?id=eq.'+s.id, {graduated:true, class_id:null});
+    if (ok) done++; else failed++;
+  }
+  msg.innerHTML = `🏆 ${done} student(s) graduated!${failed>0?` · <span style="color:var(--red)">${failed} failed</span>`:''}`;
+  msg.style.color='var(--green)';
+  showToast('🏆 '+done+' students graduated','success');
+  await loadData();
+  loadGraduateOptions();
 }
 
 // ── Add Teacher ─────────────────────────────────────────────────
 async function addTeacher() {
   const name = document.getElementById('tchrName').value.trim();
   const email = document.getElementById('tchrEmail').value.trim();
-  const subj = document.getElementById('tchrSubject').value;
-  const grade = document.getElementById('tchrGrade').value;
   const classId = document.getElementById('tchrClass').value;
   const msg = document.getElementById('tchrMsg');
   if (!name || !email) { msg.textContent = '❌ Name and email required'; msg.style.color='var(--red)'; return; }
-  const pw = 'Matric'+Math.floor(1000+Math.random()*9000)+'!';
-  if (classId) {
-    const ok = await sbPatch('school_classes?id=eq.'+classId, {teacher_name:name, teacher_email:email, teacher_password:btoa(pw)});
-    if (ok) { msg.textContent = '✅ Teacher added! Temp password: '+pw; msg.style.color='var(--green)'; showToast('✅ Teacher added','success'); await loadData(); }
-    else { msg.textContent = '❌ Failed to save teacher'; msg.style.color='var(--red)'; }
-  } else {
-    msg.textContent = '✅ Invite ready — please assign a class'; msg.style.color='var(--orange)';
-    showToast('✅ Teacher invite prepared','success');
-  }
+  if (!classId) { msg.textContent = '❌ Please select a class'; msg.style.color='var(--red)'; return; }
+  let pw = document.getElementById('tchrPw').value.trim() || 'Matric'+Math.floor(1000+Math.random()*9000)+'!';
+  msg.textContent = 'Saving…'; msg.style.color = 'var(--text3)';
+  const ok = await sbPatch('school_classes?id=eq.'+classId, {
+    teacher_name: name, teacher_email: email, teacher_password: btoa(pw)
+  });
+  if (ok) {
+    msg.innerHTML = '✅ Teacher added!<br>📧 Email: <strong>'+email+'</strong><br>🔑 Password: <strong>'+pw+'</strong><br>They log in via the 🏫 School tab.';
+    msg.style.color='var(--green)';
+    showToast('✅ '+name+' added','success');
+    document.getElementById('tchrName').value='';
+    document.getElementById('tchrEmail').value='';
+    document.getElementById('tchrPw').value='';
+    await loadData();
+  } else { msg.textContent = '❌ Failed to save teacher'; msg.style.color='var(--red)'; }
 }
 
-// ── Add Student ─────────────────────────────────────────────────
+// ── Add Single Student ───────────────────────────────────────────
 async function addStudent() {
   const name = document.getElementById('stuName').value.trim();
   const grade = document.getElementById('stuGrade').value;
@@ -516,12 +970,112 @@ async function addStudent() {
   const stuNum = document.getElementById('stuNum').value.trim();
   const msg = document.getElementById('stuMsg');
   if (!name) { msg.textContent = '❌ Student name required'; msg.style.color='var(--red)'; return; }
-  const username = stuNum || (name.replace(/[^a-zA-Z0-9]/g,'').toLowerCase().slice(0,8) + Math.floor(100+Math.random()*900));
-  const pw = 'Matric' + Math.floor(1000+Math.random()*9000) + '!';
+  const school_prefix = (SCHOOL.name||'SCH').replace(/[^a-zA-Z]/g,'').toUpperCase().slice(0,3);
+  const username = stuNum || (school_prefix + String(Date.now()).slice(-5) + Math.floor(10+Math.random()*90));
+  const pw = document.getElementById('stuPw').value.trim() || 'Matric'+Math.floor(1000+Math.random()*9000)+'!';
+  msg.textContent = 'Creating…'; msg.style.color='var(--text3)';
   const data = {school_id:SCHOOL.id, full_username:username, display_name:name, grade:parseInt(grade)||12, class_id:classId||null, preset_password:btoa(pw), registered:false};
   const res = await sbPost('school_students', data);
-  if (res) { msg.textContent = '✅ Created! Login: '+username+' / '+pw; msg.style.color='var(--green)'; showToast('✅ Student account created','success'); document.getElementById('stuName').value=''; document.getElementById('stuNum').value=''; await loadData(); }
-  else { msg.textContent = '❌ Could not create student'; msg.style.color='var(--red)'; }
+  if (res) {
+    msg.innerHTML = '✅ Account created!<br>👤 Student number: <strong>'+username+'</strong><br>🔑 Password: <strong>'+pw+'</strong>';
+    msg.style.color='var(--green)';
+    showToast('✅ '+name+' added','success');
+    document.getElementById('stuName').value='';
+    document.getElementById('stuNum').value='';
+    document.getElementById('stuPw').value='';
+    await loadData();
+  } else { msg.textContent = '❌ Could not create student'; msg.style.color='var(--red)'; }
+}
+
+// ── Bulk Add Students ─────────────────────────────────────────────
+document.getElementById('bulkNames')?.addEventListener('input', function() {
+  const names = this.value.split('\n').filter(n => n.trim().length > 1);
+  document.getElementById('bulkCount').textContent = names.length + ' student' + (names.length!==1?'s':'') + ' entered';
+});
+
+async function bulkAddStudents() {
+  const namesRaw = document.getElementById('bulkNames').value;
+  const grade = document.getElementById('bulkGrade').value;
+  const classId = document.getElementById('bulkClass').value;
+  const bulkPw = document.getElementById('bulkPw').value.trim() || 'Matric2025!';
+  const prefix = document.getElementById('bulkPrefix').value.trim().toUpperCase() ||
+    (SCHOOL.name||'SCH').replace(/[^a-zA-Z]/g,'').toUpperCase().slice(0,3);
+  const names = namesRaw.split('\n').map(n => n.trim()).filter(n => n.length > 1);
+  if (!names.length) { showToast('Enter at least one student name','error'); return; }
+  if (!classId) { showToast('Please select a class','error'); return; }
+  // Show progress
+  const prog = document.getElementById('bulkProgress');
+  const progBar = document.getElementById('bulkProgressBar');
+  const progLabel = document.getElementById('bulkProgressLabel');
+  const result = document.getElementById('bulkResult');
+  prog.style.display = 'block';
+  result.innerHTML = '';
+  let success = 0, failed = 0;
+  const created = [];
+  for (let i = 0; i < names.length; i++) {
+    const name = names[i];
+    progLabel.textContent = `Adding ${i+1} of ${names.length}: ${name}…`;
+    progBar.style.width = Math.round((i/names.length)*100)+'%';
+    const num = String(i+1).padStart(3,'0');
+    const username = prefix + num + '_' + name.replace(/[^a-zA-Z]/g,'').toLowerCase().slice(0,4);
+    const data = {
+      school_id: SCHOOL.id,
+      full_username: username,
+      display_name: name,
+      grade: parseInt(grade)||12,
+      class_id: classId||null,
+      preset_password: btoa(bulkPw),
+      registered: false
+    };
+    const res = await sbPost('school_students', data);
+    if (res) { success++; created.push({name, username, pw: bulkPw}); }
+    else failed++;
+    await new Promise(r => setTimeout(r, 80)); // small delay to avoid rate limiting
+  }
+  progBar.style.width = '100%';
+  progLabel.textContent = `Done! ${success} added${failed>0?' · '+failed+' failed':''}`;
+  // Show results table
+  let html = `<div style="font-size:.78rem;font-weight:800;color:var(--green);margin-bottom:10px">✅ ${success} students added${failed>0?` · <span style="color:var(--red)">${failed} failed</span>`:''}</div>`;
+  if (created.length) {
+    html += `<div style="font-size:.72rem;color:var(--text3);margin-bottom:8px">Share these login details with students:</div>`;
+    html += `<div style="background:var(--bg);border:1px solid var(--border);border-radius:9px;padding:10px;font-family:'JetBrains Mono',monospace;font-size:.68rem;line-height:2;max-height:200px;overflow-y:auto">`;
+    created.forEach(s => {
+      html += `<div><strong>${s.name}</strong> — Student#: ${s.username} · Password: ${s.pw}</div>`;
+    });
+    html += '</div>';
+    html += `<button class="btn btn-ghost btn-sm" style="margin-top:8px" onclick="copyCredentials()">📋 Copy All Credentials</button>`;
+    window._lastBulkCreated = created;
+  }
+  result.innerHTML = html;
+  if (success > 0) { await loadData(); document.getElementById('bulkNames').value=''; document.getElementById('bulkCount').textContent='0 students entered'; }
+}
+
+function copyCredentials() {
+  if (!window._lastBulkCreated) return;
+  const text = window._lastBulkCreated.map(s => `${s.name} | Student#: ${s.username} | Password: ${s.pw}`).join('\n');
+  navigator.clipboard.writeText(text).then(() => showToast('📋 Credentials copied!','success'));
+}
+
+function downloadTemplate() {
+  const csv = 'Name\nThabo Mokoena\nAmahle Nkosi\nKeanu Pietersen\nSipho Ndlovu\nNomvula Sithole';
+  const blob = new Blob([csv], {type:'text/csv'});
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+  a.download = 'student-import-template.csv'; a.click();
+}
+
+function importCSV(input) {
+  const file = input.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    const lines = e.target.result.split('\n').map(l=>l.trim()).filter(Boolean);
+    // Skip header row if it looks like a header
+    const data = lines.filter(l => !/^name$/i.test(l));
+    document.getElementById('bulkNames').value = data.join('\n');
+    document.getElementById('bulkCount').textContent = data.length + ' students imported from CSV';
+    showToast('✅ '+data.length+' names imported','success');
+  };
+  reader.readAsText(file);
 }
 
 // ── Announcements ─────────────────────────────────────────────
@@ -554,6 +1108,16 @@ function setInviteTab(btn, formId) {
   document.querySelectorAll('.invite-tab').forEach(t => t.classList.remove('active'));
   btn.classList.add('active');
   ['teacher-form','student-form','bulk-form'].forEach(id => { const el = document.getElementById(id); if(el) el.style.display = id===formId?'block':'none'; });
+  // Populate class dropdowns based on current grade selection
+  if (formId==='student-form') filterClassesByGrade('stuClass', document.getElementById('stuGrade').value);
+  if (formId==='bulk-form') filterClassesByGrade('bulkClass', document.getElementById('bulkGrade').value);
+  if (formId==='teacher-form') {
+    const sel = document.getElementById('tchrClass');
+    if (sel) sel.innerHTML = '<option value="">— Select a class —</option>' + CLASSES.sort((a,b)=>{
+      if(a.grade!==b.grade) return a.grade-b.grade;
+      return (a.division||'').localeCompare(b.division||'');
+    }).map(c => `<option value="${c.id}">Grade ${c.grade}${c.division||''} — ${c.teacher_name||'No teacher'}</option>`).join('');
+  }
 }
 
 function exportTeachers() { showToast('📥 Export feature coming soon'); }
@@ -568,5 +1132,125 @@ function updateColor(color) {
 // ── Init ──────────────────────────────────────────────────────
 init();
 </script>
+
+<!-- ══════════════ TEACHER EDIT MODAL ══════════════ -->
+<div id="teacherModal" style="display:none;position:fixed;inset:0;z-index:9000;background:rgba(15,23,41,.6);backdrop-filter:blur(4px);align-items:center;justify-content:center;padding:20px">
+  <div style="background:var(--surface);border-radius:18px;padding:24px;width:100%;max-width:500px;box-shadow:0 20px 60px rgba(0,0,0,.2);animation:fadeUp .2s ease">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px">
+      <div>
+        <div style="font-family:'Outfit',sans-serif;font-size:1rem;font-weight:800;color:var(--text)" id="teacherModalTitle">Edit Teacher</div>
+        <div style="font-size:.72rem;color:var(--text3);margin-top:2px" id="teacherModalSub"></div>
+      </div>
+      <button onclick="closeTeacherModal()" style="width:32px;height:32px;border-radius:8px;background:var(--bg);border:1px solid var(--border);font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--text3)">✕</button>
+    </div>
+    <input type="hidden" id="tmClassId">
+    <div class="ff"><label>Teacher Full Name</label><input type="text" id="tmName" placeholder="e.g. Mr T. Khumalo"></div>
+    <div class="ff"><label>Teacher Email</label><input type="email" id="tmEmail" placeholder="teacher@school.co.za"></div>
+    <div class="ff"><label>New Password <span style="color:var(--text4);font-weight:400">(leave blank to keep current)</span></label><input type="text" id="tmPw" placeholder="Leave blank to keep current password"></div>
+    <div class="ff"><label>Assign to Different Class</label>
+      <select id="tmNewClass">
+        <option value="">— Keep in current class —</option>
+      </select>
+    </div>
+    <div style="background:var(--orange-dim);border:1px solid rgba(217,119,6,.2);border-radius:9px;padding:10px 12px;font-size:.75rem;color:var(--orange);margin-bottom:16px" id="tmWarning" style="display:none"></div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <button class="btn btn-primary" onclick="saveTeacherChanges()" style="flex:1">✓ Save Changes</button>
+      <button class="btn" onclick="removeTeacherFromClass()" style="background:var(--red-dim);border:1px solid rgba(220,38,38,.2);color:var(--red)">🚫 Remove Teacher</button>
+    </div>
+    <div id="tmMsg" style="margin-top:10px;font-size:.75rem;font-weight:700"></div>
+  </div>
+</div>
+
+<!-- ══════════════ STUDENT MIGRATE MODAL ══════════════ -->
+<div id="migrateModal" style="display:none;position:fixed;inset:0;z-index:9000;background:rgba(15,23,41,.6);backdrop-filter:blur(4px);align-items:center;justify-content:center;padding:20px">
+  <div style="background:var(--surface);border-radius:18px;padding:24px;width:100%;max-width:600px;box-shadow:0 20px 60px rgba(0,0,0,.2);max-height:90vh;overflow-y:auto;animation:fadeUp .2s ease">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
+      <div>
+        <div style="font-family:'Outfit',sans-serif;font-size:1rem;font-weight:800;color:var(--text)">Migrate Students</div>
+        <div style="font-size:.72rem;color:var(--text3);margin-top:2px">Move students to a new grade or class</div>
+      </div>
+      <button onclick="closeMigrateModal()" style="width:32px;height:32px;border-radius:8px;background:var(--bg);border:1px solid var(--border);font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--text3)">✕</button>
+    </div>
+
+    <!-- Migrate type tabs -->
+    <div style="display:flex;gap:0;border-bottom:1px solid var(--border);margin-bottom:16px">
+      <button class="mig-tab active" data-tab="promote" onclick="setMigTab(this,'promote')" style="padding:9px 16px;font-size:.8rem;font-weight:700;color:var(--primary);background:none;border:none;border-bottom:2.5px solid var(--primary);cursor:pointer">🎓 Promote Grade</button>
+      <button class="mig-tab" data-tab="move" onclick="setMigTab(this,'move')" style="padding:9px 16px;font-size:.8rem;font-weight:700;color:var(--text3);background:none;border:none;border-bottom:2.5px solid transparent;cursor:pointer">🔀 Move to Class</button>
+      <button class="mig-tab" data-tab="graduate" onclick="setMigTab(this,'graduate')" style="padding:9px 16px;font-size:.8rem;font-weight:700;color:var(--text3);background:none;border:none;border-bottom:2.5px solid transparent;cursor:pointer">🏆 Graduate (Grade 12)</button>
+    </div>
+
+    <!-- PROMOTE TAB -->
+    <div id="mig-promote" class="mig-section">
+      <div style="background:var(--blue-dim);border:1px solid rgba(27,79,216,.2);border-radius:9px;padding:12px;font-size:.78rem;color:var(--primary);margin-bottom:14px;line-height:1.6">
+        📋 Promotes all students from one grade to the next (10→11 or 11→12) and automatically assigns them to the target class division.
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px">
+        <div class="ff"><label>From Grade *</label>
+          <select id="promFromGrade" onchange="loadPromoteOptions()">
+            <option value="10">Grade 10</option><option value="11">Grade 11</option>
+          </select>
+        </div>
+        <div class="ff"><label>From Class</label>
+          <select id="promFromClass"><option value="">All classes in grade</option></select>
+        </div>
+        <div class="ff"><label>To Grade *</label><input type="text" id="promToGrade" readonly style="background:var(--bg3);cursor:not-allowed"></div>
+        <div class="ff"><label>To Class *</label>
+          <select id="promToClass"><option value="">— Select target class —</option></select>
+        </div>
+      </div>
+      <div id="promStudentCount" style="font-size:.78rem;color:var(--text3);margin-bottom:14px"></div>
+      <button class="btn btn-primary" onclick="promoteStudents()">🎓 Promote Students →</button>
+    </div>
+
+    <!-- MOVE TAB -->
+    <div id="mig-move" class="mig-section" style="display:none">
+      <div style="background:var(--blue-dim);border:1px solid rgba(27,79,216,.2);border-radius:9px;padding:12px;font-size:.78rem;color:var(--primary);margin-bottom:14px;line-height:1.6">
+        🔀 Move specific students from one class to another (same or different grade). Good for when a student changes class or repeats a year.
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px">
+        <div class="ff"><label>From Class *</label>
+          <select id="moveFromClass" onchange="loadMoveStudents()"><option value="">— Select source class —</option></select>
+        </div>
+        <div class="ff"><label>To Class *</label>
+          <select id="moveToClass"><option value="">— Select target class —</option></select>
+        </div>
+      </div>
+      <div class="ff"><label>Select Students to Move</label>
+        <div id="moveStudentList" style="background:var(--bg);border:1.5px solid var(--border2);border-radius:9px;padding:10px;max-height:200px;overflow-y:auto">
+          <div style="font-size:.78rem;color:var(--text3)">Select a source class first</div>
+        </div>
+      </div>
+      <div style="display:flex;gap:8px;margin-bottom:14px">
+        <button class="btn btn-ghost btn-sm" onclick="selectAllMoveStudents(true)">Select All</button>
+        <button class="btn btn-ghost btn-sm" onclick="selectAllMoveStudents(false)">Deselect All</button>
+        <span id="moveSelCount" style="font-size:.75rem;color:var(--text3);display:flex;align-items:center">0 selected</span>
+      </div>
+      <button class="btn btn-primary" onclick="moveStudents()">🔀 Move Selected Students →</button>
+    </div>
+
+    <!-- GRADUATE TAB -->
+    <div id="mig-graduate" class="mig-section" style="display:none">
+      <div style="background:var(--green-dim);border:1px solid rgba(5,150,105,.2);border-radius:9px;padding:12px;font-size:.78rem;color:var(--green);margin-bottom:14px;line-height:1.6">
+        🏆 Graduates Grade 12 students at the end of the year. Their accounts remain active but are marked as graduated and removed from active class rosters.
+      </div>
+      <div class="ff"><label>Which class to graduate</label>
+        <select id="gradClass"><option value="all_grade12">All Grade 12 students</option></select>
+      </div>
+      <div id="gradStudentCount" style="font-size:.78rem;color:var(--text3);margin-bottom:14px"></div>
+      <div style="background:var(--red-dim);border:1px solid rgba(220,38,38,.2);border-radius:9px;padding:10px 12px;font-size:.75rem;color:var(--red);margin-bottom:14px">
+        ⚠️ This will mark students as <strong>graduated</strong> and remove them from class rosters. Their accounts and progress data are kept.
+      </div>
+      <button class="btn" onclick="graduateStudents()" style="background:var(--green);color:#fff;border:none;padding:9px 18px;border-radius:9px;font-weight:700;cursor:pointer;font-family:inherit">🏆 Graduate Selected Class</button>
+    </div>
+
+    <div id="migMsg" style="margin-top:14px;font-size:.78rem;font-weight:700;line-height:1.8"></div>
+  </div>
+</div>
+
+<style>
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+.mig-tab{transition:all .15s}
+</style>
+
 </body>
 </html>
