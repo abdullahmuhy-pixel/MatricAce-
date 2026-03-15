@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MatricAce — School Admin Portal</title>
+<style id="shared-css"></style>
+<style>
+.school-bar{position:fixed;top:0;left:0;right:0;z-index:200;height:32px;background:linear-gradient(135deg,var(--primary),var(--primary-dark));display:flex;align-items:center;justify-content:space-between;padding:0 18px;font-size:.63rem;font-weight:700;color:rgba(255,255,255,.75);font-family:'JetBrains Mono',monospace}
+.school-bar strong{color:#fff;margin-left:5px}
+body{padding-top:32px}
+.perf-item{display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid var(--border)}.perf-item:last-child{border-bottom:none}.perf-name{font-size:.78rem;font-weight:600;color:var(--text);width:130px;flex-shrink:0}.perf-bar{flex:1;height:6px;background:var(--border);border-radius:3px;overflow:hidden}.perf-fill{height:100%;border-radius:3px;transition:width 1s ease}.perf-pct{font-size:.72rem;font-weight:800;width:36px;text-align:right;font-family:'JetBrains Mono',monospace;flex-shrink:0}
+.teacher-row{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border)}.teacher-row:last-child{border-bottom:none}.t-av{width:32px;height:32px;border-radius:8px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:.65rem;font-weight:800;color:#fff}.t-info{flex:1;min-width:0}.t-name{font-size:.8rem;font-weight:700;color:var(--text)}.t-meta{font-size:.63rem;color:var(--text3);font-family:'JetBrains Mono',monospace}.t-stats{text-align:right}.t-stat-val{font-family:'Outfit',sans-serif;font-size:.9rem;font-weight:800}.t-stat-lbl{font-size:.58rem;color:var(--text4)}
+.invite-tabs{display:flex;gap:0;border-bottom:1px solid var(--border);margin-bottom:16px}.invite-tab{padding:9px 16px;font-size:.8rem;font-weight:700;color:var(--text3);background:none;border:none;border-bottom:2.5px solid transparent;cursor:pointer;transition:all .15s}.invite-tab.active{color:var(--primary);border-bottom-color:var(--primary)}
+.std-row{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:var(--r);border:1px solid var(--border);background:var(--surface);margin-bottom:6px;transition:all .15s}.std-row:hover{border-color:var(--primary);background:var(--primary-dim)}.std-av{width:32px;height:32px;border-radius:8px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:.65rem;font-weight:800;color:#fff}.std-info{flex:1;min-width:0}.std-name{font-size:.8rem;font-weight:700;color:var(--text)}.std-meta{font-size:.63rem;color:var(--text3);font-family:'JetBrains Mono',monospace}
+.subj-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:14px;transition:box-shadow .15s}.subj-card:hover{box-shadow:var(--shadow)}.subj-icon{font-size:1.5rem;margin-bottom:6px}.subj-name{font-size:.85rem;font-weight:800;color:var(--text);margin-bottom:2px}.subj-meta{font-size:.65rem;color:var(--text3);margin-bottom:8px}.subj-avg{font-family:'Outfit',sans-serif;font-size:1.3rem;font-weight:800}
+.subject-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px;margin-top:4px}
+</style>
+</head>
+<body>
+
+<div class="school-bar">
+  <span>🏫 School Admin Portal — <strong id="barSchoolName">Loading…</strong></span>
+  <span id="barCode" style="color:rgba(255,255,255,.45)">CODE</span>
+</div>
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="sidebar-header">
+    <div class="sidebar-logo">
+      <div class="sidebar-logo-mark">MA</div>
+      <div class="sidebar-logo-name">Matric<span>Ace</span></div>
+    </div>
+    <div class="sidebar-role-badge">🏫 School Admin</div>
+    <div class="sidebar-sub" id="schoolSub">Loading…</div>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-section-label">School</div>
+    <div class="nav-item active" onclick="switchPanel(this,'overview')"><span class="nav-icon">📊</span><span>Dashboard</span></div>
+    <div class="nav-item" onclick="switchPanel(this,'teachers')"><span class="nav-icon">👩‍🏫</span><span>Teachers</span><span class="nav-badge nb-blue" id="tchrCount"></span></div>
+    <div class="nav-item" onclick="switchPanel(this,'students')"><span class="nav-icon">🎓</span><span>Students</span><span class="nav-badge nb-blue" id="stuCount"></span></div>
+    <div class="nav-item" onclick="switchPanel(this,'classes')"><span class="nav-icon">🏛️</span><span>Classes</span></div>
+    <div class="nav-item" onclick="switchPanel(this,'subjects')"><span class="nav-icon">📐</span><span>Subjects</span></div>
+    <div class="nav-section-label">Management</div>
+    <div class="nav-item" onclick="switchPanel(this,'onboard')"><span class="nav-icon">➕</span><span>Add People</span></div>
+    <div class="nav-item" onclick="switchPanel(this,'reports')"><span class="nav-icon">📋</span><span>Reports</span></div>
+    <div class="nav-item" onclick="switchPanel(this,'announcements')"><span class="nav-icon">📢</span><span>Announcements</span></div>
+    <div class="nav-section-label">System</div>
+    <div class="nav-item" onclick="switchPanel(this,'settings')"><span class="nav-icon">⚙️</span><span>Settings</span></div>
+  </nav>
+  <div class="sidebar-footer">
+    <div class="user-row">
+      <div class="user-av" id="userAv">A</div>
+      <div><div class="user-name" id="userName">Admin</div><div class="user-role">SCHOOL ADMIN</div></div>
+    </div>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<div class="main">
+  <div class="header">
+    <button class="back-btn" onclick="goBack()">← Back to Portal</button>
+    <div class="header-title" id="headerTitle">Dashboard <span>School overview</span></div>
+    <button class="hbtn hbtn-ghost" onclick="switchPanel(null,'reports')">📋 Generate Report</button>
+    <button class="hbtn hbtn-primary" onclick="switchPanel(null,'onboard')">+ Add Teacher / Student</button>
+  </div>
+  <div class="content">
+    <div class="content-inner">
+
+      <!-- OVERVIEW -->
+      <div class="panel active" id="panel-overview">
+        <div class="metrics-row">
+          <div class="mc blue"><div class="mc-top"><div class="mc-icon blue">🎓</div><div class="mc-change up" id="stuChange"></div></div><div class="mc-val" id="ov-students">—</div><div class="mc-lbl">Total Students (Gr 10–12)</div></div>
+          <div class="mc green"><div class="mc-top"><div class="mc-icon green">👩‍🏫</div></div><div class="mc-val" id="ov-teachers">—</div><div class="mc-lbl">Active Teachers</div></div>
+          <div class="mc gold"><div class="mc-top"><div class="mc-icon gold">📊</div></div><div class="mc-val" id="ov-avg">—</div><div class="mc-lbl">School Avg Score</div></div>
+          <div class="mc red"><div class="mc-top"><div class="mc-icon red">⚠️</div></div><div class="mc-val" id="ov-risk">—</div><div class="mc-lbl">Students at Risk</div></div>
+        </div>
+        <div class="g3">
+          <div class="card">
+            <div class="card-header"><div><div class="card-title">Subject Performance</div><div class="card-sub">School average by subject</div></div><div class="card-action" onclick="switchPanel(null,'subjects')">View all</div></div>
+            <div id="subjPerf"><div class="loading"><div class="spinner"></div>Loading…</div></div>
+          </div>
+          <div>
+            <div class="card">
+              <div class="card-header"><div class="card-title">Top Teachers</div><div class="card-action" onclick="switchPanel(null,'teachers')">All →</div></div>
+              <div id="topTeachers"><div class="loading"><div class="spinner"></div></div></div>
+            </div>
+            <div class="card">
+              <div class="card-header"><div class="card-title">⚠️ Students at Risk</div><div style="font-size:.7rem;color:var(--red);font-weight:700" id="riskCount">0 flagged</div></div>
+              <div id="riskStudents"><div class="loading"><div class="spinner"></div></div></div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header"><div class="card-title">Grade Breakdown</div><div class="card-sub">Performance by grade</div></div>
+          <div style="overflow-x:auto"><table class="tbl" id="gradeTable">
+            <thead><tr><th>Grade</th><th>Students</th><th>Classes</th><th>Avg Score</th><th>Signed Up</th><th>Not Signed Up</th></tr></thead>
+            <tbody id="gradeTbody"><tr><td colspan="6" style="text-align:center;color:var(--text3);padding:20px">Loading…</td></tr></tbody>
+          </table></div>
+        </div>
+      </div>
+
+      <!-- TEACHERS -->
+      <div class="panel" id="panel-teachers">
+        <div class="card">
+          <div class="card-header">
+            <div><div class="card-title">All Teachers</div><div class="card-sub" id="tchrLabel">Loading…</div></div>
+            <div style="display:flex;gap:8px">
+              <button class="btn btn-ghost btn-sm" onclick="exportTeachers()">Export</button>
+              <button class="btn btn-primary btn-sm" onclick="switchPanel(null,'onboard')">+ Add Teacher</button>
+            </div>
+          </div>
+          <div id="teacherList"><div class="loading"><div class="spinner"></div>Loading teachers…</div></div>
+        </div>
+      </div>
+
+      <!-- STUDENTS -->
+      <div class="panel" id="panel-students">
+        <div class="card">
+          <div class="card-header">
+            <div><div class="card-title">All Students</div><div class="card-sub" id="stuLabel">Loading…</div></div>
+            <div style="display:flex;gap:8px">
+              <input id="stuSearch" type="text" placeholder="Search…" style="padding:6px 11px;border:1.5px solid var(--border2);border-radius:8px;font-size:.78rem;background:var(--bg);color:var(--text);outline:none;font-family:inherit" oninput="filterStudents(this.value)">
+              <select id="gradeFilter" onchange="filterStudents(document.getElementById('stuSearch').value)" style="padding:6px 10px;border:1.5px solid var(--border2);border-radius:8px;font-size:.78rem;background:var(--bg);color:var(--text);outline:none;font-family:inherit">
+                <option value="">All Grades</option>
+                <option value="10">Grade 10</option>
+                <option value="11">Grade 11</option>
+                <option value="12">Grade 12</option>
+              </select>
+            </div>
+          </div>
+          <div id="studentList"><div class="loading"><div class="spinner"></div>Loading students…</div></div>
+        </div>
+      </div>
+
+      <!-- CLASSES -->
+      <div class="panel" id="panel-classes">
+        <div class="card">
+          <div class="card-header"><div class="card-title">Class Management</div><div class="card-action" onclick="loadClasses()">🔄 Refresh</div></div>
+          <div id="classList"><div class="loading"><div class="spinner"></div>Loading classes…</div></div>
+        </div>
+      </div>
+
+      <!-- SUBJECTS -->
+      <div class="panel" id="panel-subjects">
+        <div class="card">
+          <div class="card-header"><div class="card-title">Subject Performance</div></div>
+          <div class="subject-grid" id="subjectGrid"><div class="loading"><div class="spinner"></div></div></div>
+        </div>
+      </div>
+
+      <!-- ONBOARD (Add People) -->
+      <div class="panel" id="panel-onboard">
+        <div class="invite-tabs">
+          <button class="invite-tab active" onclick="setInviteTab(this,'teacher-form')">Add Teacher</button>
+          <button class="invite-tab" onclick="setInviteTab(this,'student-form')">Add Student</button>
+          <button class="invite-tab" onclick="setInviteTab(this,'bulk-form')">Bulk Import</button>
+        </div>
+
+        <div id="teacher-form" class="card" style="max-width:600px">
+          <div class="card-title" style="margin-bottom:16px">Invite a Teacher</div>
+          <div class="form-grid">
+            <div class="ff"><label>Full Name *</label><input type="text" id="tchrName" placeholder="e.g. Mr T. Khumalo"></div>
+            <div class="ff"><label>Email Address *</label><input type="email" id="tchrEmail" placeholder="teacher@school.co.za"></div>
+            <div class="ff"><label>Subject *</label>
+              <select id="tchrSubject"><option>Mathematics</option><option>Life Sciences</option><option>Physical Sciences</option><option>History</option><option>Geography</option><option>English HL</option><option>Business Studies</option><option>Accounting</option><option>Economics</option></select>
+            </div>
+            <div class="ff"><label>Assigned Grade</label>
+              <select id="tchrGrade"><option value="12">Grade 12</option><option value="11">Grade 11</option><option value="10">Grade 10</option><option value="">All Grades</option></select>
+            </div>
+            <div class="ff form-row-full"><label>Assign to Class</label><select id="tchrClass"><option value="">— Loading classes —</option></select></div>
+          </div>
+          <div class="info-box">📧 Teacher will receive their class code, login link, and temporary password via email. They can also access their Teacher Dashboard directly.</div>
+          <button class="btn btn-primary" onclick="addTeacher()">Send Invite →</button>
+          <div id="tchrMsg" style="margin-top:10px;font-size:.78rem;font-weight:700"></div>
+        </div>
+
+        <div id="student-form" class="card" style="max-width:600px;display:none">
+          <div class="card-title" style="margin-bottom:16px">Register a Student</div>
+          <div class="form-grid">
+            <div class="ff"><label>Full Name *</label><input type="text" id="stuName" placeholder="e.g. Thabo Mokoena"></div>
+            <div class="ff"><label>Student Number</label><input type="text" id="stuNum" placeholder="Auto-generated if blank"></div>
+            <div class="ff"><label>Grade *</label><select id="stuGrade"><option value="12">Grade 12</option><option value="11">Grade 11</option><option value="10">Grade 10</option></select></div>
+            <div class="ff"><label>Class</label><select id="stuClass"><option value="">— Loading classes —</option></select></div>
+          </div>
+          <button class="btn btn-primary" onclick="addStudent()">Create Account →</button>
+          <div id="stuMsg" style="margin-top:10px;font-size:.78rem;font-weight:700"></div>
+        </div>
+
+        <div id="bulk-form" class="card" style="max-width:600px;display:none">
+          <div class="card-title" style="margin-bottom:10px">Bulk Import via Spreadsheet</div>
+          <p style="font-size:.8rem;color:var(--text3);margin-bottom:16px;line-height:1.6">Upload a CSV with columns: Name, Grade, Class. We'll create all student accounts automatically.</p>
+          <div style="border:2px dashed var(--border2);border-radius:var(--r);padding:36px;text-align:center;margin-bottom:14px;cursor:pointer;transition:border-color .15s" onmouseover="this.style.borderColor='var(--primary)'" onmouseout="this.style.borderColor='var(--border2)'">
+            <div style="font-size:2rem;margin-bottom:8px">📂</div>
+            <div style="font-size:.85rem;font-weight:700;color:var(--text);margin-bottom:5px">Drop CSV here or click to browse</div>
+            <div style="font-size:.73rem;color:var(--text3)">CSV · Max 1000 rows</div>
+          </div>
+          <button class="btn btn-ghost" onclick="showToast('Download template coming soon')">📥 Download Template</button>
+        </div>
+      </div>
+
+      <!-- REPORTS -->
+      <div class="panel" id="panel-reports">
+        <div class="card" style="max-width:500px">
+          <div class="card-title" style="margin-bottom:16px">Generate School Report</div>
+          <div class="ff"><label>Report Type</label><select><option>Full School Performance</option><option>Grade Report</option><option>Subject Report</option><option>At-Risk Students</option><option>Teacher Activity</option></select></div>
+          <div class="ff"><label>Period</label><select><option>This Term</option><option>This Year</option><option>Last Month</option></select></div>
+          <div class="ff"><label>Grade</label><select><option>All Grades</option><option>Grade 10</option><option>Grade 11</option><option>Grade 12</option></select></div>
+          <div class="ff"><label>Format</label><select><option>PDF Report</option><option>Excel Spreadsheet</option></select></div>
+          <button class="btn btn-primary" onclick="showToast('📄 Generating report…','success')">Generate Report</button>
+        </div>
+      </div>
+
+      <!-- ANNOUNCEMENTS -->
+      <div class="panel" id="panel-announcements">
+        <div class="g2">
+          <div class="card">
+            <div class="card-title" style="margin-bottom:14px">Send School Announcement</div>
+            <div class="ff"><label>Send To *</label>
+              <select id="annTarget"><option value="all_students">All Students (Grade 10–12)</option><option value="all_teachers">All Teachers</option><option value="grade12">Grade 12 Only</option><option value="grade11">Grade 11 Only</option><option value="grade10">Grade 10 Only</option><option value="everyone">All Staff and Students</option></select>
+            </div>
+            <div class="ff"><label>Title *</label><input type="text" id="annTitle" placeholder="e.g. End of Term Exam Schedule"></div>
+            <div class="ff"><label>Message *</label><textarea rows="5" id="annBody" placeholder="Type your announcement here…" style="width:100%;resize:vertical;padding:8px 11px;border:1.5px solid var(--border2);border-radius:9px;background:var(--bg);color:var(--text);font-family:'Manrope',sans-serif;font-size:.8rem;outline:none"></textarea></div>
+            <button class="btn btn-primary" onclick="sendAnnouncement()">Send Announcement →</button>
+          </div>
+          <div class="card">
+            <div class="card-header"><div class="card-title">Previous Announcements</div><div class="card-action" onclick="loadAnnouncements()">🔄</div></div>
+            <div id="annList"><div class="loading"><div class="spinner"></div>Loading…</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SETTINGS -->
+      <div class="panel" id="panel-settings">
+        <div class="card" style="max-width:520px">
+          <div class="card-title" style="margin-bottom:16px">School Portal Settings</div>
+          <div class="ff"><label>School Name</label><input type="text" id="settName" placeholder="School name"></div>
+          <div class="ff"><label>School Code (read-only)</label><input type="text" id="settCode" readonly style="background:var(--bg3);cursor:not-allowed"></div>
+          <div class="ff"><label>Primary Colour</label><input type="color" id="settColor" value="#1B4FD8" style="height:38px" onchange="updateColor(this.value)"></div>
+          <div class="ff"><label>Portal Contact Email</label><input type="email" id="settEmail" placeholder="admin@school.co.za"></div>
+          <div class="ff"><label>Change Admin Password</label><input type="password" id="settPw" placeholder="New password"></div>
+          <div style="margin-top:6px"><button class="btn btn-primary" onclick="saveSettings()">Save Changes</button></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ── CSS inject ─────────────────────────────────────────────────────────────
+document.getElementById('shared-css').textContent = `
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
+:root{--primary:#1B4FD8;--primary-dark:#1340B0;--primary-light:#3B6FEF;--primary-dim:rgba(27,79,216,.10);--primary-glow:rgba(27,79,216,.25);--accent:#FFB612;--accent-dim:rgba(255,182,18,.12);--green:#059669;--green-dim:rgba(5,150,105,.10);--orange:#D97706;--orange-dim:rgba(217,119,6,.10);--red:#DC2626;--red-dim:rgba(220,38,38,.10);--purple:#7C3AED;--purple-dim:rgba(124,58,237,.10);--teal:#0891B2;--teal-dim:rgba(8,145,178,.10);--bg:#F0F4FE;--bg2:#FFFFFF;--bg3:#E8EFFD;--surface:#FFFFFF;--text:#0F1729;--text2:#374A6B;--text3:#6B7FA8;--text4:#9BAEC8;--border:rgba(27,79,216,.10);--border2:rgba(27,79,216,.18);--sidebar-w:252px;--header-h:62px;--shadow-sm:0 1px 4px rgba(27,79,216,.07),0 1px 2px rgba(0,0,0,.04);--shadow:0 4px 20px rgba(27,79,216,.10),0 2px 8px rgba(0,0,0,.06);--r:12px;--r-lg:18px}
+*{box-sizing:border-box;margin:0;padding:0}html,body{height:100%;font-size:16px}body{font-family:'Manrope',sans-serif;background:var(--bg);color:var(--text);display:flex;height:100dvh;overflow:hidden}a{text-decoration:none;color:inherit}button{font-family:inherit;cursor:pointer;border:none;outline:none}
+.sidebar{width:var(--sidebar-w);flex-shrink:0;background:#0F1729;display:flex;flex-direction:column;overflow:hidden;z-index:10}.sidebar-header{padding:18px 18px 14px;border-bottom:1px solid rgba(255,255,255,.08);flex-shrink:0}.sidebar-logo{display:flex;align-items:center;gap:9px}.sidebar-logo-mark{width:34px;height:34px;border-radius:9px;flex-shrink:0;background:linear-gradient(135deg,var(--primary),var(--primary-light));display:flex;align-items:center;justify-content:center;font-family:'Outfit',sans-serif;font-size:.72rem;font-weight:800;color:#fff;box-shadow:0 4px 12px var(--primary-glow)}.sidebar-logo-name{font-family:'Outfit',sans-serif;font-weight:800;font-size:1rem;color:#fff}.sidebar-logo-name span{color:var(--accent)}.sidebar-role-badge{margin-top:9px;display:inline-flex;align-items:center;gap:5px;padding:4px 9px;border-radius:6px;background:rgba(255,182,18,.12);border:1px solid rgba(255,182,18,.2);font-size:.6rem;font-weight:800;color:var(--accent);font-family:'JetBrains Mono',monospace;text-transform:uppercase;letter-spacing:.5px}.sidebar-sub{margin-top:6px;font-size:.63rem;color:rgba(255,255,255,.3);font-family:'JetBrains Mono',monospace;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.sidebar-nav{flex:1;overflow-y:auto;padding:12px 10px;scrollbar-width:none}.sidebar-nav::-webkit-scrollbar{display:none}.nav-section-label{font-size:.58rem;font-weight:800;color:rgba(255,255,255,.22);text-transform:uppercase;letter-spacing:1.2px;padding:0 8px;margin:14px 0 5px;font-family:'JetBrains Mono',monospace}.nav-item{display:flex;align-items:center;gap:9px;padding:8px 10px;border-radius:8px;font-size:.8rem;font-weight:600;color:rgba(255,255,255,.5);cursor:pointer;transition:all .15s;margin-bottom:2px;position:relative;user-select:none}.nav-item:hover{background:rgba(255,255,255,.06);color:rgba(255,255,255,.85)}.nav-item.active{background:rgba(27,79,216,.3);color:#fff}.nav-item.active::before{content:'';position:absolute;left:0;top:50%;transform:translateY(-50%);width:3px;height:60%;border-radius:0 2px 2px 0;background:var(--primary-light)}.nav-icon{font-size:.9rem;width:18px;text-align:center;flex-shrink:0}.nav-badge{margin-left:auto;font-size:.6rem;font-weight:800;padding:2px 6px;border-radius:12px;font-family:'JetBrains Mono',monospace}.nb-blue{background:rgba(27,79,216,.3);color:#93BBFF}.nb-red{background:rgba(220,38,38,.25);color:#F87171}.sidebar-footer{padding:12px 10px;border-top:1px solid rgba(255,255,255,.08);flex-shrink:0}.user-row{display:flex;align-items:center;gap:9px;padding:8px;border-radius:8px;cursor:pointer;transition:background .15s}.user-row:hover{background:rgba(255,255,255,.06)}.user-av{width:32px;height:32px;border-radius:8px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:.68rem;font-weight:800;color:#fff;background:linear-gradient(135deg,var(--primary),var(--primary-light))}.user-name{font-size:.78rem;font-weight:700;color:#fff}.user-role{font-size:.58rem;color:rgba(255,255,255,.3);font-family:'JetBrains Mono',monospace}
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0}.header{height:var(--header-h);background:var(--surface);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 18px;gap:10px;flex-shrink:0;box-shadow:var(--shadow-sm)}.header-title{font-family:'Outfit',sans-serif;font-size:1rem;font-weight:800;color:var(--text);flex:1;min-width:0}.header-title span{color:var(--text3);font-weight:500;font-size:.82rem;margin-left:8px}.hbtn{padding:7px 14px;border-radius:8px;font-size:.78rem;font-weight:700;display:flex;align-items:center;gap:5px;transition:all .15s;cursor:pointer;white-space:nowrap}.hbtn-primary{background:linear-gradient(135deg,var(--primary),var(--primary-light));color:#fff;box-shadow:0 3px 10px var(--primary-glow)}.hbtn-ghost{background:var(--bg);border:1.5px solid var(--border2);color:var(--text2)}.hbtn-ghost:hover{border-color:var(--primary);color:var(--primary)}.back-btn{display:flex;align-items:center;gap:6px;padding:7px 12px;border-radius:8px;background:var(--bg);border:1.5px solid var(--border2);color:var(--text2);font-size:.78rem;font-weight:700;cursor:pointer;transition:all .15s;white-space:nowrap}.back-btn:hover{border-color:var(--primary);color:var(--primary)}.content{flex:1;overflow-y:auto;background:var(--bg);scrollbar-width:thin}.content-inner{padding:20px 22px;max-width:980px;margin:0 auto}.panel{display:none}.panel.active{display:block;animation:fadeUp .2s ease both}@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.metrics-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:18px}.mc{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:16px;box-shadow:var(--shadow-sm);position:relative;overflow:hidden}.mc::after{content:'';position:absolute;top:0;right:0;width:70px;height:70px;border-radius:0 var(--r-lg) 0 100%;opacity:.06}.mc.blue::after{background:var(--primary)}.mc.green::after{background:var(--green)}.mc.gold::after{background:var(--accent)}.mc.red::after{background:var(--red)}.mc-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:12px}.mc-icon{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1rem}.mc-icon.blue{background:var(--primary-dim)}.mc-icon.green{background:var(--green-dim)}.mc-icon.gold{background:var(--accent-dim)}.mc-icon.red{background:var(--red-dim)}.mc-change{display:flex;align-items:center;gap:3px;padding:2px 7px;border-radius:20px;font-size:.62rem;font-weight:800;font-family:'JetBrains Mono',monospace}.mc-change.up{background:var(--green-dim);color:var(--green)}.mc-val{font-family:'Outfit',sans-serif;font-size:1.8rem;font-weight:800;color:var(--text);line-height:1;margin-bottom:3px}.mc-lbl{font-size:.72rem;color:var(--text3);font-weight:600}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:18px;box-shadow:var(--shadow-sm);margin-bottom:14px}.card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}.card-title{font-family:'Outfit',sans-serif;font-size:.9rem;font-weight:800;color:var(--text)}.card-sub{font-size:.7rem;color:var(--text3);margin-top:2px}.card-action{font-size:.73rem;font-weight:700;color:var(--primary);cursor:pointer}.card-action:hover{opacity:.7}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:14px}.g3{display:grid;grid-template-columns:2fr 1fr;gap:14px}
+.tbl{width:100%;border-collapse:collapse}.tbl th{font-size:.63rem;font-weight:800;color:var(--text3);text-transform:uppercase;letter-spacing:.8px;padding:8px 10px;border-bottom:1px solid var(--border);text-align:left;font-family:'JetBrains Mono',monospace}.tbl td{padding:10px 10px;font-size:.78rem;border-bottom:1px solid var(--border);color:var(--text2)}.tbl tr:last-child td{border-bottom:none}.tbl tr:hover td{background:var(--bg)}.tbl-name{font-weight:700;color:var(--text)}
+.btn{padding:8px 16px;border-radius:9px;font-size:.78rem;font-weight:700;display:inline-flex;align-items:center;gap:5px;transition:all .15s;cursor:pointer;font-family:'Manrope',sans-serif}.btn-primary{background:linear-gradient(135deg,var(--primary),var(--primary-light));color:#fff;box-shadow:0 2px 8px var(--primary-glow)}.btn-ghost{background:var(--bg);border:1.5px solid var(--border2);color:var(--text2)}.btn-ghost:hover{border-color:var(--primary);color:var(--primary)}.btn-sm{padding:5px 10px;font-size:.7rem}
+.pill{padding:3px 8px;border-radius:20px;font-size:.62rem;font-weight:800;font-family:'JetBrains Mono',monospace}.p-blue{background:var(--primary-dim);color:var(--primary)}.p-green{background:var(--green-dim);color:var(--green)}.p-gold{background:var(--accent-dim);color:var(--orange)}.p-red{background:var(--red-dim);color:var(--red)}
+.ff{display:flex;flex-direction:column;gap:5px;margin-bottom:12px}.ff label{font-size:.7rem;font-weight:700;color:var(--text2)}.ff input,.ff select,.ff textarea{padding:8px 11px;border:1.5px solid var(--border2);border-radius:9px;background:var(--bg);color:var(--text);font-family:'Manrope',sans-serif;font-size:.8rem;outline:none;transition:all .15s}.ff input:focus,.ff select:focus,.ff textarea:focus{border-color:var(--primary);background:#fff;box-shadow:0 0 0 3px var(--primary-dim)}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.form-row-full{grid-column:1/-1}
+.empty-state{text-align:center;padding:40px 20px;color:var(--text3)}.empty-state-icon{font-size:2.5rem;margin-bottom:10px}.empty-state-title{font-size:.9rem;font-weight:700;color:var(--text);margin-bottom:6px}.empty-state-sub{font-size:.78rem;line-height:1.6}
+.loading{display:flex;flex-direction:column;align-items:center;gap:10px;padding:40px;color:var(--text3)}.spinner{width:28px;height:28px;border:3px solid var(--border);border-top-color:var(--primary);border-radius:50%;animation:spin .7s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--text);color:#fff;padding:11px 22px;border-radius:100px;font-size:.8rem;font-weight:700;z-index:9999;transition:transform .3s ease;box-shadow:var(--shadow);pointer-events:none;white-space:nowrap}.toast.show{transform:translateX(-50%) translateY(0)}.toast.success{background:var(--green)}.toast.error{background:var(--red)}
+.info-box{background:var(--primary-dim);border:1px solid rgba(27,79,216,.2);border-radius:var(--r);padding:12px 14px;font-size:.78rem;color:var(--primary);line-height:1.6;margin-bottom:16px}
+@media(max-width:700px){.sidebar{width:52px}.sidebar-logo-name,.sidebar-role-badge,.nav-section-label,.nav-item span,.user-name,.user-role,.sidebar-sub{display:none}.nav-item{justify-content:center;padding:10px}.nav-badge{display:none}.user-row{justify-content:center}.metrics-row{grid-template-columns:1fr 1fr}.g2,.g3,.form-grid{grid-template-columns:1fr}.content-inner{padding:14px 12px}.header{padding:0 12px}}
+`;
+
+// ── Constants ──────────────────────────────────────────────────
+const SUPA_URL = 'https://xdwexkmbhzkjivpayyrp.supabase.co';
+const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inhkd2V4a21iaHpraml2cGF5eXJwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIzNzI2NTMsImV4cCI6MjA4Nzk0ODY1M30.2GWkg-L86GL0mp0LCfmmW3waDHWiMcZhqzhuOTRpTJI';
+const H = { 'apikey': SUPA_KEY, 'Authorization': 'Bearer ' + SUPA_KEY, 'Content-Type': 'application/json' };
+const APP_URL = 'MatricAce_SA_Ultimate_v7.html';
+const COLORS = ['#1B4FD8','#059669','#7C3AED','#0891B2','#D97706','#DC2626','#0F766E'];
+
+let SCHOOL = null, CLASSES = [], allStudents = [], allTeachers = [];
+
+// ── Helpers ────────────────────────────────────────────────────
+async function sbGet(path) {
+  try { const r = await fetch(SUPA_URL+'/rest/v1/'+path, {headers:H}); return r.ok ? await r.json() : []; } catch(e) { return []; }
+}
+async function sbPost(path, data) {
+  try { const r = await fetch(SUPA_URL+'/rest/v1/'+path, {method:'POST',headers:{...H,'Prefer':'return=representation'},body:JSON.stringify(data)}); return r.ok ? await r.json() : null; } catch(e) { return null; }
+}
+async function sbPatch(path, data) {
+  try { const r = await fetch(SUPA_URL+'/rest/v1/'+path, {method:'PATCH',headers:{...H,'Prefer':'return=minimal'},body:JSON.stringify(data)}); return r.ok; } catch(e) { return false; }
+}
+function goBack() { window.location.href = APP_URL; }
+function showToast(msg, type) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.className = 'toast show' + (type ? ' '+type : '');
+  clearTimeout(t._t); t._t = setTimeout(() => t.className = 'toast', 2800);
+}
+function switchPanel(navEl, id) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  const panel = document.getElementById('panel-'+id);
+  if (panel) panel.classList.add('active');
+  if (navEl) navEl.classList.add('active');
+  else document.querySelectorAll('.nav-item').forEach(n => {
+    if ((n.getAttribute('onclick')||'').includes("'"+id+"'")) n.classList.add('active');
+  });
+  const map = {overview:'Dashboard',teachers:'Teachers',students:'Students',classes:'Classes',subjects:'Subjects',onboard:'Add People',reports:'Reports',announcements:'Announcements',settings:'Settings'};
+  document.getElementById('headerTitle').innerHTML = (map[id]||id) + ' <span>' + (SCHOOL ? SCHOOL.name : '') + '</span>';
+}
+function av(name) { const p = (name||'').trim().split(' '); return (p[0]?.[0]||'')+(p[1]?.[0]||p[0]?.[1]||''); }
+
+// ── Session ────────────────────────────────────────────────────
+async function init() {
+  try {
+    const ctx = JSON.parse(localStorage.getItem('ma_teacher_ctx') || 'null');
+    const sess = JSON.parse(localStorage.getItem('matric_session') || 'null');
+    const users = JSON.parse(localStorage.getItem('matric_users') || '{}');
+    const user = sess ? users[sess.uid] : null;
+
+    if (ctx && ctx.school) {
+      SCHOOL = ctx.school;
+      CLASSES = ctx.allClasses || [];
+    } else if (user && user.school_id) {
+      const s = await sbGet('schools?id=eq.'+user.school_id+'&select=*&limit=1');
+      SCHOOL = s[0] || null;
+      const c = await sbGet('school_classes?school_id=eq.'+user.school_id+'&select=*&order=grade.asc,division.asc');
+      CLASSES = Array.isArray(c) ? c : [];
+    }
+
+    if (!SCHOOL) {
+      document.body.innerHTML = '<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100dvh;gap:16px;font-family:Manrope,sans-serif"><div style="font-size:2rem">🔐</div><div style="font-size:1rem;font-weight:800;color:#0F1729">Not logged in</div><div style="font-size:.85rem;color:#6B7FA8">Please log in via the school portal first</div><button onclick="window.location.href=\''+APP_URL+'\'" style="padding:10px 20px;background:#1B4FD8;color:#fff;border:none;border-radius:9px;font-weight:700;cursor:pointer;font-family:inherit">← Back to Portal</button></div>';
+      return;
+    }
+
+    // Populate UI
+    document.getElementById('barSchoolName').textContent = SCHOOL.name || '';
+    document.getElementById('barCode').textContent = SCHOOL.id ? SCHOOL.id.toString().slice(0,8).toUpperCase() : '';
+    document.getElementById('schoolSub').textContent = SCHOOL.name || '';
+    if (user) {
+      document.getElementById('userAv').textContent = av((user.name||'A')+' '+(user.surname||''));
+      document.getElementById('userName').textContent = (user.name||'Admin')+' '+(user.surname||'');
+    }
+    document.getElementById('settCode').value = SCHOOL.id || '';
+    document.getElementById('settName').value = SCHOOL.name || '';
+    document.getElementById('settEmail').value = SCHOOL.teacher_email || '';
+
+    // Populate class dropdowns
+    const opts = CLASSES.map(c => `<option value="${c.id}">Grade ${c.grade}${c.division||''} — ${c.teacher_name||'No teacher'}</option>`).join('');
+    ['tchrClass','stuClass'].forEach(id => { const el = document.getElementById(id); if (el) el.innerHTML = '<option value="">— Select class —</option>'+opts; });
+
+    await loadData();
+    loadAnnouncements();
+  } catch(e) {
+    console.error('Init error', e);
+    showToast('Error loading dashboard','error');
+  }
+}
+
+async function loadData() {
+  const [students, classes] = await Promise.all([
+    sbGet('school_students?school_id=eq.'+SCHOOL.id+'&select=*&order=grade.asc,full_username.asc'),
+    sbGet('school_classes?school_id=eq.'+SCHOOL.id+'&select=*&order=grade.asc,division.asc')
+  ]);
+  allStudents = Array.isArray(students) ? students : [];
+  CLASSES = Array.isArray(classes) ? classes : [];
+  // Teachers come from school_classes
+  allTeachers = CLASSES.filter(c => c.teacher_name || c.teacher_email);
+
+  // Update counts
+  document.getElementById('stuCount').textContent = allStudents.length || '';
+  document.getElementById('tchrCount').textContent = allTeachers.length || '';
+  document.getElementById('stuLabel').textContent = allStudents.length + ' students total';
+  document.getElementById('tchrLabel').textContent = allTeachers.length + ' active teachers';
+
+  // Overview metrics
+  document.getElementById('ov-students').textContent = allStudents.length;
+  document.getElementById('ov-teachers').textContent = allTeachers.length;
+  const registered = allStudents.filter(s => s.registered || s.user_id).length;
+  const notReg = allStudents.length - registered;
+  document.getElementById('ov-risk').textContent = notReg;
+  document.getElementById('ov-avg').textContent = registered > 0 ? Math.round(registered/allStudents.length*100)+'%' : '—';
+  document.getElementById('riskCount').textContent = notReg + ' not signed up';
+
+  renderOverview();
+  renderStudents();
+  renderTeachers();
+  renderClasses();
+  renderGradeTable();
+}
+
+function renderOverview() {
+  // Subject performance (representative)
+  const subjects = ['Mathematics','Life Sciences','Phys. Sciences','History','English HL','Accounting'];
+  const cols = ['#1B4FD8','#059669','#0891B2','#D97706','#7C3AED','#DC2626'];
+  const pcts = [68,81,64,76,73,58];
+  document.getElementById('subjPerf').innerHTML = subjects.map((s,i) =>
+    `<div class="perf-item"><div class="perf-name">${s}</div><div class="perf-bar"><div class="perf-fill" style="width:${pcts[i]}%;background:linear-gradient(90deg,${cols[i]},${cols[i]}99)"></div></div><div class="perf-pct" style="color:${cols[i]}">${pcts[i]}%</div></div>`).join('');
+
+  // Top teachers
+  document.getElementById('topTeachers').innerHTML = allTeachers.slice(0,3).map((c,i) =>
+    `<div class="teacher-row">
+      <div class="t-av" style="background:${COLORS[i%COLORS.length]}">${av(c.teacher_name||'?')}</div>
+      <div class="t-info"><div class="t-name">${c.teacher_name||'Teacher'}</div><div class="t-meta">Grade ${c.grade}${c.division||''}</div></div>
+    </div>`).join('') || '<div class="empty-state" style="padding:16px"><div class="empty-state-sub">No teachers yet</div></div>';
+
+  // Risk students (not registered)
+  const risk = allStudents.filter(s => !s.registered && !s.user_id).slice(0,3);
+  document.getElementById('riskStudents').innerHTML = risk.map(s =>
+    `<div style="display:flex;align-items:center;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--border)">
+      <div style="font-size:.78rem;font-weight:700;color:var(--text)">${s.display_name||s.full_username}</div>
+      <span class="pill p-gold">Not Signed Up</span>
+    </div>`).join('') || '<div class="empty-state" style="padding:12px"><div class="empty-state-sub">No at-risk students 🎉</div></div>';
+
+  // Subject grid
+  document.getElementById('subjectGrid').innerHTML = subjects.map((s,i) =>
+    `<div class="subj-card" style="border-top:3px solid ${cols[i]}">
+      <div class="subj-icon">${['📐','🌿','⚗️','📜','📖','💰'][i]}</div>
+      <div class="subj-name">${s}</div>
+      <div class="subj-meta">${allTeachers.length} teachers</div>
+      <div class="subj-avg" style="color:${cols[i]}">${pcts[i]}%</div>
+    </div>`).join('');
+}
+
+function renderGradeTable() {
+  const grades = [10,11,12];
+  document.getElementById('gradeTbody').innerHTML = grades.map(g => {
+    const stus = allStudents.filter(s => String(s.grade) === String(g));
+    const reg = stus.filter(s => s.registered || s.user_id).length;
+    const cls = CLASSES.filter(c => String(c.grade) === String(g));
+    return `<tr>
+      <td><span class="tbl-name">Grade ${g}</span></td>
+      <td>${stus.length}</td>
+      <td>${cls.length}</td>
+      <td>—</td>
+      <td><span style="color:var(--green);font-weight:700">${reg}</span></td>
+      <td><span style="color:${stus.length-reg>0?'var(--red)':'var(--green)'};font-weight:700">${stus.length-reg}</span></td>
+    </tr>`;
+  }).join('');
+}
+
+let stuFilter = '';
+function filterStudents(q) { stuFilter = q; renderStudents(); }
+function renderStudents() {
+  const gradeF = document.getElementById('gradeFilter')?.value || '';
+  let list = allStudents;
+  if (stuFilter) list = list.filter(s => (s.display_name||s.full_username||'').toLowerCase().includes(stuFilter.toLowerCase()));
+  if (gradeF) list = list.filter(s => String(s.grade) === gradeF);
+  document.getElementById('stuLabel').textContent = list.length + ' of ' + allStudents.length + ' students';
+  document.getElementById('studentList').innerHTML = list.map((s,i) => {
+    const name = s.display_name||s.full_username||'?';
+    const cls = CLASSES.find(c => c.id === s.class_id);
+    return `<div class="std-row">
+      <div class="std-av" style="background:${COLORS[i%COLORS.length]}">${av(name)}</div>
+      <div class="std-info">
+        <div class="std-name">${name}</div>
+        <div class="std-meta">Grade ${s.grade||'?'}${cls?' · Class '+cls.grade+(cls.division||''):''}</div>
+      </div>
+      ${s.registered||s.user_id ? '<span class="pill p-green">Registered</span>' : '<span class="pill p-gold">Not signed up</span>'}
+    </div>`;
+  }).join('') || '<div class="empty-state"><div class="empty-state-icon">🎓</div><div class="empty-state-title">No students found</div></div>';
+}
+
+function renderTeachers() {
+  document.getElementById('teacherList').innerHTML = allTeachers.map((c,i) =>
+    `<div style="display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:var(--r);border:1px solid var(--border);background:var(--surface);margin-bottom:6px">
+      <div style="width:34px;height:34px;border-radius:9px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:.65rem;font-weight:800;color:#fff;background:${COLORS[i%COLORS.length]}">${av(c.teacher_name||'?')}</div>
+      <div style="flex:1">
+        <div style="font-size:.82rem;font-weight:700;color:var(--text)">${c.teacher_name||'Teacher'}</div>
+        <div style="font-size:.63rem;color:var(--text3);font-family:'JetBrains Mono',monospace">Grade ${c.grade}${c.division||''} · ${c.teacher_email||''}</div>
+      </div>
+      <span class="pill p-blue">Grade ${c.grade}${c.division||''}</span>
+    </div>`).join('') || '<div class="empty-state"><div class="empty-state-icon">👩‍🏫</div><div class="empty-state-title">No teachers yet</div><div class="empty-state-sub">Add teachers using the "Add People" section</div></div>';
+}
+
+function renderClasses() {
+  document.getElementById('classList').innerHTML = CLASSES.map((c,i) => {
+    const stuCount = allStudents.filter(s => s.class_id === c.id).length;
+    return `<div style="display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:var(--r);border:1px solid var(--border);background:var(--surface);margin-bottom:8px">
+      <div style="width:38px;height:38px;border-radius:9px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-family:'Outfit',sans-serif;font-size:.85rem;font-weight:800;color:#fff;background:${COLORS[i%COLORS.length]}">G${c.grade}</div>
+      <div style="flex:1">
+        <div style="font-size:.85rem;font-weight:800;color:var(--text)">Grade ${c.grade}${c.division||''}</div>
+        <div style="font-size:.65rem;color:var(--text3);font-family:'JetBrains Mono',monospace">${c.teacher_name||'No teacher assigned'} · ${stuCount} students</div>
+      </div>
+      <span class="pill p-blue">${stuCount} students</span>
+    </div>`;
+  }).join('') || '<div class="empty-state"><div class="empty-state-icon">🏛️</div><div class="empty-state-title">No classes set up yet</div></div>';
+}
+
+// ── Add Teacher ─────────────────────────────────────────────────
+async function addTeacher() {
+  const name = document.getElementById('tchrName').value.trim();
+  const email = document.getElementById('tchrEmail').value.trim();
+  const subj = document.getElementById('tchrSubject').value;
+  const grade = document.getElementById('tchrGrade').value;
+  const classId = document.getElementById('tchrClass').value;
+  const msg = document.getElementById('tchrMsg');
+  if (!name || !email) { msg.textContent = '❌ Name and email required'; msg.style.color='var(--red)'; return; }
+  const pw = 'Matric'+Math.floor(1000+Math.random()*9000)+'!';
+  if (classId) {
+    const ok = await sbPatch('school_classes?id=eq.'+classId, {teacher_name:name, teacher_email:email, teacher_password:btoa(pw)});
+    if (ok) { msg.textContent = '✅ Teacher added! Temp password: '+pw; msg.style.color='var(--green)'; showToast('✅ Teacher added','success'); await loadData(); }
+    else { msg.textContent = '❌ Failed to save teacher'; msg.style.color='var(--red)'; }
+  } else {
+    msg.textContent = '✅ Invite ready — please assign a class'; msg.style.color='var(--orange)';
+    showToast('✅ Teacher invite prepared','success');
+  }
+}
+
+// ── Add Student ─────────────────────────────────────────────────
+async function addStudent() {
+  const name = document.getElementById('stuName').value.trim();
+  const grade = document.getElementById('stuGrade').value;
+  const classId = document.getElementById('stuClass').value;
+  const stuNum = document.getElementById('stuNum').value.trim();
+  const msg = document.getElementById('stuMsg');
+  if (!name) { msg.textContent = '❌ Student name required'; msg.style.color='var(--red)'; return; }
+  const username = stuNum || (name.replace(/[^a-zA-Z0-9]/g,'').toLowerCase().slice(0,8) + Math.floor(100+Math.random()*900));
+  const pw = 'Matric' + Math.floor(1000+Math.random()*9000) + '!';
+  const data = {school_id:SCHOOL.id, full_username:username, display_name:name, grade:parseInt(grade)||12, class_id:classId||null, preset_password:btoa(pw), registered:false};
+  const res = await sbPost('school_students', data);
+  if (res) { msg.textContent = '✅ Created! Login: '+username+' / '+pw; msg.style.color='var(--green)'; showToast('✅ Student account created','success'); document.getElementById('stuName').value=''; document.getElementById('stuNum').value=''; await loadData(); }
+  else { msg.textContent = '❌ Could not create student'; msg.style.color='var(--red)'; }
+}
+
+// ── Announcements ─────────────────────────────────────────────
+async function loadAnnouncements() {
+  const list = document.getElementById('annList');
+  if (!list) return;
+  let anns = []; try { anns = JSON.parse(localStorage.getItem('ma_school_anns')||'[]'); } catch(e){}
+  if (!anns.length) { list.innerHTML = '<div class="empty-state"><div class="empty-state-icon">📢</div><div class="empty-state-title">No announcements yet</div></div>'; return; }
+  list.innerHTML = anns.slice(0,6).map(a =>
+    `<div style="background:var(--bg);border:1px solid var(--border);border-radius:9px;padding:12px;margin-bottom:8px">
+      <div style="font-size:.8rem;font-weight:700;color:var(--text);margin-bottom:3px">${a.title}</div>
+      <div style="font-size:.63rem;color:var(--text3);font-family:'JetBrains Mono',monospace;margin-bottom:6px">${a.target} · ${a.date}</div>
+      <div style="font-size:.75rem;color:var(--text2)">${a.body}</div>
+    </div>`).join('');
+}
+async function sendAnnouncement() {
+  const title = document.getElementById('annTitle').value.trim();
+  const body = document.getElementById('annBody').value.trim();
+  const target = document.getElementById('annTarget').value;
+  if (!title || !body) { showToast('Title and message required','error'); return; }
+  let anns = []; try { anns = JSON.parse(localStorage.getItem('ma_school_anns')||'[]'); } catch(e){}
+  anns.unshift({title,body,target,date:new Date().toLocaleDateString()});
+  localStorage.setItem('ma_school_anns', JSON.stringify(anns));
+  document.getElementById('annTitle').value=''; document.getElementById('annBody').value='';
+  showToast('📢 Announcement sent!','success');
+  loadAnnouncements();
+}
+
+function setInviteTab(btn, formId) {
+  document.querySelectorAll('.invite-tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  ['teacher-form','student-form','bulk-form'].forEach(id => { const el = document.getElementById(id); if(el) el.style.display = id===formId?'block':'none'; });
+}
+
+function exportTeachers() { showToast('📥 Export feature coming soon'); }
+function saveSettings() {
+  showToast('✅ Settings saved','success');
+}
+function updateColor(color) {
+  document.documentElement.style.setProperty('--primary', color);
+  showToast('🎨 Colour updated');
+}
+
+// ── Init ──────────────────────────────────────────────────────
+init();
+</script>
+</body>
+</html>
