@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MatricAce — Founder Console</title>
+<style id="shared-css"></style>
+<style>
+.school-row{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:var(--r);border:1px solid var(--border);background:var(--bg);cursor:pointer;transition:all .15s;margin-bottom:8px}.school-row:hover{border-color:var(--primary);background:var(--primary-dim)}.school-color{width:10px;height:10px;border-radius:50%;flex-shrink:0}.school-info{flex:1;min-width:0}.school-name{font-size:.83rem;font-weight:700;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.school-meta{font-size:.63rem;color:var(--text3);font-family:'JetBrains Mono',monospace;margin-top:1px}.s-stat{text-align:right;flex-shrink:0}.s-stat-val{font-family:'Outfit',sans-serif;font-size:.88rem;font-weight:800;color:var(--text)}.s-stat-lbl{font-size:.58rem;color:var(--text4);font-family:'JetBrains Mono',monospace}
+.status-active{background:var(--green-dim);color:var(--green);padding:3px 8px;border-radius:20px;font-size:.6rem;font-weight:800;font-family:'JetBrains Mono',monospace}
+.status-trial{background:var(--accent-dim);color:var(--orange);padding:3px 8px;border-radius:20px;font-size:.6rem;font-weight:800;font-family:'JetBrains Mono',monospace}
+.chart-bars{display:flex;align-items:flex-end;gap:5px;height:70px;margin-top:14px}
+.cb-wrap{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px}
+.cb{width:100%;border-radius:3px 3px 0 0;background:linear-gradient(180deg,var(--primary),var(--primary-dark));min-height:3px;transition:height 1s ease}
+.cb-lbl{font-size:.55rem;color:var(--text4);font-family:'JetBrains Mono',monospace}
+.province-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}
+.prov-item{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:9px 10px}
+.prov-name{font-size:.7rem;font-weight:700;color:var(--text);margin-bottom:4px}
+.prov-bar{height:4px;background:var(--border);border-radius:2px;overflow:hidden;margin-bottom:4px}
+.prov-fill{height:100%;border-radius:2px;background:linear-gradient(90deg,var(--primary),var(--primary-light))}
+.prov-count{font-size:.6rem;color:var(--text4);font-family:'JetBrains Mono',monospace}
+.activity-item{display:flex;align-items:flex-start;gap:10px;padding:9px 0;border-bottom:1px solid var(--border)}.activity-item:last-child{border-bottom:none}
+.act-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;margin-top:5px}
+.act-text{font-size:.77rem;color:var(--text2);line-height:1.5;flex:1}
+.act-text strong{color:var(--text);font-weight:700}
+.act-time{font-size:.63rem;color:var(--text4);flex-shrink:0;white-space:nowrap;font-family:'JetBrains Mono',monospace}
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="sidebar-header">
+    <div class="sidebar-logo">
+      <div class="sidebar-logo-mark">MA</div>
+      <div class="sidebar-logo-name">Matric<span>Ace</span></div>
+    </div>
+    <div class="sidebar-role-badge">🛡️ Super Admin</div>
+    <div class="sidebar-sub" id="adminEmail">Loading…</div>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-section-label">Overview</div>
+    <div class="nav-item active" onclick="switchPanel(this,'overview')"><span class="nav-icon">📊</span><span>Dashboard</span></div>
+    <div class="nav-item" onclick="switchPanel(this,'schools')"><span class="nav-icon">🏫</span><span>All Schools</span><span class="nav-badge nb-blue" id="schoolCount"></span></div>
+    <div class="nav-item" onclick="switchPanel(this,'analytics')"><span class="nav-icon">📈</span><span>Analytics</span></div>
+    <div class="nav-section-label">Management</div>
+    <div class="nav-item" onclick="switchPanel(this,'onboard')"><span class="nav-icon">➕</span><span>Onboard School</span></div>
+    <div class="nav-item" onclick="switchPanel(this,'users')"><span class="nav-icon">👥</span><span>All Users</span></div>
+    <div class="nav-item" onclick="switchPanel(this,'broadcast')"><span class="nav-icon">📢</span><span>Broadcast</span></div>
+    <div class="nav-section-label">System</div>
+    <div class="nav-item" onclick="switchPanel(this,'config')"><span class="nav-icon">🔧</span><span>Config</span></div>
+    <div class="nav-item" onclick="switchPanel(this,'settings')"><span class="nav-icon">⚙️</span><span>Settings</span></div>
+  </nav>
+  <div class="sidebar-footer">
+    <div class="user-row">
+      <div class="user-av" id="userAv">AB</div>
+      <div><div class="user-name" id="userName">Admin</div><div class="user-role">FOUNDER</div></div>
+    </div>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<div class="main">
+  <div class="header">
+    <button class="back-btn" onclick="goBack()">← Back to Portal</button>
+    <div class="header-title" id="headerTitle">Dashboard <span>All schools overview</span></div>
+    <button class="hbtn hbtn-ghost" onclick="switchPanel(null,'onboard')">📋 Onboard School</button>
+    <button class="hbtn hbtn-primary" onclick="refresh()">🔄 Refresh</button>
+  </div>
+  <div class="content">
+    <div class="content-inner">
+
+      <!-- OVERVIEW -->
+      <div class="panel active" id="panel-overview">
+        <div class="metrics-row">
+          <div class="mc blue"><div class="mc-top"><div class="mc-icon blue">🏫</div><div class="mc-change up" id="schoolChange"></div></div><div class="mc-val" id="ov-schools">—</div><div class="mc-lbl">Partner Schools</div></div>
+          <div class="mc green"><div class="mc-top"><div class="mc-icon green">🎓</div></div><div class="mc-val" id="ov-students">—</div><div class="mc-lbl">Total Students</div></div>
+          <div class="mc gold"><div class="mc-top"><div class="mc-icon gold">👩‍🏫</div></div><div class="mc-val" id="ov-teachers">—</div><div class="mc-lbl">Total Teachers</div></div>
+          <div class="mc purple"><div class="mc-top"><div class="mc-icon purple">📝</div></div><div class="mc-val" id="ov-classes">—</div><div class="mc-lbl">Total Classes</div></div>
+        </div>
+        <div class="g3">
+          <div class="card">
+            <div class="card-header">
+              <div><div class="card-title">Active Schools</div><div class="card-sub">All partner schools by size</div></div>
+              <div class="card-action" onclick="switchPanel(null,'schools')">View all →</div>
+            </div>
+            <div id="schoolList"><div class="loading"><div class="spinner"></div>Loading schools…</div></div>
+          </div>
+          <div>
+            <div class="card">
+              <div class="card-header">
+                <div class="card-title">Live Activity</div>
+                <div style="font-size:.65rem;color:var(--green);display:flex;align-items:center;gap:4px"><span style="width:6px;height:6px;border-radius:50%;background:var(--green);display:inline-block"></span>Real-time</div>
+              </div>
+              <div id="activityFeed"><div class="loading"><div class="spinner"></div></div></div>
+            </div>
+            <div class="card">
+              <div class="card-header"><div class="card-title">Schools by Province</div></div>
+              <div class="province-grid" id="provinceGrid"><div class="loading"><div class="spinner"></div></div></div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <div><div class="card-title">Student Growth</div><div class="card-sub">Students registered per school</div></div>
+          </div>
+          <div class="chart-bars" id="growthChart"></div>
+        </div>
+      </div>
+
+      <!-- ALL SCHOOLS -->
+      <div class="panel" id="panel-schools">
+        <div class="card">
+          <div class="card-header">
+            <div><div class="card-title">All Partner Schools</div><div class="card-sub" id="schoolsLabel">Loading…</div></div>
+            <div style="display:flex;gap:8px">
+              <input id="schoolSearch" type="text" placeholder="Search schools…" style="padding:6px 11px;border:1.5px solid var(--border2);border-radius:8px;font-size:.78rem;background:var(--bg);color:var(--text);outline:none;font-family:inherit" oninput="filterSchools(this.value)">
+              <button class="btn btn-primary btn-sm" onclick="switchPanel(null,'onboard')">+ Add School</button>
+            </div>
+          </div>
+          <div style="overflow-x:auto">
+            <table class="tbl">
+              <thead><tr><th>School</th><th>Province</th><th>Students</th><th>Classes</th><th>Teachers</th><th>Registered</th><th>Status</th><th>Actions</th></tr></thead>
+              <tbody id="schoolsTable"><tr><td colspan="8" style="text-align:center;color:var(--text3);padding:20px">Loading…</td></tr></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ANALYTICS -->
+      <div class="panel" id="panel-analytics">
+        <div class="metrics-row">
+          <div class="mc blue"><div class="mc-top"><div class="mc-icon blue">📝</div></div><div class="mc-val" id="an-mocks">—</div><div class="mc-lbl">Mock Exams (stored)</div></div>
+          <div class="mc green"><div class="mc-top"><div class="mc-icon green">✅</div></div><div class="mc-val" id="an-reg">—</div><div class="mc-lbl">Registered Students</div></div>
+          <div class="mc gold"><div class="mc-top"><div class="mc-icon gold">🏫</div></div><div class="mc-val" id="an-schools">—</div><div class="mc-lbl">Schools</div></div>
+          <div class="mc purple"><div class="mc-top"><div class="mc-icon purple">📚</div></div><div class="mc-val" id="an-classes">—</div><div class="mc-lbl">Classes</div></div>
+        </div>
+        <div class="card">
+          <div class="card-title" style="margin-bottom:14px">Schools Performance Overview</div>
+          <div style="overflow-x:auto">
+            <table class="tbl">
+              <thead><tr><th>School</th><th>Students</th><th>Registered</th><th>Classes</th><th>Teachers</th><th>% Registered</th></tr></thead>
+              <tbody id="analyticsTable"><tr><td colspan="6" style="text-align:center;color:var(--text3);padding:20px">Loading…</td></tr></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ONBOARD SCHOOL -->
+      <div class="panel" id="panel-onboard">
+        <div class="card" style="max-width:720px">
+          <div class="card-header"><div><div class="card-title">Onboard New School</div><div class="card-sub">Create a school portal and set up admin access</div></div></div>
+          <div class="info-box">ℹ️ After onboarding, the school admin can log in with their email and password to access their School Admin Portal. You can then onboard their teachers and students.</div>
+
+          <div style="font-size:.68rem;font-weight:800;color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;font-family:'JetBrains Mono',monospace">School Information</div>
+          <div class="form-grid" style="margin-bottom:20px">
+            <div class="ff form-row-full"><label>Official School Name *</label><input type="text" id="ob-name" placeholder="e.g. Northview High School" oninput="genCode()"></div>
+            <div class="ff"><label>Province *</label>
+              <select id="ob-province"><option value="">Select province…</option><option>Gauteng</option><option>Western Cape</option><option>KwaZulu-Natal</option><option>Eastern Cape</option><option>Limpopo</option><option>Mpumalanga</option><option>North West</option><option>Free State</option><option>Northern Cape</option></select>
+            </div>
+            <div class="ff"><label>Town / City</label><input type="text" id="ob-city" placeholder="e.g. Johannesburg"></div>
+            <div class="ff"><label>School Type</label>
+              <select id="ob-type"><option>Public School</option><option>Private School</option><option>Independent School</option><option>Combined School</option></select>
+            </div>
+            <div class="ff"><label>Approx. Learners (Gr 10–12)</label><input type="number" id="ob-count" placeholder="e.g. 350"></div>
+          </div>
+
+          <div style="font-size:.68rem;font-weight:800;color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;font-family:'JetBrains Mono',monospace">Admin Account</div>
+          <div class="form-grid" style="margin-bottom:20px">
+            <div class="ff"><label>Admin Full Name *</label><input type="text" id="ob-admin-name" placeholder="e.g. Mrs N. Dlamini"></div>
+            <div class="ff"><label>Admin Email *</label><input type="email" id="ob-admin-email" placeholder="admin@school.co.za"></div>
+            <div class="ff"><label>Admin Password *</label><input type="password" id="ob-admin-pw" placeholder="Set a secure password"></div>
+            <div class="ff"><label>Phone (optional)</label><input type="tel" id="ob-admin-phone" placeholder="+27 11 000 0000"></div>
+          </div>
+
+          <div style="font-size:.68rem;font-weight:800;color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;font-family:'JetBrains Mono',monospace">Plan & Options</div>
+          <div class="form-grid" style="margin-bottom:24px">
+            <div class="ff"><label>Subscription Plan</label>
+              <select id="ob-plan"><option value="trial">30-Day Free Trial</option><option value="starter">Starter (up to 200 students)</option><option value="growth">Growth (up to 500 students)</option><option value="enterprise">Enterprise (unlimited)</option></select>
+            </div>
+            <div class="ff"><label>School Code (auto-generated)</label><input type="text" id="ob-code" readonly style="background:var(--bg3);cursor:not-allowed"></div>
+            <div class="ff"><label>AI Questions Per Student/Day</label><input type="number" id="ob-ai-cap" value="10" min="0" max="100"></div>
+            <div class="ff"><label>Expiry Date</label><input type="date" id="ob-expiry"></div>
+          </div>
+
+          <div style="display:flex;gap:12px;align-items:center">
+            <button class="btn btn-primary" onclick="onboardSchool()">✓ Create School Portal</button>
+            <button class="btn btn-ghost" onclick="resetForm()">Clear Form</button>
+          </div>
+          <div id="ob-msg" style="margin-top:12px;font-size:.8rem;font-weight:700"></div>
+        </div>
+      </div>
+
+      <!-- USERS -->
+      <div class="panel" id="panel-users">
+        <div class="card">
+          <div class="card-header">
+            <div><div class="card-title">All Students (Platform-wide)</div><div class="card-sub" id="usersLabel">Loading…</div></div>
+            <div style="display:flex;gap:8px">
+              <input id="userSearch" type="text" placeholder="Search by name or username…" style="padding:6px 11px;border:1.5px solid var(--border2);border-radius:8px;font-size:.78rem;background:var(--bg);color:var(--text);outline:none;font-family:inherit" oninput="filterUsers(this.value)">
+              <select id="schoolFilter" onchange="filterUsers(document.getElementById('userSearch').value)" style="padding:6px 10px;border:1.5px solid var(--border2);border-radius:8px;font-size:.78rem;background:var(--bg);color:var(--text);outline:none;font-family:inherit">
+                <option value="">All Schools</option>
+              </select>
+            </div>
+          </div>
+          <div style="overflow-x:auto">
+            <table class="tbl">
+              <thead><tr><th>Student</th><th>School</th><th>Grade</th><th>Registered</th><th>Actions</th></tr></thead>
+              <tbody id="usersTable"><tr><td colspan="5" style="text-align:center;color:var(--text3);padding:20px">Click Refresh to load all users</td></tr></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- BROADCAST -->
+      <div class="panel" id="panel-broadcast">
+        <div class="g2">
+          <div class="card">
+            <div class="card-title" style="margin-bottom:14px">Platform Broadcast</div>
+            <div class="warn-box">⚠️ This message will appear to all users when they open the app.</div>
+            <div class="ff"><label>Message *</label><textarea rows="4" id="bcMsg" placeholder="Type your broadcast message…" style="width:100%;resize:vertical;padding:8px 11px;border:1.5px solid var(--border2);border-radius:9px;background:var(--bg);color:var(--text);font-family:'Manrope',sans-serif;font-size:.8rem;outline:none"></textarea></div>
+            <div class="ff"><label>Type</label>
+              <select id="bcType"><option value="info">📢 Info</option><option value="warning">⚠️ Warning</option><option value="maintenance">🔧 Maintenance</option><option value="feature">🆕 New Feature</option></select>
+            </div>
+            <div style="display:flex;gap:10px">
+              <button class="btn btn-primary" onclick="sendBroadcast()">📢 Broadcast to All</button>
+              <button class="btn btn-danger btn-sm" onclick="clearBroadcast()">Clear</button>
+            </div>
+            <div id="bc-result" style="margin-top:10px;font-size:.78rem;font-weight:700"></div>
+          </div>
+          <div class="card">
+            <div class="card-header"><div class="card-title">Active Broadcasts</div><div class="card-action" onclick="loadBroadcasts()">🔄</div></div>
+            <div id="bcList"><div class="loading"><div class="spinner"></div>Loading…</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CONFIG -->
+      <div class="panel" id="panel-config">
+        <div class="card" style="max-width:580px">
+          <div class="card-title" style="margin-bottom:18px">🔧 App Configuration</div>
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--border)">
+            <div><div style="font-size:.85rem;font-weight:700">🚧 Maintenance Mode</div><div style="font-size:.7rem;color:var(--text3);margin-top:2px">Shows a maintenance banner to all users</div></div>
+            <label class="toggle-wrap"><input type="checkbox" id="cfg-maintenance" onchange="saveConfig()"><span class="toggle-sw"></span></label>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--border)">
+            <div><div style="font-size:.85rem;font-weight:700">🎯 Free Trial Duration</div><div style="font-size:.7rem;color:var(--text3);margin-top:2px">Days of free Premium on signup</div></div>
+            <select id="cfg-trial" onchange="saveConfig()" style="padding:5px 9px;border:1.5px solid var(--border2);border-radius:8px;background:var(--bg);font-family:inherit;font-size:.82rem;outline:none"><option value="3">3 days</option><option value="7" selected>7 days</option><option value="14">14 days</option><option value="30">30 days</option></select>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--border)">
+            <div><div style="font-size:.85rem;font-weight:700">🤖 Default AI Daily Limit</div><div style="font-size:.7rem;color:var(--text3);margin-top:2px">Questions per free user per day</div></div>
+            <select id="cfg-ai-quota" onchange="saveConfig()" style="padding:5px 9px;border:1.5px solid var(--border2);border-radius:8px;background:var(--bg);font-family:inherit;font-size:.82rem;outline:none"><option value="5">5 questions</option><option value="10" selected>10 questions</option><option value="20">20 questions</option><option value="unlimited">Unlimited</option></select>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 0">
+            <div><div style="font-size:.85rem;font-weight:700">💰 Premium Price (ZAR/month)</div></div>
+            <select id="cfg-price" onchange="saveConfig()" style="padding:5px 9px;border:1.5px solid var(--border2);border-radius:8px;background:var(--bg);font-family:inherit;font-size:.82rem;outline:none"><option value="49">R49/month</option><option value="60" selected>R60/month</option><option value="79">R79/month</option><option value="99">R99/month</option></select>
+          </div>
+        </div>
+      </div>
+
+      <!-- SETTINGS -->
+      <div class="panel" id="panel-settings">
+        <div class="card" style="max-width:520px">
+          <div class="card-title" style="margin-bottom:16px">Platform Settings</div>
+          <div class="ff"><label>Platform Name</label><input type="text" value="MatricAce" readonly style="background:var(--bg3)"></div>
+          <div class="ff"><label>Support Email</label><input type="email" value="support@matricace.co.za"></div>
+          <div class="ff"><label>Admin Email (read-only)</label><input type="email" id="settEmail" readonly style="background:var(--bg3)"></div>
+          <div style="margin-top:10px"><button class="btn btn-primary" onclick="showToast('✅ Settings saved','success')">Save Settings</button></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<style>
+.toggle-wrap{position:relative;display:inline-block;width:42px;height:22px}.toggle-wrap input{opacity:0;width:0;height:0}.toggle-sw{position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;background:var(--border2);border-radius:22px;transition:.3s}.toggle-sw:before{position:absolute;content:'';height:16px;width:16px;left:3px;bottom:3px;background:#fff;border-radius:50%;transition:.3s}.toggle-wrap input:checked+.toggle-sw{background:var(--primary)}.toggle-wrap input:checked+.toggle-sw:before{transform:translateX(20px)}
+.warn-box{background:var(--accent-dim);border:1px solid rgba(217,119,6,.2);border-radius:var(--r);padding:10px 13px;font-size:.76rem;color:var(--orange);line-height:1.6;margin-bottom:14px}
+.info-box{background:var(--primary-dim);border:1px solid rgba(27,79,216,.2);border-radius:var(--r);padding:10px 13px;font-size:.76rem;color:var(--primary);line-height:1.6;margin-bottom:14px}
+</style>
+
+<script>
+document.getElementById('shared-css').textContent = `
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
+:root{--primary:#1B4FD8;--primary-dark:#1340B0;--primary-light:#3B6FEF;--primary-dim:rgba(27,79,216,.10);--primary-glow:rgba(27,79,216,.25);--accent:#FFB612;--accent-dim:rgba(255,182,18,.12);--green:#059669;--green-dim:rgba(5,150,105,.10);--orange:#D97706;--orange-dim:rgba(217,119,6,.10);--red:#DC2626;--red-dim:rgba(220,38,38,.10);--purple:#7C3AED;--purple-dim:rgba(124,58,237,.10);--teal:#0891B2;--teal-dim:rgba(8,145,178,.10);--bg:#F0F4FE;--bg2:#FFFFFF;--bg3:#E8EFFD;--surface:#FFFFFF;--text:#0F1729;--text2:#374A6B;--text3:#6B7FA8;--text4:#9BAEC8;--border:rgba(27,79,216,.10);--border2:rgba(27,79,216,.18);--sidebar-w:252px;--header-h:62px;--shadow-sm:0 1px 4px rgba(27,79,216,.07),0 1px 2px rgba(0,0,0,.04);--shadow:0 4px 20px rgba(27,79,216,.10),0 2px 8px rgba(0,0,0,.06);--r:12px;--r-lg:18px}
+*{box-sizing:border-box;margin:0;padding:0}html,body{height:100%;font-size:16px}body{font-family:'Manrope',sans-serif;background:var(--bg);color:var(--text);display:flex;height:100dvh;overflow:hidden}a{text-decoration:none;color:inherit}button{font-family:inherit;cursor:pointer;border:none;outline:none}
+.sidebar{width:var(--sidebar-w);flex-shrink:0;background:#0F1729;display:flex;flex-direction:column;overflow:hidden;z-index:10}.sidebar-header{padding:18px 18px 14px;border-bottom:1px solid rgba(255,255,255,.08);flex-shrink:0}.sidebar-logo{display:flex;align-items:center;gap:9px}.sidebar-logo-mark{width:34px;height:34px;border-radius:9px;flex-shrink:0;background:linear-gradient(135deg,var(--primary),var(--primary-light));display:flex;align-items:center;justify-content:center;font-family:'Outfit',sans-serif;font-size:.72rem;font-weight:800;color:#fff;box-shadow:0 4px 12px var(--primary-glow)}.sidebar-logo-name{font-family:'Outfit',sans-serif;font-weight:800;font-size:1rem;color:#fff}.sidebar-logo-name span{color:var(--accent)}.sidebar-role-badge{margin-top:9px;display:inline-flex;align-items:center;gap:5px;padding:4px 9px;border-radius:6px;background:rgba(255,182,18,.12);border:1px solid rgba(255,182,18,.2);font-size:.6rem;font-weight:800;color:var(--accent);font-family:'JetBrains Mono',monospace;text-transform:uppercase;letter-spacing:.5px}.sidebar-sub{margin-top:6px;font-size:.63rem;color:rgba(255,255,255,.3);font-family:'JetBrains Mono',monospace;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.sidebar-nav{flex:1;overflow-y:auto;padding:12px 10px;scrollbar-width:none}.sidebar-nav::-webkit-scrollbar{display:none}.nav-section-label{font-size:.58rem;font-weight:800;color:rgba(255,255,255,.22);text-transform:uppercase;letter-spacing:1.2px;padding:0 8px;margin:14px 0 5px;font-family:'JetBrains Mono',monospace}.nav-item{display:flex;align-items:center;gap:9px;padding:8px 10px;border-radius:8px;font-size:.8rem;font-weight:600;color:rgba(255,255,255,.5);cursor:pointer;transition:all .15s;margin-bottom:2px;position:relative;user-select:none}.nav-item:hover{background:rgba(255,255,255,.06);color:rgba(255,255,255,.85)}.nav-item.active{background:rgba(27,79,216,.3);color:#fff}.nav-item.active::before{content:'';position:absolute;left:0;top:50%;transform:translateY(-50%);width:3px;height:60%;border-radius:0 2px 2px 0;background:var(--primary-light)}.nav-icon{font-size:.9rem;width:18px;text-align:center;flex-shrink:0}.nav-badge{margin-left:auto;font-size:.6rem;font-weight:800;padding:2px 6px;border-radius:12px;font-family:'JetBrains Mono',monospace}.nb-blue{background:rgba(27,79,216,.3);color:#93BBFF}.sidebar-footer{padding:12px 10px;border-top:1px solid rgba(255,255,255,.08);flex-shrink:0}.user-row{display:flex;align-items:center;gap:9px;padding:8px;border-radius:8px;cursor:pointer;transition:background .15s}.user-row:hover{background:rgba(255,255,255,.06)}.user-av{width:32px;height:32px;border-radius:8px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:.68rem;font-weight:800;color:#fff;background:linear-gradient(135deg,var(--primary),var(--primary-light))}.user-name{font-size:.78rem;font-weight:700;color:#fff}.user-role{font-size:.58rem;color:rgba(255,255,255,.3);font-family:'JetBrains Mono',monospace}
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0}.header{height:var(--header-h);background:var(--surface);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 18px;gap:10px;flex-shrink:0;box-shadow:var(--shadow-sm)}.header-title{font-family:'Outfit',sans-serif;font-size:1rem;font-weight:800;color:var(--text);flex:1;min-width:0}.header-title span{color:var(--text3);font-weight:500;font-size:.82rem;margin-left:8px}.hbtn{padding:7px 14px;border-radius:8px;font-size:.78rem;font-weight:700;display:flex;align-items:center;gap:5px;transition:all .15s;cursor:pointer;white-space:nowrap}.hbtn-primary{background:linear-gradient(135deg,var(--primary),var(--primary-light));color:#fff;box-shadow:0 3px 10px var(--primary-glow)}.hbtn-ghost{background:var(--bg);border:1.5px solid var(--border2);color:var(--text2)}.hbtn-ghost:hover{border-color:var(--primary);color:var(--primary)}.back-btn{display:flex;align-items:center;gap:6px;padding:7px 12px;border-radius:8px;background:var(--bg);border:1.5px solid var(--border2);color:var(--text2);font-size:.78rem;font-weight:700;cursor:pointer;transition:all .15s;white-space:nowrap}.back-btn:hover{border-color:var(--primary);color:var(--primary)}.content{flex:1;overflow-y:auto;background:var(--bg);scrollbar-width:thin}.content-inner{padding:20px 22px;max-width:980px;margin:0 auto}.panel{display:none}.panel.active{display:block;animation:fadeUp .2s ease both}@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.metrics-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:18px}.mc{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:16px;box-shadow:var(--shadow-sm);position:relative;overflow:hidden}.mc::after{content:'';position:absolute;top:0;right:0;width:70px;height:70px;border-radius:0 var(--r-lg) 0 100%;opacity:.06}.mc.blue::after{background:var(--primary)}.mc.green::after{background:var(--green)}.mc.gold::after{background:var(--accent)}.mc.purple::after{background:var(--purple)}.mc-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:12px}.mc-icon{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1rem}.mc-icon.blue{background:var(--primary-dim)}.mc-icon.green{background:var(--green-dim)}.mc-icon.gold{background:var(--accent-dim)}.mc-icon.purple{background:var(--purple-dim)}.mc-val{font-family:'Outfit',sans-serif;font-size:1.8rem;font-weight:800;color:var(--text);line-height:1;margin-bottom:3px}.mc-lbl{font-size:.72rem;color:var(--text3);font-weight:600}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:18px;box-shadow:var(--shadow-sm);margin-bottom:14px}.card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}.card-title{font-family:'Outfit',sans-serif;font-size:.9rem;font-weight:800;color:var(--text)}.card-sub{font-size:.7rem;color:var(--text3);margin-top:2px}.card-action{font-size:.73rem;font-weight:700;color:var(--primary);cursor:pointer}.card-action:hover{opacity:.7}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:14px}.g3{display:grid;grid-template-columns:2fr 1fr;gap:14px}
+.tbl{width:100%;border-collapse:collapse}.tbl th{font-size:.63rem;font-weight:800;color:var(--text3);text-transform:uppercase;letter-spacing:.8px;padding:8px 10px;border-bottom:1px solid var(--border);text-align:left;font-family:'JetBrains Mono',monospace}.tbl td{padding:10px 10px;font-size:.78rem;border-bottom:1px solid var(--border);color:var(--text2)}.tbl tr:last-child td{border-bottom:none}.tbl tr:hover td{background:var(--bg)}.tbl-name{font-weight:700;color:var(--text)}
+.btn{padding:8px 16px;border-radius:9px;font-size:.78rem;font-weight:700;display:inline-flex;align-items:center;gap:5px;transition:all .15s;cursor:pointer;font-family:'Manrope',sans-serif}.btn-primary{background:linear-gradient(135deg,var(--primary),var(--primary-light));color:#fff;box-shadow:0 2px 8px var(--primary-glow)}.btn-ghost{background:var(--bg);border:1.5px solid var(--border2);color:var(--text2)}.btn-ghost:hover{border-color:var(--primary);color:var(--primary)}.btn-danger{background:var(--red-dim);border:1px solid rgba(220,38,38,.2);color:var(--red)}.btn-sm{padding:5px 10px;font-size:.7rem}
+.pill{padding:3px 8px;border-radius:20px;font-size:.62rem;font-weight:800;font-family:'JetBrains Mono',monospace}.p-blue{background:var(--primary-dim);color:var(--primary)}.p-green{background:var(--green-dim);color:var(--green)}.p-gold{background:var(--accent-dim);color:var(--orange)}.p-red{background:var(--red-dim);color:var(--red)}
+.ff{display:flex;flex-direction:column;gap:5px;margin-bottom:10px}.ff label{font-size:.7rem;font-weight:700;color:var(--text2)}.ff input,.ff select,.ff textarea{padding:8px 11px;border:1.5px solid var(--border2);border-radius:9px;background:var(--bg);color:var(--text);font-family:'Manrope',sans-serif;font-size:.8rem;outline:none;transition:all .15s}.ff input:focus,.ff select:focus,.ff textarea:focus{border-color:var(--primary);background:#fff;box-shadow:0 0 0 3px var(--primary-dim)}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.form-row-full{grid-column:1/-1}
+.empty-state{text-align:center;padding:36px 20px;color:var(--text3)}.empty-state-icon{font-size:2.5rem;margin-bottom:10px}.empty-state-title{font-size:.9rem;font-weight:700;color:var(--text);margin-bottom:6px}.empty-state-sub{font-size:.78rem;line-height:1.6}
+.loading{display:flex;flex-direction:column;align-items:center;gap:10px;padding:36px;color:var(--text3)}.spinner{width:28px;height:28px;border:3px solid var(--border);border-top-color:var(--primary);border-radius:50%;animation:spin .7s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--text);color:#fff;padding:11px 22px;border-radius:100px;font-size:.8rem;font-weight:700;z-index:9999;transition:transform .3s ease;box-shadow:var(--shadow);pointer-events:none;white-space:nowrap}.toast.show{transform:translateX(-50%) translateY(0)}.toast.success{background:var(--green)}.toast.error{background:var(--red)}
+@media(max-width:700px){.sidebar{width:52px}.sidebar-logo-name,.sidebar-role-badge,.nav-section-label,.nav-item span,.user-name,.user-role,.sidebar-sub{display:none}.nav-item{justify-content:center;padding:10px}.nav-badge{display:none}.user-row{justify-content:center}.metrics-row{grid-template-columns:1fr 1fr}.g2,.g3,.form-grid{grid-template-columns:1fr}.content-inner{padding:14px 12px}.header{padding:0 12px}}
+`;
+
+// ── Constants ──────────────────────────────────────────────────
+const SUPA_URL = 'https://xdwexkmbhzkjivpayyrp.supabase.co';
+const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inhkd2V4a21iaHpraml2cGF5eXJwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIzNzI2NTMsImV4cCI6MjA4Nzk0ODY1M30.2GWkg-L86GL0mp0LCfmmW3waDHWiMcZhqzhuOTRpTJI';
+const H = { 'apikey': SUPA_KEY, 'Authorization': 'Bearer ' + SUPA_KEY, 'Content-Type': 'application/json' };
+const ADMIN_EMAILS = ['matricace.sa@gmail.com', 'abdullahomuhy@gmail.com'];
+const APP_URL = 'MatricAce_SA_Ultimate_v7.html';
+const COLORS = ['#1B4FD8','#059669','#7C3AED','#0891B2','#D97706','#DC2626','#0F766E','#7C3AED'];
+
+let allSchools = [], allStudents = [], allClasses = [];
+
+// ── Helpers ────────────────────────────────────────────────────
+async function sbGet(path) {
+  try { const r = await fetch(SUPA_URL+'/rest/v1/'+path, {headers:H}); return r.ok ? await r.json() : []; } catch(e) { return []; }
+}
+async function sbPost(path, data) {
+  try { const r = await fetch(SUPA_URL+'/rest/v1/'+path, {method:'POST',headers:{...H,'Prefer':'return=representation'},body:JSON.stringify(data)}); return r.ok ? await r.json() : null; } catch(e) { return null; }
+}
+async function sbPatch(path, data) {
+  try { const r = await fetch(SUPA_URL+'/rest/v1/'+path, {method:'PATCH',headers:{...H,'Prefer':'return=minimal'},body:JSON.stringify(data)}); return r.ok; } catch(e) { return false; }
+}
+function goBack() { window.location.href = APP_URL; }
+function showToast(msg, type) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.className = 'toast show' + (type ? ' '+type : '');
+  clearTimeout(t._t); t._t = setTimeout(() => t.className = 'toast', 2800);
+}
+function switchPanel(navEl, id) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  const panel = document.getElementById('panel-'+id);
+  if (panel) panel.classList.add('active');
+  if (navEl) navEl.classList.add('active');
+  else document.querySelectorAll('.nav-item').forEach(n => {
+    if ((n.getAttribute('onclick')||'').includes("'"+id+"'")) n.classList.add('active');
+  });
+  const map = {overview:'Dashboard',schools:'All Schools',analytics:'Analytics',onboard:'Onboard School',users:'All Users',broadcast:'Broadcast',config:'Config',settings:'Settings'};
+  document.getElementById('headerTitle').innerHTML = (map[id]||id) + ' <span>MatricAce Platform</span>';
+}
+function av(name) { const p = (name||'').trim().split(' '); return (p[0]?.[0]||'')+(p[1]?.[0]||p[0]?.[1]||''); }
+
+// ── Auth check ──────────────────────────────────────────────────
+function checkAuth() {
+  // Try all possible localStorage key combinations the app might use
+  const sessionKeys = ['matric_ace_session', 'matric_session'];
+  const userKeys    = ['matric_ace_users',   'matric_users'];
+
+  let sess = null, users = {};
+  for (const k of sessionKeys) {
+    try { sess = JSON.parse(localStorage.getItem(k) || 'null'); } catch(e){}
+    if (sess) break;
+  }
+  for (const k of userKeys) {
+    try { const u = JSON.parse(localStorage.getItem(k) || '{}'); if (Object.keys(u).length) { users = u; break; } } catch(e){}
+  }
+
+  let user = sess ? users[sess.uid] : null;
+
+  // Extra fallback: check if any stored user has an admin email
+  if (!user || !ADMIN_EMAILS.includes((user.email||'').toLowerCase())) {
+    const allUsers = Object.values(users);
+    user = allUsers.find(u => ADMIN_EMAILS.includes((u.email||'').toLowerCase())) || null;
+  }
+
+  if (!user || !ADMIN_EMAILS.includes((user.email||'').toLowerCase())) {
+    // Show login form instead of hard block — lets admin authenticate directly
+    document.body.innerHTML = `
+    <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100dvh;gap:16px;font-family:Manrope,sans-serif;background:#F0F4FE;padding:24px">
+      <div style="background:#fff;border:1px solid rgba(27,79,216,.15);border-radius:18px;padding:28px;width:100%;max-width:380px;box-shadow:0 4px 24px rgba(27,79,216,.1)">
+        <div style="text-align:center;margin-bottom:24px">
+          <div style="font-size:2rem;margin-bottom:8px">🛡️</div>
+          <div style="font-family:'Outfit',sans-serif;font-size:1.1rem;font-weight:800;color:#0F1729">MatricAce Admin</div>
+          <div style="font-size:.78rem;color:#6B7FA8;margin-top:4px">Sign in with your admin email</div>
+        </div>
+        <div style="margin-bottom:12px">
+          <label style="font-size:.72rem;font-weight:700;color:#374A6B;display:block;margin-bottom:5px">Email</label>
+          <input id="directEmail" type="email" placeholder="matricace.sa@gmail.com" style="width:100%;padding:10px 12px;border:1.5px solid rgba(27,79,216,.18);border-radius:9px;font-family:Manrope,sans-serif;font-size:.85rem;outline:none;color:#0F1729;background:#F0F4FE">
+        </div>
+        <div style="margin-bottom:18px">
+          <label style="font-size:.72rem;font-weight:700;color:#374A6B;display:block;margin-bottom:5px">Password</label>
+          <input id="directPw" type="password" placeholder="••••••••" style="width:100%;padding:10px 12px;border:1.5px solid rgba(27,79,216,.18);border-radius:9px;font-family:Manrope,sans-serif;font-size:.85rem;outline:none;color:#0F1729;background:#F0F4FE">
+        </div>
+        <button onclick="directAdminLogin()" style="width:100%;padding:12px;background:linear-gradient(135deg,#1B4FD8,#3B6FEF);color:#fff;border:none;border-radius:10px;font-family:Manrope,sans-serif;font-weight:800;font-size:.9rem;cursor:pointer">Sign In →</button>
+        <div id="directLoginMsg" style="margin-top:10px;font-size:.75rem;text-align:center;font-weight:700"></div>
+        <div style="margin-top:16px;text-align:center">
+          <button onclick="window.location.href='${APP_URL}'" style="background:none;border:none;color:#6B7FA8;font-size:.75rem;cursor:pointer;font-family:inherit">← Back to Portal</button>
+        </div>
+      </div>
+    </div>`;
+    return null;
+  }
+  return user;
+}
+
+async function directAdminLogin() {
+  const email = (document.getElementById('directEmail')?.value || '').trim().toLowerCase();
+  const pw    = document.getElementById('directPw')?.value || '';
+  const msg   = document.getElementById('directLoginMsg');
+  if (!email || !pw) { msg.textContent = '❌ Enter email and password'; msg.style.color='#DC2626'; return; }
+  if (!ADMIN_EMAILS.includes(email)) { msg.textContent = '❌ Not an admin account'; msg.style.color='#DC2626'; return; }
+  msg.textContent = 'Verifying…'; msg.style.color = '#6B7FA8';
+  // Check against Supabase users table
+  try {
+    const r = await fetch(SUPA_URL+'/rest/v1/users?email=eq.'+encodeURIComponent(email)+'&select=*&limit=1', {headers:H});
+    const rows = r.ok ? await r.json() : [];
+    const dbUser = rows[0];
+    if (!dbUser) { msg.textContent = '❌ Account not found'; msg.style.color='#DC2626'; return; }
+    // Verify password (stored as btoa)
+    let stored = '';
+    try { stored = atob(dbUser.password||''); } catch(e){}
+    if (stored !== pw && dbUser.password !== btoa(pw)) {
+      msg.textContent = '❌ Incorrect password'; msg.style.color='#DC2626'; return;
+    }
+    // Save to localStorage so future visits work
+    const uid = dbUser.uid || ('admin_'+email.replace(/[^a-z0-9]/g,'_').slice(0,16));
+    const userObj = {...dbUser, uid, email};
+    const users = {};
+    users[uid] = userObj;
+    localStorage.setItem('matric_ace_users', JSON.stringify(users));
+    localStorage.setItem('matric_ace_session', JSON.stringify({uid, loginAt:Date.now()}));
+    msg.textContent = '✅ Signed in!'; msg.style.color='#059669';
+    setTimeout(() => location.reload(), 800);
+  } catch(e) {
+    msg.textContent = '❌ Login error: '+e.message; msg.style.color='#DC2626';
+  }
+}
+
+// ── Init ────────────────────────────────────────────────────────
+async function init() {
+  const user = checkAuth();
+  if (!user) return;
+  document.getElementById('userAv').textContent = av((user.name||'A')+' '+(user.surname||''));
+  document.getElementById('userName').textContent = (user.name||'Admin')+' '+(user.surname||'');
+  document.getElementById('adminEmail').textContent = user.email || '';
+  document.getElementById('settEmail').value = user.email || '';
+  // Set default expiry to 1 year from now
+  const exp = document.getElementById('ob-expiry');
+  if (exp) { const d = new Date(Date.now()+365*86400000); exp.value = d.toISOString().split('T')[0]; }
+  await loadData();
+  loadBroadcasts();
+}
+
+async function loadData() {
+  showToast('Loading platform data…');
+  const [schools, students, classes] = await Promise.all([
+    sbGet('schools?select=*&order=name.asc'),
+    sbGet('school_students?select=*'),
+    sbGet('school_classes?select=*&order=school_id.asc,grade.asc')
+  ]);
+  allSchools = Array.isArray(schools) ? schools : [];
+  allStudents = Array.isArray(students) ? students : [];
+  allClasses = Array.isArray(classes) ? classes : [];
+
+  // Update metrics
+  document.getElementById('ov-schools').textContent = allSchools.length;
+  document.getElementById('ov-students').textContent = allStudents.length;
+  document.getElementById('ov-teachers').textContent = allClasses.filter(c => c.teacher_email).length;
+  document.getElementById('ov-classes').textContent = allClasses.length;
+  document.getElementById('schoolCount').textContent = allSchools.length || '';
+  document.getElementById('schoolsLabel').textContent = allSchools.length + ' schools · ' + allStudents.length + ' students';
+  document.getElementById('usersLabel').textContent = allStudents.length + ' total students';
+
+  // Analytics
+  document.getElementById('an-mocks').textContent = '—';
+  document.getElementById('an-reg').textContent = allStudents.filter(s=>s.registered||s.user_id).length;
+  document.getElementById('an-schools').textContent = allSchools.length;
+  document.getElementById('an-classes').textContent = allClasses.length;
+
+  renderOverview();
+  renderSchoolsTable();
+  renderAnalyticsTable();
+  renderUsersTable();
+  populateSchoolFilter();
+  showToast('✅ Data loaded','success');
+}
+
+function renderOverview() {
+  // School list
+  document.getElementById('schoolList').innerHTML = allSchools.slice(0,6).map((s,i) => {
+    const stuCount = allStudents.filter(st => st.school_id === s.id).length;
+    const clsCount = allClasses.filter(c => c.school_id === s.id).length;
+    return `<div class="school-row" onclick="showToast('Opening ${s.name}…')">
+      <div class="school-color" style="background:${COLORS[i%COLORS.length]}"></div>
+      <div class="school-info">
+        <div class="school-name">${s.name}</div>
+        <div class="school-meta">${s.province||'SA'} · ${clsCount} classes</div>
+      </div>
+      <div class="s-stat"><div class="s-stat-val">${stuCount}</div><div class="s-stat-lbl">Students</div></div>
+      <span class="status-active">Active</span>
+    </div>`;
+  }).join('') || '<div class="empty-state"><div class="empty-state-icon">🏫</div><div class="empty-state-title">No schools yet</div><div class="empty-state-sub">Onboard your first school</div></div>';
+
+  // Activity
+  document.getElementById('activityFeed').innerHTML = allSchools.slice(0,5).map((s,i) =>
+    `<div class="activity-item">
+      <div class="act-dot" style="background:${COLORS[i%COLORS.length]}"></div>
+      <div class="act-text"><strong>${s.name}</strong> — ${allStudents.filter(st=>st.school_id===s.id).length} students registered</div>
+      <div class="act-time">Active</div>
+    </div>`).join('') || '<div style="color:var(--text3);font-size:.8rem;padding:10px 0">No activity yet</div>';
+
+  // Province grid
+  const provinces = ['Gauteng','W Cape','KZN','E Cape','Limpopo','Other'];
+  document.getElementById('provinceGrid').innerHTML = provinces.map(p => {
+    const count = allSchools.filter(s => (s.province||'').includes(p.split(' ')[0])).length;
+    const pct = allSchools.length ? Math.round(count/allSchools.length*100) : 0;
+    return `<div class="prov-item"><div class="prov-name">${p}</div><div class="prov-bar"><div class="prov-fill" style="width:${pct}%"></div></div><div class="prov-count">${count} school${count!==1?'s':''}</div></div>`;
+  }).join('');
+
+  // Growth chart
+  document.getElementById('growthChart').innerHTML = allSchools.slice(0,12).map((s,i) => {
+    const cnt = allStudents.filter(st=>st.school_id===s.id).length;
+    const max = Math.max(...allSchools.map(x => allStudents.filter(st=>st.school_id===x.id).length), 1);
+    const h = Math.max(Math.round(cnt/max*60), 3);
+    return `<div class="cb-wrap"><div class="cb" style="height:${h}px" title="${s.name}: ${cnt} students"></div><div class="cb-lbl">${(s.name||'').split(' ')[0]?.slice(0,4)}</div></div>`;
+  }).join('') || '<div style="color:var(--text3);font-size:.8rem">No data yet</div>';
+}
+
+function renderSchoolsTable() {
+  document.getElementById('schoolsTable').innerHTML = allSchools.map((s,i) => {
+    const stuCnt = allStudents.filter(st=>st.school_id===s.id).length;
+    const clsCnt = allClasses.filter(c=>c.school_id===s.id).length;
+    const tCnt = allClasses.filter(c=>c.school_id===s.id&&c.teacher_email).length;
+    const regCnt = allStudents.filter(st=>st.school_id===s.id&&(st.registered||st.user_id)).length;
+    return `<tr>
+      <td><span class="tbl-name">${s.name}</span></td>
+      <td>${s.province||'—'}</td>
+      <td>${stuCnt}</td>
+      <td>${clsCnt}</td>
+      <td>${tCnt}</td>
+      <td><span style="color:var(--green);font-weight:700">${regCnt}</span> / ${stuCnt}</td>
+      <td><span class="status-active">Active</span></td>
+      <td><button class="btn btn-ghost btn-sm" onclick="showToast('Managing ${s.name}…')">Manage</button></td>
+    </tr>`;
+  }).join('') || '<tr><td colspan="8" style="text-align:center;color:var(--text3);padding:20px">No schools yet — onboard your first school</td></tr>';
+}
+
+function renderAnalyticsTable() {
+  document.getElementById('analyticsTable').innerHTML = allSchools.map(s => {
+    const stu = allStudents.filter(st=>st.school_id===s.id);
+    const reg = stu.filter(st=>st.registered||st.user_id).length;
+    const cls = allClasses.filter(c=>c.school_id===s.id).length;
+    const tch = allClasses.filter(c=>c.school_id===s.id&&c.teacher_email).length;
+    const pct = stu.length ? Math.round(reg/stu.length*100) : 0;
+    return `<tr>
+      <td><span class="tbl-name">${s.name}</span></td>
+      <td>${stu.length}</td>
+      <td><span style="color:var(--green);font-weight:700">${reg}</span></td>
+      <td>${cls}</td>
+      <td>${tch}</td>
+      <td><span style="font-weight:800;color:${pct>=70?'var(--green)':pct>=40?'var(--orange)':'var(--red)'}">${pct}%</span></td>
+    </tr>`;
+  }).join('') || '<tr><td colspan="6" style="text-align:center;color:var(--text3);padding:20px">No data</td></tr>';
+}
+
+let userFilter = '';
+function filterUsers(q) { userFilter = q; renderUsersTable(); }
+function filterSchools(q) {
+  document.getElementById('schoolsTable').innerHTML = allSchools.filter(s => s.name.toLowerCase().includes(q.toLowerCase())).map((s,i) => {
+    const stuCnt = allStudents.filter(st=>st.school_id===s.id).length;
+    const clsCnt = allClasses.filter(c=>c.school_id===s.id).length;
+    const tCnt = allClasses.filter(c=>c.school_id===s.id&&c.teacher_email).length;
+    const regCnt = allStudents.filter(st=>st.school_id===s.id&&(st.registered||st.user_id)).length;
+    return `<tr><td><span class="tbl-name">${s.name}</span></td><td>${s.province||'—'}</td><td>${stuCnt}</td><td>${clsCnt}</td><td>${tCnt}</td><td>${regCnt}/${stuCnt}</td><td><span class="status-active">Active</span></td><td><button class="btn btn-ghost btn-sm">Manage</button></td></tr>`;
+  }).join('');
+}
+
+function renderUsersTable() {
+  let list = allStudents;
+  const q = userFilter.toLowerCase();
+  const sf = document.getElementById('schoolFilter')?.value;
+  if (q) list = list.filter(s => (s.display_name||s.full_username||'').toLowerCase().includes(q));
+  if (sf) list = list.filter(s => String(s.school_id) === sf);
+  document.getElementById('usersLabel').textContent = list.length + ' of ' + allStudents.length + ' students';
+  document.getElementById('usersTable').innerHTML = list.slice(0,50).map(s => {
+    const school = allSchools.find(sc => sc.id === s.school_id);
+    return `<tr>
+      <td><span class="tbl-name">${s.display_name||s.full_username||'?'}</span></td>
+      <td>${school ? school.name : s.school_id||'—'}</td>
+      <td>Grade ${s.grade||'?'}</td>
+      <td>${s.registered||s.user_id ? '<span class="pill p-green">Yes</span>' : '<span class="pill p-gold">No</span>'}</td>
+      <td><button class="btn btn-ghost btn-sm" onclick="showToast('Viewing ${s.display_name||s.full_username}…')">View</button></td>
+    </tr>`;
+  }).join('') || '<tr><td colspan="5" style="text-align:center;color:var(--text3);padding:20px">No users found</td></tr>';
+}
+
+function populateSchoolFilter() {
+  const sel = document.getElementById('schoolFilter');
+  if (!sel) return;
+  sel.innerHTML = '<option value="">All Schools</option>' + allSchools.map(s =>
+    `<option value="${s.id}">${s.name}</option>`).join('');
+}
+
+// ── Onboard School ─────────────────────────────────────────────
+function genCode() {
+  const name = document.getElementById('ob-name').value;
+  if (!name) return;
+  const code = name.split(' ').filter(Boolean).map(w=>w[0]).join('').toUpperCase().slice(0,3) + String(Math.floor(100+Math.random()*900));
+  document.getElementById('ob-code').value = code;
+}
+
+async function onboardSchool() {
+  const name = document.getElementById('ob-name').value.trim();
+  const adminEmail = document.getElementById('ob-admin-email').value.trim();
+  const adminPw = document.getElementById('ob-admin-pw').value.trim();
+  const province = document.getElementById('ob-province').value;
+  const city = document.getElementById('ob-city').value.trim();
+  const aiCap = parseInt(document.getElementById('ob-ai-cap').value) || 10;
+  const msg = document.getElementById('ob-msg');
+
+  if (!name || !adminEmail || !adminPw) { msg.textContent = '❌ Name, admin email and password required'; msg.style.color='var(--red)'; return; }
+
+  msg.textContent = '⏳ Creating school portal…'; msg.style.color = 'var(--text3)';
+
+  const data = {
+    name, province: province || null, city: city || null,
+    teacher_email: adminEmail,
+    default_password: btoa(adminPw),
+    ai_cap: aiCap,
+    plan: document.getElementById('ob-plan').value,
+    created_at: new Date().toISOString()
+  };
+  const result = await sbPost('schools', data);
+  if (result && result[0]) {
+    msg.textContent = `✅ "${name}" created! Admin login: ${adminEmail} / ${adminPw}`;
+    msg.style.color = 'var(--green)';
+    showToast('✅ School portal created!','success');
+    document.getElementById('ob-name').value = '';
+    document.getElementById('ob-admin-email').value = '';
+    document.getElementById('ob-admin-pw').value = '';
+    await loadData();
+  } else {
+    msg.textContent = '❌ Could not create school. Check Supabase permissions.';
+    msg.style.color = 'var(--red)';
+  }
+}
+
+function resetForm() {
+  ['ob-name','ob-city','ob-admin-name','ob-admin-email','ob-admin-pw','ob-admin-phone','ob-code'].forEach(id => { const el = document.getElementById(id); if(el) el.value=''; });
+}
+
+// ── Broadcast ─────────────────────────────────────────────────
+async function loadBroadcasts() {
+  const list = document.getElementById('bcList');
+  if (!list) return;
+  let bcs = []; try { bcs = JSON.parse(localStorage.getItem('ma_broadcasts')||'[]'); } catch(e){}
+  if (!bcs.length) { list.innerHTML = '<div class="empty-state"><div class="empty-state-icon">📢</div><div class="empty-state-title">No active broadcasts</div></div>'; return; }
+  list.innerHTML = bcs.slice(0,5).map(b =>
+    `<div style="background:var(--bg);border:1px solid var(--border);border-radius:9px;padding:11px;margin-bottom:8px">
+      <div style="font-size:.75rem;font-weight:800;color:var(--text);margin-bottom:3px">${b.type||'📢'} Broadcast</div>
+      <div style="font-size:.72rem;color:var(--text2)">${b.msg}</div>
+      <div style="font-size:.62rem;color:var(--text4);font-family:'JetBrains Mono',monospace;margin-top:5px">${b.date}</div>
+    </div>`).join('');
+}
+
+async function sendBroadcast() {
+  const msg = document.getElementById('bcMsg').value.trim();
+  const type = document.getElementById('bcType').value;
+  const res = document.getElementById('bc-result');
+  if (!msg) { res.textContent = '❌ Message required'; res.style.color='var(--red)'; return; }
+  let bcs = []; try { bcs = JSON.parse(localStorage.getItem('ma_broadcasts')||'[]'); } catch(e){}
+  bcs.unshift({msg,type,date:new Date().toLocaleDateString()});
+  localStorage.setItem('ma_broadcasts', JSON.stringify(bcs));
+  res.textContent = '✅ Broadcast active — all users will see this when they open the app';
+  res.style.color = 'var(--green)';
+  showToast('📢 Broadcast sent to all users','success');
+  loadBroadcasts();
+}
+
+function clearBroadcast() {
+  localStorage.removeItem('ma_broadcasts');
+  document.getElementById('bc-result').textContent = '✅ All broadcasts cleared';
+  document.getElementById('bc-result').style.color = 'var(--green)';
+  loadBroadcasts();
+  showToast('Broadcasts cleared','success');
+}
+
+function saveConfig() { showToast('✅ Config saved','success'); }
+function refresh() { loadData(); }
+
+// ── Init ──────────────────────────────────────────────────────
+init();
+</script>
+</body>
+</html>
