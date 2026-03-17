@@ -1,0 +1,1908 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MatricAce — School Admin Portal</title>
+<style id="shared-css"></style>
+<style>
+.school-bar{position:fixed;top:0;left:0;right:0;z-index:200;height:32px;background:linear-gradient(135deg,var(--primary),var(--primary-dark));display:flex;align-items:center;justify-content:space-between;padding:0 18px;font-size:.63rem;font-weight:700;color:rgba(255,255,255,.75);font-family:'JetBrains Mono',monospace}
+.school-bar strong{color:#fff;margin-left:5px}
+body{padding-top:32px}
+.perf-item{display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid var(--border)}.perf-item:last-child{border-bottom:none}.perf-name{font-size:.78rem;font-weight:600;color:var(--text);width:130px;flex-shrink:0}.perf-bar{flex:1;height:6px;background:var(--border);border-radius:3px;overflow:hidden}.perf-fill{height:100%;border-radius:3px;transition:width 1s ease}.perf-pct{font-size:.72rem;font-weight:800;width:36px;text-align:right;font-family:'JetBrains Mono',monospace;flex-shrink:0}
+.teacher-row{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border)}.teacher-row:last-child{border-bottom:none}.t-av{width:32px;height:32px;border-radius:8px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:.65rem;font-weight:800;color:#fff}.t-info{flex:1;min-width:0}.t-name{font-size:.8rem;font-weight:700;color:var(--text)}.t-meta{font-size:.63rem;color:var(--text3);font-family:'JetBrains Mono',monospace}.t-stats{text-align:right}.t-stat-val{font-family:'Outfit',sans-serif;font-size:.9rem;font-weight:800}.t-stat-lbl{font-size:.58rem;color:var(--text4)}
+.invite-tabs{display:flex;gap:0;border-bottom:1px solid var(--border);margin-bottom:16px}.invite-tab{padding:9px 16px;font-size:.8rem;font-weight:700;color:var(--text3);background:none;border:none;border-bottom:2.5px solid transparent;cursor:pointer;transition:all .15s}.invite-tab.active{color:var(--primary);border-bottom-color:var(--primary)}
+.std-row{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:var(--r);border:1px solid var(--border);background:var(--surface);margin-bottom:6px;transition:all .15s}.std-row:hover{border-color:var(--primary);background:var(--primary-dim)}.std-av{width:32px;height:32px;border-radius:8px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:.65rem;font-weight:800;color:#fff}.std-info{flex:1;min-width:0}.std-name{font-size:.8rem;font-weight:700;color:var(--text)}.std-meta{font-size:.63rem;color:var(--text3);font-family:'JetBrains Mono',monospace}
+.subj-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:14px;transition:box-shadow .15s}.subj-card:hover{box-shadow:var(--shadow)}.subj-icon{font-size:1.5rem;margin-bottom:6px}.subj-name{font-size:.85rem;font-weight:800;color:var(--text);margin-bottom:2px}.subj-meta{font-size:.65rem;color:var(--text3);margin-bottom:8px}.subj-avg{font-family:'Outfit',sans-serif;font-size:1.3rem;font-weight:800}
+.subject-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px;margin-top:4px}
+</style>
+</head>
+<body>
+
+<div class="school-bar">
+  <span>🏫 School Admin Portal — <strong id="barSchoolName">Loading…</strong></span>
+  <span id="barCode" style="color:rgba(255,255,255,.45)">CODE</span>
+</div>
+
+<!-- SIDEBAR -->
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+<aside class="sidebar" id="mainSidebar">
+  <div class="sidebar-header">
+    <div class="sidebar-logo">
+      <div class="sidebar-logo-mark">MA</div>
+      <div class="sidebar-logo-name">Matric<span>Ace</span></div>
+    </div>
+    <div class="sidebar-role-badge">🏫 School Admin</div>
+    <div class="sidebar-sub" id="schoolSub">Loading…</div>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-section-label">School</div>
+    <div class="nav-item active" onclick="switchPanel(this,'overview')"><span class="nav-icon">📊</span><span>Dashboard</span></div>
+    <div class="nav-item" onclick="switchPanel(this,'teachers')"><span class="nav-icon">👩‍🏫</span><span>Teachers</span><span class="nav-badge nb-blue" id="tchrCount"></span></div>
+    <div class="nav-item" onclick="switchPanel(this,'students')"><span class="nav-icon">🎓</span><span>Students</span><span class="nav-badge nb-blue" id="stuCount"></span></div>
+    <div class="nav-item" onclick="openMigrateModal()"><span class="nav-icon">🔀</span><span>Migrate Students</span></div>
+    <div class="nav-item" onclick="switchPanel(this,'classes')"><span class="nav-icon">🏛️</span><span>Classes</span></div>
+    <div class="nav-item" onclick="switchPanel(this,'manage-classes')"><span class="nav-icon">⚙️</span><span>Manage Classes</span></div>
+    <div class="nav-item" onclick="switchPanel(this,'subjects')"><span class="nav-icon">📐</span><span>Subjects</span></div>
+    <div class="nav-section-label">Management</div>
+    <div class="nav-item" onclick="switchPanel(this,'onboard')"><span class="nav-icon">➕</span><span>Add People</span></div>
+    <div class="nav-item" onclick="switchPanel(this,'reports')"><span class="nav-icon">📋</span><span>Reports</span></div>
+    <div class="nav-item" onclick="switchPanel(this,'announcements')"><span class="nav-icon">📢</span><span>Announcements</span></div>
+    <div class="nav-section-label">System</div>
+    <div class="nav-item" onclick="switchPanel(this,'settings')"><span class="nav-icon">⚙️</span><span>Settings</span></div>
+  </nav>
+  <div class="sidebar-footer">
+    <div class="user-row">
+      <div class="user-av" id="userAv">A</div>
+      <div><div class="user-name" id="userName">Admin</div><div class="user-role">SCHOOL ADMIN</div></div>
+    </div>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<div class="main">
+  <div class="header">
+    <button class="mob-menu-btn" onclick="toggleSidebar()">&#9776;</button>
+    <button class="back-btn" onclick="goBack()">← Back to Portal</button>
+    <div class="header-title" id="headerTitle">Dashboard <span>School overview</span></div>
+    <button class="hbtn hbtn-ghost" onclick="switchPanel(null,'reports')">📋 Generate Report</button>
+    <button class="hbtn hbtn-primary" onclick="switchPanel(null,'onboard')">+ Add Teacher / Student</button>
+  </div>
+  <div class="content">
+    <div class="content-inner">
+
+      <!-- OVERVIEW -->
+      <div class="panel active" id="panel-overview">
+        <div class="metrics-row">
+          <div class="mc blue"><div class="mc-top"><div class="mc-icon blue">🎓</div><div class="mc-change up" id="stuChange"></div></div><div class="mc-val" id="ov-students">—</div><div class="mc-lbl">Total Students (Gr 10–12)</div></div>
+          <div class="mc green"><div class="mc-top"><div class="mc-icon green">👩‍🏫</div></div><div class="mc-val" id="ov-teachers">—</div><div class="mc-lbl">Active Teachers</div></div>
+          <div class="mc gold"><div class="mc-top"><div class="mc-icon gold">📊</div></div><div class="mc-val" id="ov-avg">—</div><div class="mc-lbl">School Avg Score</div></div>
+          <div class="mc red"><div class="mc-top"><div class="mc-icon red">⚠️</div></div><div class="mc-val" id="ov-risk">—</div><div class="mc-lbl">Students at Risk</div></div>
+        </div>
+        <div class="g3">
+          <div class="card">
+            <div class="card-header"><div><div class="card-title">Subject Performance</div><div class="card-sub">School average by subject</div></div><div class="card-action" onclick="switchPanel(null,'subjects')">View all</div></div>
+            <div id="subjPerf"><div class="loading"><div class="spinner"></div>Loading…</div></div>
+          </div>
+          <div>
+            <div class="card">
+              <div class="card-header"><div class="card-title">Top Teachers</div><div class="card-action" onclick="switchPanel(null,'teachers')">All →</div></div>
+              <div id="topTeachers"><div class="loading"><div class="spinner"></div></div></div>
+            </div>
+            <div class="card">
+              <div class="card-header"><div class="card-title">⚠️ Students at Risk</div><div style="font-size:.7rem;color:var(--red);font-weight:700" id="riskCount">0 flagged</div></div>
+              <div id="riskStudents"><div class="loading"><div class="spinner"></div></div></div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header"><div class="card-title">Grade Breakdown</div><div class="card-sub">Performance by grade</div></div>
+          <div style="overflow-x:auto"><table class="tbl" id="gradeTable">
+            <thead><tr><th>Grade</th><th>Students</th><th>Classes</th><th>Avg Score</th><th>Signed Up</th><th>Not Signed Up</th></tr></thead>
+            <tbody id="gradeTbody"><tr><td colspan="6" style="text-align:center;color:var(--text3);padding:20px">Loading…</td></tr></tbody>
+          </table></div>
+        </div>
+      </div>
+
+      <!-- TEACHERS -->
+      <div class="panel" id="panel-teachers">
+        <div class="card">
+          <div class="card-header">
+            <div><div class="card-title">All Teachers</div><div class="card-sub" id="tchrLabel">Loading…</div></div>
+            <div style="display:flex;gap:8px">
+              <button class="btn btn-ghost btn-sm" onclick="exportTeachers()">Export</button>
+              <button class="btn btn-primary btn-sm" onclick="switchPanel(null,'onboard')">+ Add Teacher</button>
+            </div>
+          </div>
+          <div id="teacherList"><div class="loading"><div class="spinner"></div>Loading teachers…</div></div>
+        </div>
+      </div>
+
+      <!-- STUDENTS -->
+      <div class="panel" id="panel-students">
+        <div class="card">
+          <div class="card-header">
+            <div><div class="card-title">All Students</div><div class="card-sub" id="stuLabel">Loading…</div></div>
+            <div style="display:flex;gap:8px">
+              <input id="stuSearch" type="text" placeholder="Search…" style="padding:6px 11px;border:1.5px solid var(--border2);border-radius:8px;font-size:.78rem;background:var(--bg);color:var(--text);outline:none;font-family:inherit" oninput="filterStudents(this.value)">
+              <select id="gradeFilter" onchange="filterStudents(document.getElementById('stuSearch').value)" style="padding:6px 10px;border:1.5px solid var(--border2);border-radius:8px;font-size:.78rem;background:var(--bg);color:var(--text);outline:none;font-family:inherit">
+                <option value="">All Grades</option>
+                <option value="10">Grade 10</option>
+                <option value="11">Grade 11</option>
+                <option value="12">Grade 12</option>
+              </select>
+            </div>
+          </div>
+          <div id="studentList"><div class="loading"><div class="spinner"></div>Loading students…</div></div>
+        </div>
+      </div>
+
+      <!-- CLASSES -->
+      <div class="panel" id="panel-classes">
+        <div class="card">
+          <div class="card-header"><div class="card-title">Class Management</div><div class="card-action" onclick="loadClasses()">🔄 Refresh</div></div>
+          <div id="classList"><div class="loading"><div class="spinner"></div>Loading classes…</div></div>
+        </div>
+      </div>
+
+      <!-- SUBJECTS -->
+      <div class="panel" id="panel-subjects">
+        <div class="card">
+          <div class="card-header"><div class="card-title">Subject Performance</div></div>
+          <div class="subject-grid" id="subjectGrid"><div class="loading"><div class="spinner"></div></div></div>
+        </div>
+      </div>
+
+      <!-- ONBOARD (Add People) -->
+      <div class="panel" id="panel-onboard">
+        <div class="invite-tabs">
+          <button class="invite-tab active" onclick="setInviteTab(this,'teacher-form')">👩‍🏫 Add Teacher</button>
+          <button class="invite-tab" onclick="setInviteTab(this,'student-form')">🎓 Add Student</button>
+          <button class="invite-tab" onclick="setInviteTab(this,'bulk-form')">📋 Bulk Add Students</button>
+        </div>
+
+        <!-- TEACHER FORM - New multi-onboard flow -->
+        <div id="teacher-form" class="card" style="max-width:760px">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;flex-wrap:wrap;gap:8px">
+            <div class="card-title">Add Teachers</div>
+            <span style="font-size:.68rem;font-weight:700;color:var(--primary);background:var(--primary-dim);padding:4px 10px;border-radius:20px">⚠️ Do this BEFORE creating classes</span>
+          </div>
+          <p style="font-size:.75rem;color:var(--text3);margin-bottom:16px;line-height:1.6">
+            Add <strong>all teachers</strong> who will use the app here first — including their full name, email, password and the subjects they teach. Once saved, they'll appear in dropdowns when you create classes. You can add multiple at once.
+          </p>
+
+          <!-- Teacher roster being built -->
+          <div id="tchrRoster" style="display:flex;flex-direction:column;gap:10px;margin-bottom:12px"></div>
+
+          <!-- Add teacher row button -->
+          <button class="btn btn-ghost btn-sm" onclick="addTeacherRow()" style="margin-bottom:18px;width:fit-content">+ Add Another Teacher</button>
+
+          <!-- Already onboarded teachers preview -->
+          <div id="onboardedTeachersPreview" style="margin-bottom:16px"></div>
+
+          <div class="info-box" style="margin-bottom:14px">
+            🔑 <strong>How teachers log in:</strong> Main app → <strong>🏫 School tab</strong> → enter email &amp; password → Teacher Dashboard.<br>
+            ➡️ After saving, go to <strong>Manage Classes</strong> to create classes and assign these teachers.
+          </div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap">
+            <button class="btn btn-primary" onclick="saveAllTeachers()">✓ Save All Teachers</button>
+            <button class="btn btn-ghost" onclick="switchPanel(null,'manage-classes')" id="goToClassesBtn" style="display:none">➡️ Go to Manage Classes</button>
+          </div>
+          <div id="tchrMsg" style="margin-top:12px;font-size:.78rem;font-weight:700;line-height:2"></div>
+        </div>
+
+        <!-- SINGLE STUDENT FORM -->
+        <div id="student-form" class="card" style="max-width:640px;display:none">
+          <div class="card-title" style="margin-bottom:16px">Register a Student</div>
+          <div class="form-grid">
+            <div class="ff"><label>Full Name *</label><input type="text" id="stuName" placeholder="e.g. Thabo Mokoena"></div>
+            <div class="ff"><label>Student Number</label><input type="text" id="stuNum" placeholder="Auto-generated if blank"></div>
+            <div class="ff"><label>Grade *</label>
+              <select id="stuGrade" onchange="filterClassesByGrade('stuClass',this.value)">
+                <option value="12">Grade 12</option><option value="11">Grade 11</option><option value="10">Grade 10</option>
+              </select>
+            </div>
+            <div class="ff"><label>Class *</label><select id="stuClass"><option value="">— Select class —</option></select></div>
+            <div class="ff"><label>Password</label><input type="text" id="stuPw" placeholder="Auto-generated if blank"></div>
+          </div>
+          <button class="btn btn-primary" onclick="addStudent()">✓ Create Student Account</button>
+          <div id="stuMsg" style="margin-top:10px;font-size:.78rem;font-weight:700"></div>
+        </div>
+
+        <!-- BULK STUDENTS FORM -->
+        <div id="bulk-form" class="card" style="max-width:760px;display:none">
+          <div class="card-title" style="margin-bottom:6px">Bulk Add Students to a Class</div>
+          <p style="font-size:.78rem;color:var(--text3);margin-bottom:16px;line-height:1.6">Type or paste a list of student names — one per line. All students will be added to the selected class at once with auto-generated student numbers and passwords.</p>
+
+          <div class="form-grid" style="margin-bottom:14px">
+            <div class="ff"><label>Grade *</label>
+              <select id="bulkGrade" onchange="filterClassesByGrade('bulkClass',this.value)">
+                <option value="12">Grade 12</option><option value="11">Grade 11</option><option value="10">Grade 10</option>
+              </select>
+            </div>
+            <div class="ff"><label>Class *</label><select id="bulkClass"><option value="">— Select class —</option></select></div>
+            <div class="ff"><label>Password for all students</label><input type="text" id="bulkPw" placeholder="e.g. School2025! (same for all, they can change later)"></div>
+            <div class="ff"><label>Student number prefix</label><input type="text" id="bulkPrefix" placeholder="e.g. NRD (→ NRD001, NRD002…)"></div>
+          </div>
+
+          <div class="ff">
+            <label>Student Names * — one per line</label>
+            <textarea id="bulkNames" rows="10" placeholder="Thabo Mokoena&#10;Amahle Nkosi&#10;Keanu Pietersen&#10;Sipho Ndlovu&#10;Nomvula Sithole&#10;..." style="width:100%;resize:vertical;padding:10px 12px;border:1.5px solid var(--border2);border-radius:9px;background:var(--bg);color:var(--text);font-family:'Manrope',sans-serif;font-size:.82rem;outline:none;line-height:1.8"></textarea>
+            <div style="font-size:.68rem;color:var(--text3);margin-top:4px" id="bulkCount">0 students entered</div>
+          </div>
+
+          <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+            <button class="btn btn-primary" onclick="bulkAddStudents()">✓ Add All Students</button>
+            <button class="btn btn-ghost" onclick="downloadTemplate()">📥 Download CSV Template</button>
+            <label class="btn btn-ghost" style="cursor:pointer">📂 Import CSV <input type="file" id="csvFile" accept=".csv,.txt" style="display:none" onchange="importCSV(this)"></label>
+          </div>
+
+          <div id="bulkProgress" style="display:none;margin-top:14px">
+            <div style="font-size:.78rem;font-weight:700;color:var(--text);margin-bottom:8px" id="bulkProgressLabel">Adding students…</div>
+            <div style="height:6px;background:var(--border);border-radius:3px;overflow:hidden">
+              <div id="bulkProgressBar" style="height:100%;background:linear-gradient(90deg,var(--primary),var(--primary-light));border-radius:3px;width:0%;transition:width .3s"></div>
+            </div>
+          </div>
+          <div id="bulkResult" style="margin-top:12px;font-size:.78rem;line-height:1.8"></div>
+        </div>
+      </div>
+
+      <!-- MANAGE CLASSES PANEL -->
+      <div class="panel" id="panel-manage-classes">
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <div class="card-title">Manage Classes</div>
+              <div class="card-sub">Create classes and assign all teachers before students are added</div>
+            </div>
+            <button class="btn btn-primary btn-sm" onclick="showAddClassForm()">+ Create Class</button>
+          </div>
+
+          <!-- Create Class Form -->
+          <div id="addClassForm" style="display:none;background:var(--bg);border:1.5px solid var(--border2);border-radius:14px;padding:20px;margin-bottom:16px">
+            <div style="font-size:.9rem;font-weight:900;color:var(--text);margin-bottom:4px">Create New Class</div>
+            <p style="font-size:.72rem;color:var(--text3);margin-bottom:16px;line-height:1.6">Select teachers from your saved teacher list. Make sure you've added all teachers in <strong>Add People → Add Teacher</strong> first. The <strong style="color:var(--primary)">Main Teacher</strong> (homeroom) gets full dashboard access — select them from the dropdown. Tick all subject teachers who will teach in this class.</p>
+
+            <!-- Grade & Division -->
+            <div class="form-grid" style="margin-bottom:20px">
+              <div class="ff"><label>Grade *</label>
+                <select id="newClassGrade">
+                  <option value="10">Grade 10</option><option value="11">Grade 11</option><option value="12">Grade 12</option>
+                </select>
+              </div>
+              <div class="ff"><label>Division *</label>
+                <select id="newClassDiv">
+                  <option value="A">A</option><option value="B">B</option><option value="C">C</option>
+                  <option value="D">D</option><option value="E">E</option><option value="F">F</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Main Teacher — dropdown from onboarded list -->
+            <div style="background:var(--primary-dim);border:1.5px solid var(--border2);border-radius:10px;padding:14px;margin-bottom:14px">
+              <div style="font-size:.7rem;font-weight:900;color:var(--primary);letter-spacing:1px;text-transform:uppercase;margin-bottom:10px">👑 Main Teacher (Homeroom)</div>
+              <div class="ff">
+                <label>Select Main Teacher *</label>
+                <select id="mainTchrSelect" onchange="onMainTchrSelect(this)" style="padding:9px 11px;border:1.5px solid var(--border2);border-radius:9px;background:var(--bg);color:var(--text);font-family:inherit;font-size:.82rem;outline:none;width:100%">
+                  <option value="">— Pick a teacher —</option>
+                </select>
+                <div id="mainTchrInfo" style="margin-top:8px;font-size:.72rem;color:var(--text3);font-style:italic"></div>
+              </div>
+              <!-- Hidden fields populated by onMainTchrSelect -->
+              <input type="hidden" id="mainTchrName">
+              <input type="hidden" id="mainTchrEmail">
+              <input type="hidden" id="mainTchrPw">
+            </div>
+
+            <!-- Subject Teachers — checkbox array from onboarded list -->
+            <div style="font-size:.7rem;font-weight:900;color:var(--text2);letter-spacing:1px;text-transform:uppercase;margin-bottom:6px">
+              Subject Teachers <span style="font-weight:400;color:var(--text3);text-transform:none;letter-spacing:0">(tick all teachers teaching in this class)</span>
+            </div>
+            <div id="subjTeacherCheckboxes" style="background:var(--bg);border:1.5px solid var(--border2);border-radius:10px;padding:12px;margin-bottom:18px;display:grid;grid-template-columns:1fr 1fr;gap:6px 16px">
+              <div style="grid-column:1/-1;font-size:.72rem;color:var(--text3);font-style:italic">No teachers onboarded yet — add teachers in the Add People tab first.</div>
+            </div>
+
+            <div class="info-box" style="margin-bottom:14px">
+              ℹ️ <strong>Main teacher</strong> gets full dashboard access — can add students, post announcements, upload to library, generate reports.<br>
+              <strong>Subject teachers</strong> (ticked below) log in and see their subject content + student list for this class (read-only).<br>
+              ⚠️ If you don't see a teacher in the lists below, go to <strong>Add People → Add Teacher</strong> and save them first.
+            </div>
+
+            <div style="display:flex;gap:8px">
+              <button class="btn btn-primary" onclick="addClass()">✓ Create Class</button>
+              <button class="btn btn-ghost" onclick="cancelAddClass()">Cancel</button>
+            </div>
+            <div id="addClassMsg" style="margin-top:10px;font-size:.75rem;font-weight:700;line-height:1.8"></div>
+          </div>
+
+          <!-- Classes by grade -->
+          <div id="classesByGrade"><div class="loading"><div class="spinner"></div>Loading classes…</div></div>
+        </div>
+      </div>
+
+      <!-- REPORTS -->
+      <div class="panel" id="panel-reports">
+        <div class="card" style="max-width:500px">
+          <div class="card-title" style="margin-bottom:16px">Generate School Report</div>
+          <div class="ff"><label>Report Type</label><select><option>Full School Performance</option><option>Grade Report</option><option>Subject Report</option><option>At-Risk Students</option><option>Teacher Activity</option></select></div>
+          <div class="ff"><label>Period</label><select><option>This Term</option><option>This Year</option><option>Last Month</option></select></div>
+          <div class="ff"><label>Grade</label><select><option>All Grades</option><option>Grade 10</option><option>Grade 11</option><option>Grade 12</option></select></div>
+          <div class="ff"><label>Format</label><select><option>PDF Report</option><option>Excel Spreadsheet</option></select></div>
+          <button class="btn btn-primary" onclick="showToast('📄 Generating report…','success')">Generate Report</button>
+        </div>
+      </div>
+
+      <!-- ANNOUNCEMENTS -->
+      <div class="panel" id="panel-announcements">
+        <div class="g2">
+          <div class="card">
+            <div class="card-title" style="margin-bottom:14px">Send School Announcement</div>
+            <div class="ff"><label>Send To *</label>
+              <select id="annTarget"><option value="all_students">All Students (Grade 10–12)</option><option value="all_teachers">All Teachers</option><option value="grade12">Grade 12 Only</option><option value="grade11">Grade 11 Only</option><option value="grade10">Grade 10 Only</option><option value="everyone">All Staff and Students</option></select>
+            </div>
+            <div class="ff"><label>Title *</label><input type="text" id="annTitle" placeholder="e.g. End of Term Exam Schedule"></div>
+            <div class="ff"><label>Message *</label><textarea rows="5" id="annBody" placeholder="Type your announcement here…" style="width:100%;resize:vertical;padding:8px 11px;border:1.5px solid var(--border2);border-radius:9px;background:var(--bg);color:var(--text);font-family:'Manrope',sans-serif;font-size:.8rem;outline:none"></textarea></div>
+            <button class="btn btn-primary" onclick="sendAnnouncement()">Send Announcement →</button>
+          </div>
+          <div class="card">
+            <div class="card-header"><div class="card-title">Previous Announcements</div><div class="card-action" onclick="loadAnnouncements()">🔄</div></div>
+            <div id="annList"><div class="loading"><div class="spinner"></div>Loading…</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SETTINGS -->
+      <div class="panel" id="panel-settings">
+        <div class="card" style="max-width:520px">
+          <div class="card-title" style="margin-bottom:16px">School Portal Settings</div>
+          <div class="ff"><label>School Name</label><input type="text" id="settName" placeholder="School name"></div>
+          <div class="ff"><label>School Code (read-only)</label><input type="text" id="settCode" readonly style="background:var(--bg3);cursor:not-allowed"></div>
+          <div class="ff"><label>Primary Colour</label><input type="color" id="settColor" value="#1B4FD8" style="height:38px" onchange="updateColor(this.value)"></div>
+          <div class="ff"><label>Portal Contact Email</label><input type="email" id="settEmail" placeholder="admin@school.co.za"></div>
+          <div class="ff"><label>Change Admin Password</label><input type="password" id="settPw" placeholder="New password"></div>
+          <div style="margin-top:6px"><button class="btn btn-primary" onclick="saveSettings()">Save Changes</button></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- Edit Teachers Modal -->
+<div id="editTeachersModal" style="display:none;position:fixed;inset:0;z-index:500;background:rgba(0,0,0,.5);align-items:center;justify-content:center;padding:20px">
+  <div style="background:var(--bg2);border-radius:var(--r-lg);padding:24px;max-width:600px;width:100%;max-height:90vh;overflow-y:auto;box-shadow:var(--shadow)">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">
+      <div>
+        <div style="font-size:1rem;font-weight:900;color:var(--text)" id="etmTitle">Edit Class Teachers</div>
+        <div style="font-size:.7rem;color:var(--text3);margin-top:2px" id="etmSubTitle"></div>
+      </div>
+      <button onclick="closeEditTeachersModal()" style="background:var(--bg3);border:none;border-radius:7px;width:30px;height:30px;cursor:pointer;font-size:1rem">✕</button>
+    </div>
+    <p style="font-size:.72rem;color:var(--text3);margin-bottom:16px;line-height:1.6">Select a new Main Teacher or update which Subject Teachers are assigned to this class. All teachers must be added in <strong>Add People → Add Teacher</strong> first.</p>
+
+    <!-- Main Teacher dropdown -->
+    <div style="background:var(--primary-dim);border:1.5px solid var(--border2);border-radius:10px;padding:14px;margin-bottom:14px">
+      <div style="font-size:.7rem;font-weight:900;color:var(--primary);letter-spacing:1px;text-transform:uppercase;margin-bottom:8px">👑 Main Teacher (Homeroom)</div>
+      <select id="etmMainSelect" style="width:100%;padding:9px 11px;border:1.5px solid var(--border2);border-radius:9px;background:var(--bg);color:var(--text);font-family:inherit;font-size:.82rem;outline:none">
+        <option value="">— Select main teacher —</option>
+      </select>
+      <div id="etmMainInfo" style="margin-top:6px;font-size:.7rem;color:var(--text3)"></div>
+    </div>
+
+    <!-- Subject Teachers checkboxes -->
+    <div style="font-size:.7rem;font-weight:900;color:var(--text2);letter-spacing:1px;text-transform:uppercase;margin-bottom:6px">
+      Subject Teachers <span style="font-weight:400;color:var(--text3);text-transform:none;letter-spacing:0">(tick all who teach in this class)</span>
+    </div>
+    <div id="etmSubjCheckboxes" style="background:var(--bg);border:1.5px solid var(--border2);border-radius:10px;padding:12px;margin-bottom:18px;display:grid;grid-template-columns:1fr 1fr;gap:6px 16px"></div>
+
+    <div style="display:flex;gap:8px">
+      <button class="btn btn-primary" onclick="saveEditTeachers()">✓ Save Changes</button>
+      <button class="btn btn-ghost" onclick="closeEditTeachersModal()">Cancel</button>
+    </div>
+    <div id="etmMsg" style="margin-top:10px;font-size:.75rem;font-weight:700;line-height:1.8"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ── CSS inject ─────────────────────────────────────────────────────────────
+document.getElementById('shared-css').textContent = `
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
+:root{--primary:#1B4FD8;--primary-dark:#1340B0;--primary-light:#3B6FEF;--primary-dim:rgba(27,79,216,.10);--primary-glow:rgba(27,79,216,.25);--accent:#FFB612;--accent-dim:rgba(255,182,18,.12);--green:#059669;--green-dim:rgba(5,150,105,.10);--orange:#D97706;--orange-dim:rgba(217,119,6,.10);--red:#DC2626;--red-dim:rgba(220,38,38,.10);--purple:#7C3AED;--purple-dim:rgba(124,58,237,.10);--teal:#0891B2;--teal-dim:rgba(8,145,178,.10);--bg:#F0F4FE;--bg2:#FFFFFF;--bg3:#E8EFFD;--surface:#FFFFFF;--text:#0F1729;--text2:#374A6B;--text3:#6B7FA8;--text4:#9BAEC8;--border:rgba(27,79,216,.10);--border2:rgba(27,79,216,.18);--sidebar-w:252px;--header-h:62px;--shadow-sm:0 1px 4px rgba(27,79,216,.07),0 1px 2px rgba(0,0,0,.04);--shadow:0 4px 20px rgba(27,79,216,.10),0 2px 8px rgba(0,0,0,.06);--r:12px;--r-lg:18px}
+*{box-sizing:border-box;margin:0;padding:0}html,body{height:100%;font-size:16px}body{font-family:'Manrope',sans-serif;background:var(--bg);color:var(--text);display:flex;height:100dvh;overflow:hidden}a{text-decoration:none;color:inherit}button{font-family:inherit;cursor:pointer;border:none;outline:none}
+.sidebar{width:var(--sidebar-w);flex-shrink:0;background:#0F1729;display:flex;flex-direction:column;overflow:hidden;z-index:10}.sidebar-header{padding:18px 18px 14px;border-bottom:1px solid rgba(255,255,255,.08);flex-shrink:0}.sidebar-logo{display:flex;align-items:center;gap:9px}.sidebar-logo-mark{width:34px;height:34px;border-radius:9px;flex-shrink:0;background:linear-gradient(135deg,var(--primary),var(--primary-light));display:flex;align-items:center;justify-content:center;font-family:'Outfit',sans-serif;font-size:.72rem;font-weight:800;color:#fff;box-shadow:0 4px 12px var(--primary-glow)}.sidebar-logo-name{font-family:'Outfit',sans-serif;font-weight:800;font-size:1rem;color:#fff}.sidebar-logo-name span{color:var(--accent)}.sidebar-role-badge{margin-top:9px;display:inline-flex;align-items:center;gap:5px;padding:4px 9px;border-radius:6px;background:rgba(255,182,18,.12);border:1px solid rgba(255,182,18,.2);font-size:.6rem;font-weight:800;color:var(--accent);font-family:'JetBrains Mono',monospace;text-transform:uppercase;letter-spacing:.5px}.sidebar-sub{margin-top:6px;font-size:.63rem;color:rgba(255,255,255,.3);font-family:'JetBrains Mono',monospace;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.sidebar-nav{flex:1;overflow-y:auto;padding:12px 10px;scrollbar-width:none}.sidebar-nav::-webkit-scrollbar{display:none}.nav-section-label{font-size:.58rem;font-weight:800;color:rgba(255,255,255,.22);text-transform:uppercase;letter-spacing:1.2px;padding:0 8px;margin:14px 0 5px;font-family:'JetBrains Mono',monospace}.nav-item{display:flex;align-items:center;gap:9px;padding:8px 10px;border-radius:8px;font-size:.8rem;font-weight:600;color:rgba(255,255,255,.5);cursor:pointer;transition:all .15s;margin-bottom:2px;position:relative;user-select:none}.nav-item:hover{background:rgba(255,255,255,.06);color:rgba(255,255,255,.85)}.nav-item.active{background:rgba(27,79,216,.3);color:#fff}.nav-item.active::before{content:'';position:absolute;left:0;top:50%;transform:translateY(-50%);width:3px;height:60%;border-radius:0 2px 2px 0;background:var(--primary-light)}.nav-icon{font-size:.9rem;width:18px;text-align:center;flex-shrink:0}.nav-badge{margin-left:auto;font-size:.6rem;font-weight:800;padding:2px 6px;border-radius:12px;font-family:'JetBrains Mono',monospace}.nb-blue{background:rgba(27,79,216,.3);color:#93BBFF}.nb-red{background:rgba(220,38,38,.25);color:#F87171}.sidebar-footer{padding:12px 10px;border-top:1px solid rgba(255,255,255,.08);flex-shrink:0}.user-row{display:flex;align-items:center;gap:9px;padding:8px;border-radius:8px;cursor:pointer;transition:background .15s}.user-row:hover{background:rgba(255,255,255,.06)}.user-av{width:32px;height:32px;border-radius:8px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:.68rem;font-weight:800;color:#fff;background:linear-gradient(135deg,var(--primary),var(--primary-light))}.user-name{font-size:.78rem;font-weight:700;color:#fff}.user-role{font-size:.58rem;color:rgba(255,255,255,.3);font-family:'JetBrains Mono',monospace}
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0}.header{height:var(--header-h);background:var(--surface);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 18px;gap:10px;flex-shrink:0;box-shadow:var(--shadow-sm)}.header-title{font-family:'Outfit',sans-serif;font-size:1rem;font-weight:800;color:var(--text);flex:1;min-width:0}.header-title span{color:var(--text3);font-weight:500;font-size:.82rem;margin-left:8px}.hbtn{padding:7px 14px;border-radius:8px;font-size:.78rem;font-weight:700;display:flex;align-items:center;gap:5px;transition:all .15s;cursor:pointer;white-space:nowrap}.hbtn-primary{background:linear-gradient(135deg,var(--primary),var(--primary-light));color:#fff;box-shadow:0 3px 10px var(--primary-glow)}.hbtn-ghost{background:var(--bg);border:1.5px solid var(--border2);color:var(--text2)}.hbtn-ghost:hover{border-color:var(--primary);color:var(--primary)}.back-btn{display:flex;align-items:center;gap:6px;padding:7px 12px;border-radius:8px;background:var(--bg);border:1.5px solid var(--border2);color:var(--text2);font-size:.78rem;font-weight:700;cursor:pointer;transition:all .15s;white-space:nowrap}.back-btn:hover{border-color:var(--primary);color:var(--primary)}.content{flex:1;overflow-y:auto;background:var(--bg);scrollbar-width:thin}.content-inner{padding:20px 22px;max-width:980px;margin:0 auto}.panel{display:none}.panel.active{display:block;animation:fadeUp .2s ease both}@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.metrics-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:18px}.mc{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:16px;box-shadow:var(--shadow-sm);position:relative;overflow:hidden}.mc::after{content:'';position:absolute;top:0;right:0;width:70px;height:70px;border-radius:0 var(--r-lg) 0 100%;opacity:.06}.mc.blue::after{background:var(--primary)}.mc.green::after{background:var(--green)}.mc.gold::after{background:var(--accent)}.mc.red::after{background:var(--red)}.mc-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:12px}.mc-icon{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1rem}.mc-icon.blue{background:var(--primary-dim)}.mc-icon.green{background:var(--green-dim)}.mc-icon.gold{background:var(--accent-dim)}.mc-icon.red{background:var(--red-dim)}.mc-change{display:flex;align-items:center;gap:3px;padding:2px 7px;border-radius:20px;font-size:.62rem;font-weight:800;font-family:'JetBrains Mono',monospace}.mc-change.up{background:var(--green-dim);color:var(--green)}.mc-val{font-family:'Outfit',sans-serif;font-size:1.8rem;font-weight:800;color:var(--text);line-height:1;margin-bottom:3px}.mc-lbl{font-size:.72rem;color:var(--text3);font-weight:600}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:18px;box-shadow:var(--shadow-sm);margin-bottom:14px}.card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}.card-title{font-family:'Outfit',sans-serif;font-size:.9rem;font-weight:800;color:var(--text)}.card-sub{font-size:.7rem;color:var(--text3);margin-top:2px}.card-action{font-size:.73rem;font-weight:700;color:var(--primary);cursor:pointer}.card-action:hover{opacity:.7}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:14px}.g3{display:grid;grid-template-columns:2fr 1fr;gap:14px}
+.tbl{width:100%;border-collapse:collapse}.tbl th{font-size:.63rem;font-weight:800;color:var(--text3);text-transform:uppercase;letter-spacing:.8px;padding:8px 10px;border-bottom:1px solid var(--border);text-align:left;font-family:'JetBrains Mono',monospace}.tbl td{padding:10px 10px;font-size:.78rem;border-bottom:1px solid var(--border);color:var(--text2)}.tbl tr:last-child td{border-bottom:none}.tbl tr:hover td{background:var(--bg)}.tbl-name{font-weight:700;color:var(--text)}
+.btn{padding:8px 16px;border-radius:9px;font-size:.78rem;font-weight:700;display:inline-flex;align-items:center;gap:5px;transition:all .15s;cursor:pointer;font-family:'Manrope',sans-serif}.btn-primary{background:linear-gradient(135deg,var(--primary),var(--primary-light));color:#fff;box-shadow:0 2px 8px var(--primary-glow)}.btn-ghost{background:var(--bg);border:1.5px solid var(--border2);color:var(--text2)}.btn-ghost:hover{border-color:var(--primary);color:var(--primary)}.btn-sm{padding:5px 10px;font-size:.7rem}
+.pill{padding:3px 8px;border-radius:20px;font-size:.62rem;font-weight:800;font-family:'JetBrains Mono',monospace}.p-blue{background:var(--primary-dim);color:var(--primary)}.p-green{background:var(--green-dim);color:var(--green)}.p-gold{background:var(--accent-dim);color:var(--orange)}.p-red{background:var(--red-dim);color:var(--red)}
+.ff{display:flex;flex-direction:column;gap:5px;margin-bottom:12px}.ff label{font-size:.7rem;font-weight:700;color:var(--text2)}.ff input,.ff select,.ff textarea{padding:8px 11px;border:1.5px solid var(--border2);border-radius:9px;background:var(--bg);color:var(--text);font-family:'Manrope',sans-serif;font-size:.8rem;outline:none;transition:all .15s}.ff input:focus,.ff select:focus,.ff textarea:focus{border-color:var(--primary);background:#fff;box-shadow:0 0 0 3px var(--primary-dim)}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.form-row-full{grid-column:1/-1}
+.empty-state{text-align:center;padding:40px 20px;color:var(--text3)}.empty-state-icon{font-size:2.5rem;margin-bottom:10px}.empty-state-title{font-size:.9rem;font-weight:700;color:var(--text);margin-bottom:6px}.empty-state-sub{font-size:.78rem;line-height:1.6}
+.loading{display:flex;flex-direction:column;align-items:center;gap:10px;padding:40px;color:var(--text3)}.spinner{width:28px;height:28px;border:3px solid var(--border);border-top-color:var(--primary);border-radius:50%;animation:spin .7s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--text);color:#fff;padding:11px 22px;border-radius:100px;font-size:.8rem;font-weight:700;z-index:9999;transition:transform .3s ease;box-shadow:var(--shadow);pointer-events:none;white-space:nowrap}.toast.show{transform:translateX(-50%) translateY(0)}.toast.success{background:var(--green)}.toast.error{background:var(--red)}
+.info-box{background:var(--primary-dim);border:1px solid rgba(27,79,216,.2);border-radius:var(--r);padding:12px 14px;font-size:.78rem;color:var(--primary);line-height:1.6;margin-bottom:16px}
+@media(max-width:700px){
+  .sidebar{position:fixed;left:-260px;top:0;bottom:0;z-index:1000;transition:left .25s ease;box-shadow:none;width:var(--sidebar-w)}
+  .sidebar.open{left:0;box-shadow:4px 0 24px rgba(0,0,0,.4)}
+  .sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:999}
+  .sidebar-overlay.show{display:block}
+  .main{width:100%}
+  .mob-menu-btn{display:flex !important}
+  .metrics-row{grid-template-columns:1fr 1fr}
+  .g2,.g3,.form-grid{grid-template-columns:1fr}
+  .content-inner{padding:14px 12px}
+  .header{padding:0 12px}
+}
+.mob-menu-btn{display:none;align-items:center;justify-content:center;width:36px;height:36px;border-radius:8px;background:var(--bg3);border:1.5px solid var(--border2);cursor:pointer;font-size:1.1rem;flex-shrink:0;margin-right:6px}
+`;
+
+// ── Constants ──────────────────────────────────────────────────
+const SUPA_URL = 'https://xdwexkmbhzkjivpayyrp.supabase.co';
+const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inhkd2V4a21iaHpraml2cGF5eXJwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIzNzI2NTMsImV4cCI6MjA4Nzk0ODY1M30.2GWkg-L86GL0mp0LCfmmW3waDHWiMcZhqzhuOTRpTJI';
+const H = { 'apikey': SUPA_KEY, 'Authorization': 'Bearer ' + SUPA_KEY, 'Content-Type': 'application/json' };
+const APP_URL = 'MatricAce_SA_Ultimate_v7.html';
+const COLORS = ['#1B4FD8','#059669','#7C3AED','#0891B2','#D97706','#DC2626','#0F766E'];
+
+let SCHOOL = null, CLASSES = [], allStudents = [], allTeachers = [];
+var ONBOARDED_TEACHERS = []; // Teachers saved in Step 1 before class creation
+
+// ── Helpers ────────────────────────────────────────────────────
+async function sbGet(path) {
+  try { const r = await fetch(SUPA_URL+'/rest/v1/'+path, {headers:H}); return r.ok ? await r.json() : []; } catch(e) { return []; }
+}
+async function sbPost(path, data) {
+  try { const r = await fetch(SUPA_URL+'/rest/v1/'+path, {method:'POST',headers:{...H,'Prefer':'return=representation'},body:JSON.stringify(data)}); return r.ok ? await r.json() : null; } catch(e) { return null; }
+}
+async function sbPatch(path, data) {
+  try { const r = await fetch(SUPA_URL+'/rest/v1/'+path, {method:'PATCH',headers:{...H,'Prefer':'return=minimal'},body:JSON.stringify(data)}); return r.ok; } catch(e) { return false; }
+}
+function goBack() { window.location.href = APP_URL; }
+function openSidebar() {
+  document.getElementById('mainSidebar').classList.add('open');
+  document.getElementById('sidebarOverlay').classList.add('show');
+}
+function closeSidebar() {
+  document.getElementById('mainSidebar').classList.remove('open');
+  document.getElementById('sidebarOverlay').classList.remove('show');
+}
+function toggleSidebar() {
+  const sidebar = document.getElementById('mainSidebar');
+  if (sidebar.classList.contains('open')) { closeSidebar(); } else { openSidebar(); }
+}
+function showToast(msg, type) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.className = 'toast show' + (type ? ' '+type : '');
+  clearTimeout(t._t); t._t = setTimeout(() => t.className = 'toast', 2800);
+}
+function switchPanel(navEl, id) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  const panel = document.getElementById('panel-'+id);
+  if (panel) panel.classList.add('active');
+  if (navEl) navEl.classList.add('active');
+  else document.querySelectorAll('.nav-item').forEach(n => {
+    if ((n.getAttribute('onclick')||'').includes("'"+id+"'")) n.classList.add('active');
+  });
+  const map = {overview:'Dashboard',teachers:'Teachers',students:'Students',classes:'Classes',subjects:'Subjects',onboard:'Add People',reports:'Reports',announcements:'Announcements',settings:'Settings'};
+  document.getElementById('headerTitle').innerHTML = (map[id]||id) + ' <span>' + (SCHOOL ? SCHOOL.name : '') + '</span>';
+}
+function av(name) { const p = (name||'').trim().split(' '); return (p[0]?.[0]||'')+(p[1]?.[0]||p[0]?.[1]||''); }
+
+// ── Session ────────────────────────────────────────────────────
+async function init() {
+  try {
+    // Try all possible session key combinations
+    let sess = null, users = {};
+    for (const k of ['matric_ace_session','matric_session']) {
+      try { sess = JSON.parse(localStorage.getItem(k)||'null'); } catch(e){}
+      if (sess) break;
+    }
+    for (const k of ['matric_ace_users','matric_users']) {
+      try { const u = JSON.parse(localStorage.getItem(k)||'{}'); if (Object.keys(u).length) { users = u; break; } } catch(e){}
+    }
+    const user = sess ? users[sess.uid] : null;
+    const ctx = JSON.parse(localStorage.getItem('ma_teacher_ctx') || 'null');
+
+    if (ctx && ctx.school) {
+      SCHOOL = ctx.school;
+      CLASSES = ctx.allClasses || [];
+    } else if (user && user.school_id) {
+      const s = await sbGet('schools?id=eq.'+user.school_id+'&select=*&limit=1');
+      SCHOOL = s[0] || null;
+      const c = await sbGet('school_classes?school_id=eq.'+user.school_id+'&select=*&order=grade.asc,division.asc');
+      CLASSES = Array.isArray(c) ? c : [];
+    } else if (user && user.is_school_admin) {
+      // Fetch school by teacher_email
+      const s = await sbGet('schools?teacher_email=eq.'+encodeURIComponent(user.email||'')+'&select=*&limit=1');
+      if (s[0]) {
+        SCHOOL = s[0];
+        const c = await sbGet('school_classes?school_id=eq.'+s[0].id+'&select=*&order=grade.asc,division.asc');
+        CLASSES = Array.isArray(c) ? c : [];
+      }
+    }
+
+    if (!SCHOOL) {
+      // Show direct login form
+      document.body.innerHTML = `
+      <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100dvh;gap:16px;font-family:Manrope,sans-serif;background:#F0F4FE;padding:24px">
+        <div style="background:#fff;border:1px solid rgba(27,79,216,.15);border-radius:18px;padding:28px;width:100%;max-width:380px;box-shadow:0 4px 24px rgba(27,79,216,.1)">
+          <div style="text-align:center;margin-bottom:24px">
+            <div style="font-size:2rem;margin-bottom:8px">🏫</div>
+            <div style="font-family:'Outfit',sans-serif;font-size:1.1rem;font-weight:800;color:#0F1729">School Admin Portal</div>
+            <div style="font-size:.78rem;color:#6B7FA8;margin-top:4px">Sign in with your school admin email</div>
+          </div>
+          <div style="margin-bottom:12px">
+            <label style="font-size:.72rem;font-weight:700;color:#374A6B;display:block;margin-bottom:5px">Admin Email</label>
+            <input id="saEmail" type="email" placeholder="admin@school.co.za" style="width:100%;padding:10px 12px;border:1.5px solid rgba(27,79,216,.18);border-radius:9px;font-family:Manrope,sans-serif;font-size:.85rem;outline:none;color:#0F1729;background:#F0F4FE">
+          </div>
+          <div style="margin-bottom:18px">
+            <label style="font-size:.72rem;font-weight:700;color:#374A6B;display:block;margin-bottom:5px">Password</label>
+            <input id="saPw" type="password" placeholder="••••••••" style="width:100%;padding:10px 12px;border:1.5px solid rgba(27,79,216,.18);border-radius:9px;font-family:Manrope,sans-serif;font-size:.85rem;outline:none;color:#0F1729;background:#F0F4FE"
+              onkeydown="if(event.key==='Enter') directSchoolLogin()">
+          </div>
+          <button onclick="directSchoolLogin()" style="width:100%;padding:12px;background:linear-gradient(135deg,#1B4FD8,#3B6FEF);color:#fff;border:none;border-radius:10px;font-family:Manrope,sans-serif;font-weight:800;font-size:.9rem;cursor:pointer">Sign In →</button>
+          <div id="saLoginMsg" style="margin-top:10px;font-size:.75rem;text-align:center;font-weight:700"></div>
+          <div style="margin-top:16px;text-align:center">
+            <button onclick="window.location.href='${APP_URL}'" style="background:none;border:none;color:#6B7FA8;font-size:.75rem;cursor:pointer;font-family:inherit">← Back to Portal</button>
+          </div>
+        </div>
+      </div>`;
+      // Attach login function
+      window.directSchoolLogin = async function() {
+        const email = (document.getElementById('saEmail')?.value||'').trim().toLowerCase();
+        const pw = document.getElementById('saPw')?.value||'';
+        const msg = document.getElementById('saLoginMsg');
+        if (!email||!pw) { msg.textContent='❌ Enter email and password'; msg.style.color='#DC2626'; return; }
+        msg.textContent='Verifying…'; msg.style.color='#6B7FA8';
+        // Check schools table (school admin = teacher_email on schools)
+        const r = await fetch(SUPA_URL+'/rest/v1/schools?teacher_email=eq.'+encodeURIComponent(email)+'&select=*&limit=1', {headers:H});
+        const rows = r.ok ? await r.json() : [];
+        const school = rows[0];
+        if (!school) { msg.textContent='❌ School not found for this email'; msg.style.color='#DC2626'; return; }
+        let stored=''; try { stored=atob(school.default_password||''); } catch(e){}
+        if (stored!==pw) { msg.textContent='❌ Incorrect password'; msg.style.color='#DC2626'; return; }
+        // Save session
+        const uid='sa_'+email.replace(/[^a-z0-9]/g,'_').slice(0,20);
+        const userObj={uid,email,name:'Admin',school_id:school.id,is_school_admin:true};
+        const u={}; u[uid]=userObj;
+        localStorage.setItem('matric_ace_users', JSON.stringify(u));
+        localStorage.setItem('matric_ace_session', JSON.stringify({uid,loginAt:Date.now()}));
+        localStorage.setItem('ma_teacher_ctx', JSON.stringify({school,classInfo:null,isAdmin:true,allClasses:[]}));
+        msg.textContent='✅ Signed in!'; msg.style.color='#059669';
+        setTimeout(()=>location.reload(), 800);
+      };
+      return;
+    }
+
+    // Populate UI
+    document.getElementById('barSchoolName').textContent = SCHOOL.name || '';
+    document.getElementById('barCode').textContent = SCHOOL.id ? SCHOOL.id.toString().slice(0,8).toUpperCase() : '';
+    document.getElementById('schoolSub').textContent = SCHOOL.name || '';
+    if (user) {
+      document.getElementById('userAv').textContent = av((user.name||'A')+' '+(user.surname||''));
+      document.getElementById('userName').textContent = (user.name||'Admin')+' '+(user.surname||'');
+    }
+    document.getElementById('settCode').value = SCHOOL.id || '';
+    document.getElementById('settName').value = SCHOOL.name || '';
+    document.getElementById('settEmail').value = SCHOOL.teacher_email || '';
+
+    // Populate teacher class dropdown (all classes sorted)
+    const sorted = [...CLASSES].sort((a,b) => { if(a.grade!==b.grade) return a.grade-b.grade; return (a.division||'').localeCompare(b.division||''); });
+    const tchrSel = document.getElementById('tchrClass');
+    if (tchrSel) tchrSel.innerHTML = '<option value="">— Select a class —</option>' + sorted.map(c => `<option value="${c.id}">Grade ${c.grade}${c.division||''} — ${c.teacher_name||'No teacher'}</option>`).join('');
+    // Student/bulk dropdowns filtered by grade
+    filterClassesByGrade('stuClass', '12');
+    filterClassesByGrade('bulkClass', '12');
+
+    await loadData();
+    loadAnnouncements();
+  } catch(e) {
+    console.error('Init error', e);
+    showToast('Error loading dashboard','error');
+  }
+}
+
+async function loadData() {
+  const [students, classes] = await Promise.all([
+    sbGet('school_students?school_id=eq.'+SCHOOL.id+'&select=*&order=grade.asc,full_username.asc'),
+    sbGet('school_classes?school_id=eq.'+SCHOOL.id+'&select=*&order=grade.asc,division.asc')
+  ]);
+  allStudents = Array.isArray(students) ? students : [];
+  CLASSES = Array.isArray(classes) ? classes : [];
+  // Teachers come from school_classes
+  allTeachers = CLASSES.filter(c => c.teacher_name || c.teacher_email);
+
+  // Update counts
+  document.getElementById('stuCount').textContent = allStudents.length || '';
+  document.getElementById('tchrCount').textContent = allTeachers.length || '';
+  document.getElementById('stuLabel').textContent = allStudents.length + ' students total';
+  document.getElementById('tchrLabel').textContent = allTeachers.length + ' active teachers';
+
+  // Overview metrics
+  document.getElementById('ov-students').textContent = allStudents.length;
+  document.getElementById('ov-teachers').textContent = allTeachers.length;
+  const registered = allStudents.filter(s => s.registered || s.user_id).length;
+  const notReg = allStudents.length - registered;
+  document.getElementById('ov-risk').textContent = notReg;
+  document.getElementById('ov-avg').textContent = registered > 0 ? Math.round(registered/allStudents.length*100)+'%' : '—';
+  document.getElementById('riskCount').textContent = notReg + ' not signed up';
+
+  renderOverview();
+  renderStudents();
+  await loadSubjectTeachers();
+  renderTeachers();
+  renderClasses();
+  renderManageClasses();
+  renderGradeTable();
+}
+
+function renderOverview() {
+  // Subject performance (representative)
+  const subjects = ['Mathematics','Life Sciences','Phys. Sciences','History','English HL','Accounting'];
+  const cols = ['#1B4FD8','#059669','#0891B2','#D97706','#7C3AED','#DC2626'];
+  const pcts = [68,81,64,76,73,58];
+  document.getElementById('subjPerf').innerHTML = subjects.map((s,i) =>
+    `<div class="perf-item"><div class="perf-name">${s}</div><div class="perf-bar"><div class="perf-fill" style="width:${pcts[i]}%;background:linear-gradient(90deg,${cols[i]},${cols[i]}99)"></div></div><div class="perf-pct" style="color:${cols[i]}">${pcts[i]}%</div></div>`).join('');
+
+  // Top teachers
+  document.getElementById('topTeachers').innerHTML = allTeachers.slice(0,3).map((c,i) =>
+    `<div class="teacher-row">
+      <div class="t-av" style="background:${COLORS[i%COLORS.length]}">${av(c.teacher_name||'?')}</div>
+      <div class="t-info"><div class="t-name">${c.teacher_name||'Teacher'}</div><div class="t-meta">Grade ${c.grade}${c.division||''}</div></div>
+    </div>`).join('') || '<div class="empty-state" style="padding:16px"><div class="empty-state-sub">No teachers yet</div></div>';
+
+  // Risk students (not registered)
+  const risk = allStudents.filter(s => !s.registered && !s.user_id).slice(0,3);
+  document.getElementById('riskStudents').innerHTML = risk.map(s =>
+    `<div style="display:flex;align-items:center;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--border)">
+      <div style="font-size:.78rem;font-weight:700;color:var(--text)">${s.display_name||s.full_username}</div>
+      <span class="pill p-gold">Not Signed Up</span>
+    </div>`).join('') || '<div class="empty-state" style="padding:12px"><div class="empty-state-sub">No at-risk students 🎉</div></div>';
+
+  // Subject grid
+  document.getElementById('subjectGrid').innerHTML = subjects.map((s,i) =>
+    `<div class="subj-card" style="border-top:3px solid ${cols[i]}">
+      <div class="subj-icon">${['📐','🌿','⚗️','📜','📖','💰'][i]}</div>
+      <div class="subj-name">${s}</div>
+      <div class="subj-meta">${allTeachers.length} teachers</div>
+      <div class="subj-avg" style="color:${cols[i]}">${pcts[i]}%</div>
+    </div>`).join('');
+}
+
+function renderGradeTable() {
+  const grades = [10,11,12];
+  document.getElementById('gradeTbody').innerHTML = grades.map(g => {
+    const stus = allStudents.filter(s => String(s.grade) === String(g));
+    const reg = stus.filter(s => s.registered || s.user_id).length;
+    const cls = CLASSES.filter(c => String(c.grade) === String(g));
+    return `<tr>
+      <td><span class="tbl-name">Grade ${g}</span></td>
+      <td>${stus.length}</td>
+      <td>${cls.length}</td>
+      <td>—</td>
+      <td><span style="color:var(--green);font-weight:700">${reg}</span></td>
+      <td><span style="color:${stus.length-reg>0?'var(--red)':'var(--green)'};font-weight:700">${stus.length-reg}</span></td>
+    </tr>`;
+  }).join('');
+}
+
+let stuFilter = '';
+function filterStudents(q) { stuFilter = q; renderStudents(); }
+function renderStudents() {
+  const gradeF = document.getElementById('gradeFilter')?.value || '';
+  let list = allStudents;
+  if (stuFilter) list = list.filter(s => (s.display_name||s.full_username||'').toLowerCase().includes(stuFilter.toLowerCase()));
+  if (gradeF) list = list.filter(s => String(s.grade) === gradeF);
+  document.getElementById('stuLabel').textContent = list.length + ' of ' + allStudents.length + ' students';
+  document.getElementById('studentList').innerHTML = list.map((s,i) => {
+    const name = s.display_name||s.full_username||'?';
+    const cls = CLASSES.find(c => c.id === s.class_id);
+    return `<div class="std-row">
+      <div class="std-av" style="background:${COLORS[i%COLORS.length]}">${av(name)}</div>
+      <div class="std-info">
+        <div class="std-name">${name}</div>
+        <div class="std-meta">Grade ${s.grade||'?'}${cls?' · Class '+cls.grade+(cls.division||''):''}</div>
+      </div>
+      ${s.registered||s.user_id ? '<span class="pill p-green">Registered</span>' : '<span class="pill p-gold">Not signed up</span>'}
+    </div>`;
+  }).join('') || '<div class="empty-state"><div class="empty-state-icon">🎓</div><div class="empty-state-title">No students found</div></div>';
+}
+
+var allSubjectTeachers = [];
+
+async function loadSubjectTeachers() {
+  if (!SCHOOL || !SCHOOL.id) return;
+  try {
+    const r = await fetch(SUPA_URL+'/rest/v1/subject_teachers?school_id=eq.'+SCHOOL.id+'&select=*&order=name.asc',{headers:H});
+    allSubjectTeachers = r.ok ? await r.json() : [];
+    // Rebuild ONBOARDED_TEACHERS from DB so dropdowns always reflect saved teachers
+    ONBOARDED_TEACHERS = allSubjectTeachers.map(t => ({
+      id:       t.id,
+      name:     t.name,
+      email:    t.email,
+      password: t.password ? (()=>{ try{return atob(t.password);}catch(e){return t.password;} })() : '',
+      subjects: t.subjects || (t.subject ? [t.subject] : [])
+    }));
+    renderOnboardedPreview();
+  } catch(e) { allSubjectTeachers = []; }
+}
+
+function renderTeachers() {
+  // Build a unified teacher map keyed by email
+  const byEmail = {};
+
+  // 1. Subject teachers from pool (allSubjectTeachers) — these are the source of truth
+  allSubjectTeachers.forEach(t => {
+    const key = (t.email||'').toLowerCase();
+    if (!key) return;
+    if (!byEmail[key]) {
+      const pwDecoded = t.password ? (()=>{ try{return atob(t.password);}catch(e){return t.password;} })() : '—';
+      byEmail[key] = {
+        name:     t.name,
+        email:    t.email,
+        pw:       pwDecoded,
+        subjects: t.subjects || (t.subject ? [t.subject] : []),
+        classes:  [],
+        role:     'Subject Teacher',
+        inPool:   !t.class_id
+      };
+    }
+    if (t.class_id) {
+      const classRec = CLASSES.find(c => c.id === t.class_id);
+      if (classRec) {
+        const subjLabel = t.subject ? ' ('+t.subject+')' : '';
+        byEmail[key].classes.push('Grade '+classRec.grade+(classRec.division||'')+subjLabel);
+      }
+    }
+  });
+
+  // 2. Main teachers from school_classes
+  allTeachers.forEach(c => {
+    if (!c.teacher_email) return;
+    const key = c.teacher_email.toLowerCase();
+    if (!byEmail[key]) {
+      const pwDecoded = c.teacher_password ? (()=>{ try{return atob(c.teacher_password);}catch(e){return c.teacher_password;} })() : '—';
+      byEmail[key] = { name:c.teacher_name, email:c.teacher_email, pw:pwDecoded, subjects:[], classes:[], role:'Main Teacher', inPool:false };
+    }
+    byEmail[key].role = 'Main Teacher';
+    byEmail[key].classes.push('Grade '+c.grade+(c.division||'')+' (Main)');
+  });
+
+  const teachers = Object.values(byEmail).sort((a,b) => a.name.localeCompare(b.name));
+
+  document.getElementById('teacherList').innerHTML = teachers.length ? teachers.map((t, i) => {
+    const classLabels = t.classes.length ? t.classes.join(', ') : '<span style="color:var(--text4);font-style:italic">Not assigned to a class yet</span>';
+    const isMain      = t.role === 'Main Teacher';
+    const subjLabel   = t.subjects && t.subjects.length ? t.subjects.join(', ') : '';
+    const roleBadge   = isMain
+      ? `<span style="font-size:.58rem;font-weight:800;padding:2px 7px;border-radius:10px;background:var(--primary-dim);color:var(--primary)">👑 MAIN</span>`
+      : `<span style="font-size:.58rem;font-weight:800;padding:2px 7px;border-radius:10px;background:var(--purple-dim);color:#A78BFA">📚 SUBJECT</span>`;
+    const poolBadge   = t.inPool && !isMain
+      ? `<span style="font-size:.58rem;font-weight:800;padding:2px 7px;border-radius:10px;background:var(--accent-dim);color:var(--orange)">⏳ POOL</span>`
+      : '';
+    return `<div style="border:1px solid var(--border);border-radius:var(--r);background:var(--surface);padding:14px 16px;margin-bottom:8px">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+        <div style="width:36px;height:36px;border-radius:9px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:.65rem;font-weight:800;color:#fff;background:${COLORS[i%COLORS.length]}">${av(t.name||'?')}</div>
+        <div style="flex:1;min-width:0">
+          <div style="display:flex;align-items:center;gap:5px;flex-wrap:wrap">
+            <div style="font-size:.85rem;font-weight:800;color:var(--text)">${t.name||'Teacher'}</div>
+            ${roleBadge}${poolBadge}
+          </div>
+          <div style="font-size:.65rem;color:var(--text3);margin-top:2px">${classLabels}</div>
+          ${subjLabel ? `<div style="font-size:.63rem;color:var(--primary);margin-top:2px">📚 ${subjLabel}</div>` : ''}
+        </div>
+      </div>
+      <div style="background:var(--bg3);border-radius:8px;padding:10px 12px;font-size:.7rem;font-family:'JetBrains Mono',monospace;line-height:2">
+        <div style="display:flex;justify-content:space-between"><span style="color:var(--text3)">Login email</span><span style="color:var(--text);font-weight:700">${t.email}</span></div>
+        <div style="display:flex;justify-content:space-between"><span style="color:var(--text3)">Password</span><span style="color:var(--green);font-weight:700">${t.pw}</span></div>
+        <div style="display:flex;justify-content:space-between"><span style="color:var(--text3)">Login via</span><span style="color:var(--primary);font-weight:700">🏫 School tab in app</span></div>
+      </div>
+    </div>`;
+  }).join('') :
+  `<div class="empty-state"><div class="empty-state-icon">👩‍🏫</div><div class="empty-state-title">No teachers yet</div><div class="empty-state-sub">Go to <strong>Add People → Add Teacher</strong> to add your teachers first, then create classes and assign them.</div></div>`;
+}
+
+function renderClasses() {
+  // Group by grade
+  const grades = [10, 11, 12];
+  let html = '';
+  grades.forEach(g => {
+    const gradeClasses = CLASSES.filter(c => parseInt(c.grade) === g);
+    if (!gradeClasses.length) return;
+    html += `<div style="margin-bottom:18px">
+      <div style="font-size:.68rem;font-weight:800;color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;font-family:'JetBrains Mono',monospace">Grade ${g}</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:8px">`;
+    gradeClasses.sort((a,b) => (a.division||'').localeCompare(b.division||'')).forEach((c,i) => {
+      const stuCount = allStudents.filter(s => s.class_id === c.id).length;
+      html += `<div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px;transition:box-shadow .15s" >
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+          <div style="width:36px;height:36px;border-radius:9px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-family:'Outfit',sans-serif;font-size:.9rem;font-weight:900;color:#fff;background:linear-gradient(135deg,var(--primary),var(--primary-light))">${g}${c.division||''}</div>
+          <div>
+            <div style="font-size:.85rem;font-weight:800;color:var(--text)">Grade ${g}${c.division||''}</div>
+            <div style="font-size:.6rem;color:var(--text3)">${stuCount} student${stuCount!==1?'s':''}</div>
+          </div>
+        </div>
+        <div style="font-size:.7rem;color:var(--text2);margin-bottom:4px">${c.teacher_name ? '👩‍🏫 '+c.teacher_name : '<span style="color:var(--text4)">No teacher assigned</span>'}</div>
+        ${c.teacher_email ? `<div style="font-size:.62rem;color:var(--text3);font-family:'JetBrains Mono',monospace;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${c.teacher_email}</div>` : ''}
+        <div style="display:flex;gap:6px;margin-top:10px">
+          <button class="btn btn-ghost btn-sm" onclick="openEditTeachersModal('${c.id}')" style="flex:1;justify-content:center">👩‍🏫 Teachers</button>
+          <button class="btn btn-ghost btn-sm" onclick="deleteClass('${c.id}','${g}${c.division||''}')" style="color:var(--red);border-color:var(--red-dim)">🗑️</button>
+        </div>
+      </div>`;
+    });
+    html += '</div></div>';
+  });
+  document.getElementById('classList').innerHTML = html || '<div class="empty-state"><div class="empty-state-icon">🏛️</div><div class="empty-state-title">No classes set up yet</div><div class="empty-state-sub">Go to Manage Classes to add Grade 10A, 10B etc.</div></div>';
+  // Also update manage-classes panel
+  renderManageClasses();
+}
+
+function renderManageClasses() {
+  const el = document.getElementById('classesByGrade');
+  if (!el) return;
+  const grades = [10, 11, 12];
+  let html = '';
+  grades.forEach(g => {
+    const gc = CLASSES.filter(c => parseInt(c.grade) === g).sort((a,b)=>(a.division||'').localeCompare(b.division||''));
+    html += `<div style="margin-bottom:20px">
+      <div style="font-size:.75rem;font-weight:800;color:var(--text);margin-bottom:10px;display:flex;align-items:center;gap:8px">
+        <span style="background:var(--primary-dim);color:var(--primary);padding:4px 10px;border-radius:20px;font-family:'JetBrains Mono',monospace">Grade ${g}</span>
+        <span style="color:var(--text3);font-size:.68rem">${gc.length} class${gc.length!==1?'es':''}</span>
+      </div>`;
+    if (gc.length) {
+      html += '<div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse"><thead><tr>';
+      ['Class','Main Teacher','Subject Teachers','Students','Actions'].forEach(h => {
+        html += `<th style="font-size:.62rem;font-weight:800;color:var(--text3);text-transform:uppercase;letter-spacing:.8px;padding:8px 10px;border-bottom:1px solid var(--border);text-align:left;font-family:'JetBrains Mono',monospace">${h}</th>`;
+      });
+      html += '</tr></thead><tbody>';
+      gc.forEach(c => {
+        const sc = allStudents.filter(s => s.class_id === c.id).length;
+        const subjTchrs = allSubjectTeachers.filter(t => t.class_id === c.id);
+        const subjNames = subjTchrs.length
+          ? subjTchrs.map(t => `<span style="font-size:.65rem;background:var(--purple-dim);color:#A78BFA;padding:2px 6px;border-radius:8px;font-weight:700">${t.name.split(' ').pop()}</span>`).join(' ')
+          : '<span style="color:var(--text4);font-size:.7rem">None</span>';
+        html += `<tr>
+          <td style="padding:10px;border-bottom:1px solid var(--border)"><span style="font-weight:800;color:var(--text);font-family:'Outfit',sans-serif">Grade ${g}${c.division||''}</span></td>
+          <td style="padding:10px;border-bottom:1px solid var(--border)">
+            <div style="font-size:.78rem;font-weight:700;color:var(--text)">${c.teacher_name||'<span style="color:var(--text4)">—</span>'}</div>
+            ${c.teacher_email ? `<div style="font-size:.63rem;color:var(--text3);font-family:'JetBrains Mono',monospace">${c.teacher_email}</div>` : ''}
+          </td>
+          <td style="padding:10px;border-bottom:1px solid var(--border)">${subjNames}</td>
+          <td style="padding:10px;border-bottom:1px solid var(--border)"><span style="font-weight:800;color:var(--primary)">${sc}</span></td>
+          <td style="padding:10px;border-bottom:1px solid var(--border)">
+            <div style="display:flex;gap:6px">
+              <button class="btn btn-ghost btn-sm" onclick="openEditTeachersModal('${c.id}')">✏️ Teachers</button>
+              <button class="btn btn-ghost btn-sm" onclick="deleteClass('${c.id}','${g}${c.division||''}')" style="color:var(--red)">Delete</button>
+            </div>
+          </td>
+        </tr>`;
+      });
+      html += '</tbody></table></div>';
+    } else {
+      html += '<div style="font-size:.78rem;color:var(--text3);padding:10px 0">No classes for Grade '+g+' yet.</div>';
+    }
+    html += '</div>';
+  });
+  el.innerHTML = html || '<div class="empty-state"><div class="empty-state-icon">🏛️</div><div class="empty-state-title">No classes yet</div><div class="empty-state-sub">Click "+ Add Class" above to create your first class</div></div>';
+}
+
+function filterClassesByGrade(selectId, grade) {
+  const sel = document.getElementById(selectId);
+  if (!sel) return;
+  const filtered = CLASSES.filter(c => String(c.grade) === String(grade));
+  sel.innerHTML = '<option value="">— Select class —</option>' + filtered.sort((a,b)=>(a.division||'').localeCompare(b.division||'')).map(c =>
+    `<option value="${c.id}">Grade ${c.grade}${c.division||''} — ${c.teacher_name||'No teacher'}</option>`
+  ).join('');
+}
+
+function showAddClassForm() {
+  const f = document.getElementById('addClassForm');
+  f.style.display = 'block';
+  // Reset form
+  document.getElementById('mainTchrName').value  = '';
+  document.getElementById('mainTchrEmail').value = '';
+  document.getElementById('mainTchrPw').value    = '';
+  document.getElementById('mainTchrSelect').value = '';
+  document.getElementById('mainTchrInfo').textContent = '';
+  document.getElementById('addClassMsg').textContent  = '';
+  populateMainTchrDropdown();
+  populateSubjTeacherCheckboxes();
+  // Warn if no teachers have been added yet
+  const msg = document.getElementById('addClassMsg');
+  if (!ONBOARDED_TEACHERS.length) {
+    msg.innerHTML = '⚠️ <strong>No teachers found.</strong> Please go to <button onclick="switchPanel(null,\'onboard\')" style="color:var(--primary);font-weight:800;background:none;border:none;cursor:pointer;font-size:.78rem;padding:0">Add People → Add Teacher</button> and save your teachers before creating a class.';
+    msg.style.color = 'var(--orange)';
+  }
+  f.scrollIntoView({behavior:'smooth', block:'nearest'});
+}
+
+function populateMainTchrDropdown() {
+  const sel = document.getElementById('mainTchrSelect');
+  if (!sel) return;
+  sel.innerHTML = '<option value="">— Pick a teacher —</option>';
+  if (!ONBOARDED_TEACHERS.length) {
+    sel.innerHTML += '<option disabled>⚠️ No teachers saved yet — add teachers in Add People first</option>';
+    return;
+  }
+  ONBOARDED_TEACHERS.forEach((t, i) => {
+    const subjs = t.subjects && t.subjects.length ? t.subjects.join(', ') : 'General';
+    const opt = document.createElement('option');
+    opt.value = i;
+    opt.textContent = t.name + ' (' + subjs + ')';
+    sel.appendChild(opt);
+  });
+}
+
+function onMainTchrSelect(sel) {
+  const idx = sel.value;
+  const info = document.getElementById('mainTchrInfo');
+  if (idx === '') { info.textContent = ''; populateSubjTeacherCheckboxes(); return; }
+  const t = ONBOARDED_TEACHERS[parseInt(idx)];
+  if (!t) return;
+  document.getElementById('mainTchrName').value  = t.name;
+  document.getElementById('mainTchrEmail').value = t.email;
+  document.getElementById('mainTchrPw').value    = t.password || '';
+  const subjLabel = t.subjects && t.subjects.length ? ' &nbsp;|&nbsp; 📚 ' + t.subjects.join(', ') : '';
+  info.innerHTML = '📧 ' + t.email + subjLabel;
+  // Refresh checkboxes so the selected main is marked/disabled
+  populateSubjTeacherCheckboxes();
+}
+
+function populateSubjTeacherCheckboxes() {
+  const box = document.getElementById('subjTeacherCheckboxes');
+  if (!box) return;
+  if (!ONBOARDED_TEACHERS.length) {
+    box.innerHTML = '<div style="grid-column:1/-1;font-size:.72rem;color:var(--orange);font-style:italic">⚠️ No teachers saved yet. <button onclick="switchPanel(null,\'onboard\');setInviteTab(document.querySelector(\'.invite-tab\'),\'teacher-form\')" style="color:var(--primary);font-weight:700;background:none;border:none;cursor:pointer;font-size:.72rem;padding:0">Add teachers first →</button></div>';
+    return;
+  }
+  const mainIdx = document.getElementById('mainTchrSelect')?.value;
+  box.innerHTML = ONBOARDED_TEACHERS.map((t, i) => {
+    const subjs = t.subjects && t.subjects.length ? t.subjects.join(', ') : 'General';
+    const isMain = String(i) === String(mainIdx);
+    return `<label id="subj-tchr-label-${i}" class="subj-tchr-label${isMain?' st-main':''}" style="display:flex;align-items:flex-start;gap:7px;padding:8px 10px;border-radius:8px;background:${isMain?'var(--primary-dim)':'var(--surface)'};border:1.5px solid ${isMain?'var(--primary)':'var(--border)'};cursor:${isMain?'not-allowed':'pointer'};font-size:.75rem;transition:all .15s;opacity:${isMain?'0.6':'1'}">
+      <input type="checkbox" value="${i}" class="subj-tchr-cb" style="accent-color:var(--primary);margin-top:2px;flex-shrink:0" ${isMain?'disabled checked':''}> 
+      <span><strong style="color:var(--text)">${t.name}</strong>${isMain?' <span style="font-size:.6rem;color:var(--primary);font-weight:800">MAIN</span>':''}<br><span style="color:var(--text3)">${subjs}</span></span>
+    </label>`;
+  }).join('');
+}
+
+function cancelAddClass() {
+  document.getElementById('addClassForm').style.display='none';
+}
+
+var SUBJECTS_LIST = ['Mathematics','Life Sciences','Physical Sciences','History','Geography',
+  'English HL','Afrikaans HL','Business Studies','Accounting','Economics',
+  'Mathematics Literacy','CAT','IT','Agricultural Sciences'];
+
+function addExtraTeacherRow() {
+  const container = document.getElementById('additionalTeachers');
+  const idx = container.children.length;
+  const subjOpts = SUBJECTS_LIST.map(s=>`<option value="${s}">${s}</option>`).join('');
+  const row = document.createElement('div');
+  row.style.cssText = 'background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:12px;position:relative';
+  row.innerHTML = `
+    <button onclick="this.parentElement.remove()" style="position:absolute;top:8px;right:8px;background:var(--red-dim);border:none;border-radius:6px;width:24px;height:24px;color:var(--red);font-size:.8rem;cursor:pointer">✕</button>
+    <div class="form-grid" style="margin-bottom:0">
+      <div class="ff"><label>Full Name *</label><input type="text" class="xt-name" placeholder="e.g. Mr K. Sithole"></div>
+      <div class="ff"><label>Email *</label><input type="email" class="xt-email" placeholder="teacher@school.co.za"></div>
+      <div class="ff form-row-full"><label>Subject(s) they teach</label>
+        <div class="xt-subjs" style="display:grid;grid-template-columns:1fr 1fr;gap:3px 10px;padding:8px;background:var(--bg);border:1.5px solid var(--border2);border-radius:9px;margin-top:4px">
+          ${SUBJECTS_LIST.map(s=>'<label style="display:flex;align-items:center;gap:5px;font-size:.72rem;cursor:pointer"><input type="checkbox" value="'+s+'" style="accent-color:var(--primary)"> '+s+'</label>').join('')}
+        </div>
+      </div>
+      <div class="ff"><label>Password</label><input type="text" class="xt-pw" placeholder="Auto-generated if blank"></div>
+    </div>`;
+  container.appendChild(row);
+}
+
+async function addClass() {
+  const grade     = document.getElementById('newClassGrade').value;
+  const div       = document.getElementById('newClassDiv').value;
+  const mainIdx   = document.getElementById('mainTchrSelect').value;
+  const msg       = document.getElementById('addClassMsg');
+
+  if (mainIdx === '') {
+    msg.textContent = '❌ Please select a Main Teacher from the dropdown';
+    msg.style.color = 'var(--red)'; return;
+  }
+  const mainT = ONBOARDED_TEACHERS[parseInt(mainIdx)];
+  if (!mainT) { msg.textContent='❌ Invalid teacher selection'; msg.style.color='var(--red)'; return; }
+
+  const exists = CLASSES.find(c => String(c.grade)===String(grade) && c.division===div);
+  if (exists) { msg.textContent='❌ Grade '+grade+div+' already exists'; msg.style.color='var(--red)'; return; }
+
+  // Collect ticked subject teachers (excluding main)
+  const checkedCbs = Array.from(document.querySelectorAll('.subj-tchr-cb:checked'));
+  const subjTeacherIdxs = checkedCbs.map(cb => parseInt(cb.value)).filter(i => i !== parseInt(mainIdx));
+  const subjTeachers = subjTeacherIdxs.map(i => ONBOARDED_TEACHERS[i]).filter(Boolean);
+
+  msg.textContent = 'Creating class…'; msg.style.color = 'var(--text3)';
+
+  const mainPwRaw = mainT.password || 'Matric'+Math.floor(1000+Math.random()*9000)+'!';
+
+  // 1. Create the class record with main teacher info
+  const classData = {
+    school_id:        SCHOOL.id,
+    grade:            parseInt(grade),
+    division:         div,
+    teacher_name:     mainT.name,
+    teacher_email:    mainT.email,
+    teacher_password: btoa(mainPwRaw),
+    subjects:         mainT.subjects && mainT.subjects.length ? mainT.subjects : null
+  };
+
+  try {
+    const r = await fetch(SUPA_URL+'/rest/v1/school_classes', {
+      method:'POST',
+      headers:{...H,'Content-Type':'application/json','Prefer':'return=representation'},
+      body: JSON.stringify(classData)
+    });
+    const rows = r.ok ? await r.json() : null;
+    const newClass = Array.isArray(rows) ? rows[0] : null;
+
+    if (!newClass) {
+      const err = await r.text().catch(()=>'');
+      msg.textContent = '❌ Could not create class: '+err.slice(0,120);
+      msg.style.color = 'var(--red)'; return;
+    }
+
+    // 2. Link subject teachers to this class by updating their class_id
+    let extraResults = [];
+    for (const t of subjTeachers) {
+      if (!t.id) { extraResults.push({name:t.name, ok:false, reason:'no id'}); continue; }
+      // Insert a new record linking this teacher to this class
+      // (teacher can teach in multiple classes, so we insert a new row rather than updating)
+      const xr = await fetch(SUPA_URL+'/rest/v1/subject_teachers', {
+        method: 'POST',
+        headers: {...H, 'Content-Type':'application/json', 'Prefer':'return=minimal'},
+        body: JSON.stringify({
+          school_id: SCHOOL.id,
+          class_id:  newClass.id,
+          name:      t.name,
+          email:     t.email,
+          password:  t.password ? btoa(t.password) : null,
+          subject:   t.subjects && t.subjects[0] ? t.subjects[0] : null,
+          subjects:  t.subjects || []
+        })
+      });
+      extraResults.push({name:t.name, email:t.email, pw:t.password||'', ok: xr.ok||xr.status===201});
+    }
+
+    // Build success message
+    let html = `<div style="font-weight:800;color:var(--green);margin-bottom:8px">✅ Grade ${grade}${div} created!</div>`;
+    html += `<div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:10px;font-size:.7rem;font-family:'JetBrains Mono',monospace;line-height:2.2">`;
+    html += `<div style="font-weight:800;color:var(--primary);margin-bottom:4px">👑 MAIN TEACHER (Full Dashboard Access)</div>`;
+    html += `<div>Name: <strong>${mainT.name}</strong></div>`;
+    html += `<div>Email: <strong>${mainT.email}</strong></div>`;
+    html += `<div>Password: <strong style="color:var(--green)">${mainPwRaw}</strong></div>`;
+    html += `<div>Login: <strong>🏫 School tab in app</strong></div>`;
+    if (extraResults.length) {
+      html += `<div style="margin-top:8px;font-weight:800;color:var(--text2)">SUBJECT TEACHERS (Linked to class)</div>`;
+      extraResults.forEach(t => {
+        html += `<div style="margin-top:4px;padding-top:4px;border-top:1px solid var(--border)">${t.name} · ${t.email}${t.ok?' ✅':' ⚠️ failed'}</div>`;
+      });
+    }
+    html += `</div>`;
+    msg.innerHTML = html;
+
+    showToast('✅ Grade '+grade+div+' created','success');
+    document.getElementById('addClassForm').style.display='none';
+    await loadData();
+  } catch(e) {
+    msg.textContent='❌ Error: '+e.message;
+    msg.style.color='var(--red)';
+  }
+}
+
+// ── Teacher Modal ─────────────────────────────────────────────
+function openTeacherModal(classId) {
+  const c = CLASSES.find(x => x.id === classId);
+  if (!c) return;
+  document.getElementById('tmClassId').value = classId;
+  document.getElementById('teacherModalTitle').textContent = 'Edit Teacher — Grade '+c.grade+(c.division||'');
+  document.getElementById('teacherModalSub').textContent = c.teacher_name ? c.teacher_name + ' · ' + (c.teacher_email||'') : 'No teacher assigned';
+  document.getElementById('tmName').value = c.teacher_name || '';
+  document.getElementById('tmEmail').value = c.teacher_email || '';
+  document.getElementById('tmPw').value = '';
+  document.getElementById('tmMsg').textContent = '';
+  // Warning if removing from active class
+  const stuCount = allStudents.filter(s => s.class_id === classId).length;
+  const warn = document.getElementById('tmWarning');
+  warn.style.display = stuCount > 0 ? 'block' : 'none';
+  warn.textContent = '⚠️ This class has '+stuCount+' student(s). Removing the teacher will only affect the teacher login, not the students.';
+  // Populate "move to class" dropdown (other classes)
+  const sel = document.getElementById('tmNewClass');
+  sel.innerHTML = '<option value="">— Keep in current class —</option>' +
+    CLASSES.filter(x => x.id !== classId).sort((a,b)=>{
+      if(a.grade!==b.grade) return a.grade-b.grade;
+      return (a.division||'').localeCompare(b.division||'');
+    }).map(x => `<option value="${x.id}">Grade ${x.grade}${x.division||''} — ${x.teacher_name||'No teacher'}</option>`).join('');
+  document.getElementById('teacherModal').style.display = 'flex';
+}
+
+function closeTeacherModal() {
+  document.getElementById('teacherModal').style.display = 'none';
+}
+
+async function saveTeacherChanges() {
+  const classId = document.getElementById('tmClassId').value;
+  const name = document.getElementById('tmName').value.trim();
+  const email = document.getElementById('tmEmail').value.trim();
+  const pw = document.getElementById('tmPw').value.trim();
+  const newClassId = document.getElementById('tmNewClass').value;
+  const msg = document.getElementById('tmMsg');
+  msg.textContent = 'Saving…'; msg.style.color = 'var(--text3)';
+  // If moving teacher to different class
+  if (newClassId) {
+    // Remove from current class
+    const clearOk = await sbPatch('school_classes?id=eq.'+classId, {teacher_name:null, teacher_email:null, teacher_password:null});
+    // Add to new class
+    const updateData = {teacher_name:name||null, teacher_email:email||null};
+    if (pw) updateData.teacher_password = btoa(pw);
+    const moveOk = await sbPatch('school_classes?id=eq.'+newClassId, updateData);
+    if (clearOk && moveOk) {
+      const targetClass = CLASSES.find(x => x.id === newClassId);
+      msg.textContent = '✅ '+name+' moved to Grade '+(targetClass?.grade||'')+(targetClass?.division||'');
+      msg.style.color = 'var(--green)';
+      showToast('✅ Teacher moved to new class','success');
+      await loadData();
+      setTimeout(closeTeacherModal, 1500);
+    } else { msg.textContent = '❌ Update failed'; msg.style.color = 'var(--red)'; }
+    return;
+  }
+  // Update in current class
+  const updateData = {teacher_name:name||null, teacher_email:email||null};
+  if (pw) updateData.teacher_password = btoa(pw);
+  const ok = await sbPatch('school_classes?id=eq.'+classId, updateData);
+  if (ok) {
+    msg.textContent = '✅ Teacher updated!' + (pw ? ' New password: '+pw : '');
+    msg.style.color = 'var(--green)';
+    showToast('✅ Teacher updated','success');
+    await loadData();
+    setTimeout(closeTeacherModal, 1500);
+  } else { msg.textContent = '❌ Update failed'; msg.style.color = 'var(--red)'; }
+}
+
+async function removeTeacherFromClass() {
+  const classId = document.getElementById('tmClassId').value;
+  const c = CLASSES.find(x => x.id === classId);
+  const label = 'Grade '+(c?.grade||'')+(c?.division||'');
+  if (!confirm('Remove teacher from '+label+'? The class will have no teacher assigned.')) return;
+  const ok = await sbPatch('school_classes?id=eq.'+classId, {teacher_name:null, teacher_email:null, teacher_password:null});
+  if (ok) {
+    showToast('✅ Teacher removed from '+label,'success');
+    await loadData();
+    closeTeacherModal();
+  } else showToast('❌ Failed to remove teacher','error');
+}
+
+async function deleteClass(classId, label) {
+  const stuCount = allStudents.filter(s => s.class_id === classId).length;
+  if (!confirm('Delete Grade '+label+'?\n\n'+stuCount+' student(s) will be unassigned but NOT deleted. This cannot be undone.')) return;
+  // Unassign students first
+  if (stuCount > 0) {
+    await sbPatch('school_students?class_id=eq.'+classId, {class_id: null});
+  }
+  const r = await fetch(SUPA_URL+'/rest/v1/school_classes?id=eq.'+classId, {method:'DELETE', headers:H});
+  if (r.ok) { showToast('✅ Grade '+label+' deleted','success'); await loadData(); }
+  else showToast('❌ Delete failed','error');
+}
+
+// ── Migrate Modal ─────────────────────────────────────────────
+function openMigrateModal() {
+  loadPromoteOptions();
+  loadMoveClassOptions();
+  loadGraduateOptions();
+  document.getElementById('migrateModal').style.display = 'flex';
+}
+function closeMigrateModal() {
+  document.getElementById('migrateModal').style.display = 'none';
+  document.getElementById('migMsg').textContent = '';
+}
+function setMigTab(btn, tab) {
+  document.querySelectorAll('.mig-tab').forEach(b => {
+    b.style.color = 'var(--text3)'; b.style.borderBottomColor = 'transparent';
+  });
+  btn.style.color = 'var(--primary)'; btn.style.borderBottomColor = 'var(--primary)';
+  document.querySelectorAll('.mig-section').forEach(s => s.style.display = 'none');
+  document.getElementById('mig-'+tab).style.display = 'block';
+}
+
+function loadPromoteOptions() {
+  const fromGrade = parseInt(document.getElementById('promFromGrade').value);
+  const toGrade = fromGrade + 1;
+  document.getElementById('promToGrade').value = 'Grade '+toGrade;
+  // From classes
+  const fromSel = document.getElementById('promFromClass');
+  const fromClasses = CLASSES.filter(c => parseInt(c.grade)===fromGrade).sort((a,b)=>(a.division||'').localeCompare(b.division||''));
+  fromSel.innerHTML = '<option value="">All classes in Grade '+fromGrade+'</option>' +
+    fromClasses.map(c => `<option value="${c.id}">Grade ${c.grade}${c.division||''} (${allStudents.filter(s=>s.class_id===c.id).length} students)</option>`).join('');
+  // To classes
+  const toSel = document.getElementById('promToClass');
+  const toClasses = CLASSES.filter(c => parseInt(c.grade)===toGrade).sort((a,b)=>(a.division||'').localeCompare(b.division||''));
+  toSel.innerHTML = '<option value="">— Select target class —</option>' +
+    toClasses.map(c => `<option value="${c.id}">Grade ${c.grade}${c.division||''} — ${c.teacher_name||'No teacher'}</option>`).join('');
+  updatePromoteCount();
+}
+
+function updatePromoteCount() {
+  const fromGrade = parseInt(document.getElementById('promFromGrade').value);
+  const fromClassId = document.getElementById('promFromClass').value;
+  let students = allStudents.filter(s => parseInt(s.grade)===fromGrade);
+  if (fromClassId) students = students.filter(s => s.class_id===fromClassId);
+  document.getElementById('promStudentCount').textContent = students.length+' student(s) will be promoted.';
+}
+document.getElementById('promFromGrade')?.addEventListener('change', loadPromoteOptions);
+document.getElementById('promFromClass')?.addEventListener('change', updatePromoteCount);
+
+async function promoteStudents() {
+  const fromGrade = parseInt(document.getElementById('promFromGrade').value);
+  const toGrade = fromGrade + 1;
+  const fromClassId = document.getElementById('promFromClass').value;
+  const toClassId = document.getElementById('promToClass').value;
+  const msg = document.getElementById('migMsg');
+  if (!toClassId) { msg.textContent='❌ Select a target class'; msg.style.color='var(--red)'; return; }
+  let students = allStudents.filter(s => parseInt(s.grade)===fromGrade);
+  if (fromClassId) students = students.filter(s => s.class_id===fromClassId);
+  if (!students.length) { msg.textContent='❌ No students found in selected class'; msg.style.color='var(--red)'; return; }
+  msg.textContent='Promoting '+students.length+' students…'; msg.style.color='var(--text3)';
+  let done=0, failed=0;
+  for (const s of students) {
+    const ok = await sbPatch('school_students?id=eq.'+s.id, {grade: toGrade, class_id: toClassId});
+    if (ok) done++; else failed++;
+  }
+  msg.innerHTML = `✅ ${done} student(s) promoted to Grade ${toGrade}${failed>0?` · <span style="color:var(--red)">${failed} failed</span>`:''}`;
+  msg.style.color = 'var(--green)';
+  showToast('✅ '+done+' students promoted to Grade '+toGrade,'success');
+  await loadData();
+  loadPromoteOptions();
+}
+
+function loadMoveClassOptions() {
+  const sorted = [...CLASSES].sort((a,b)=>{ if(a.grade!==b.grade) return a.grade-b.grade; return (a.division||'').localeCompare(b.division||''); });
+  const opts = sorted.map(c => `<option value="${c.id}">Grade ${c.grade}${c.division||''} — ${c.teacher_name||'No teacher'} (${allStudents.filter(s=>s.class_id===c.id).length} students)</option>`).join('');
+  ['moveFromClass','moveToClass'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.innerHTML = '<option value="">— Select class —</option>' + opts;
+  });
+}
+
+function loadMoveStudents() {
+  const classId = document.getElementById('moveFromClass').value;
+  const list = document.getElementById('moveStudentList');
+  if (!classId) { list.innerHTML='<div style="font-size:.78rem;color:var(--text3)">Select a source class</div>'; return; }
+  const students = allStudents.filter(s => s.class_id===classId);
+  if (!students.length) { list.innerHTML='<div style="font-size:.78rem;color:var(--text3)">No students in this class</div>'; return; }
+  list.innerHTML = students.map(s =>
+    `<label style="display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--border);cursor:pointer;font-size:.78rem;color:var(--text)">
+      <input type="checkbox" class="move-stu-cb" value="${s.id}" onchange="updateMoveCount()" style="width:15px;height:15px;accent-color:var(--primary)">
+      <span>${s.display_name||s.full_username}</span>
+      <span style="font-size:.65rem;color:var(--text3);font-family:'JetBrains Mono',monospace;margin-left:auto">Grade ${s.grade}</span>
+    </label>`
+  ).join('');
+  updateMoveCount();
+}
+
+function updateMoveCount() {
+  const checked = document.querySelectorAll('.move-stu-cb:checked').length;
+  document.getElementById('moveSelCount').textContent = checked+' selected';
+}
+function selectAllMoveStudents(val) {
+  document.querySelectorAll('.move-stu-cb').forEach(cb => { cb.checked=val; });
+  updateMoveCount();
+}
+
+async function moveStudents() {
+  const toClassId = document.getElementById('moveToClass').value;
+  const msg = document.getElementById('migMsg');
+  const selected = [...document.querySelectorAll('.move-stu-cb:checked')].map(cb=>cb.value);
+  if (!toClassId) { msg.textContent='❌ Select a target class'; msg.style.color='var(--red)'; return; }
+  if (!selected.length) { msg.textContent='❌ Select at least one student'; msg.style.color='var(--red)'; return; }
+  const toClass = CLASSES.find(c=>c.id===toClassId);
+  msg.textContent='Moving '+selected.length+' students…'; msg.style.color='var(--text3)';
+  let done=0, failed=0;
+  for (const id of selected) {
+    const s = allStudents.find(x=>x.id===id);
+    const ok = await sbPatch('school_students?id=eq.'+id, {class_id:toClassId, grade:toClass?.grade||s?.grade});
+    if (ok) done++; else failed++;
+  }
+  msg.innerHTML = `✅ ${done} student(s) moved to Grade ${toClass?.grade||''}${toClass?.division||''}${failed>0?` · <span style="color:var(--red)">${failed} failed</span>`:''}`;
+  msg.style.color='var(--green)';
+  showToast('✅ '+done+' students moved','success');
+  await loadData();
+  loadMoveClassOptions();
+  document.getElementById('moveStudentList').innerHTML='<div style="font-size:.78rem;color:var(--text3)">Select a source class</div>';
+}
+
+function loadGraduateOptions() {
+  const grade12Classes = CLASSES.filter(c=>parseInt(c.grade)===12).sort((a,b)=>(a.division||'').localeCompare(b.division||''));
+  const sel = document.getElementById('gradClass');
+  const total12 = allStudents.filter(s=>parseInt(s.grade)===12).length;
+  sel.innerHTML = `<option value="all_grade12">All Grade 12 students (${total12})</option>` +
+    grade12Classes.map(c => {
+      const cnt = allStudents.filter(s=>s.class_id===c.id).length;
+      return `<option value="${c.id}">Grade 12${c.division||''} — ${cnt} students</option>`;
+    }).join('');
+  document.getElementById('gradStudentCount').textContent = 'Total Grade 12 students: '+total12;
+}
+
+async function graduateStudents() {
+  const target = document.getElementById('gradClass').value;
+  const msg = document.getElementById('migMsg');
+  let students = [];
+  if (target==='all_grade12') {
+    students = allStudents.filter(s=>parseInt(s.grade)===12);
+  } else {
+    students = allStudents.filter(s=>s.class_id===target);
+  }
+  if (!students.length) { msg.textContent='❌ No students found'; msg.style.color='var(--red)'; return; }
+  if (!confirm('Graduate '+students.length+' student(s)? They will be marked as graduated and removed from class rosters.')) return;
+  msg.textContent='Graduating '+students.length+' students…'; msg.style.color='var(--text3)';
+  let done=0, failed=0;
+  for (const s of students) {
+    const ok = await sbPatch('school_students?id=eq.'+s.id, {graduated:true, class_id:null});
+    if (ok) done++; else failed++;
+  }
+  msg.innerHTML = `🏆 ${done} student(s) graduated!${failed>0?` · <span style="color:var(--red)">${failed} failed</span>`:''}`;
+  msg.style.color='var(--green)';
+  showToast('🏆 '+done+' students graduated','success');
+  await loadData();
+  loadGraduateOptions();
+}
+
+// ── Teacher Onboarding (Step 1) ────────────────────────────────
+
+var SUBJECTS_FULL = ['Mathematics','Life Sciences','Physical Sciences','History','Geography',
+  'English HL','Afrikaans HL','Business Studies','Accounting','Economics',
+  'Mathematics Literacy','CAT','IT','Agricultural Sciences'];
+
+function addTeacherRow(prefill) {
+  const container = document.getElementById('tchrRoster');
+  const idx = container.children.length;
+  const t = prefill || {};
+  const row = document.createElement('div');
+  row.className = 'tchr-roster-row';
+  row.style.cssText = 'background:var(--bg3);border:1.5px solid var(--border);border-radius:12px;padding:14px;position:relative';
+  row.innerHTML = `
+    <button onclick="this.closest('.tchr-roster-row').remove();updateRosterCount()" title="Remove" style="position:absolute;top:10px;right:10px;background:var(--red-dim);border:1px solid rgba(220,38,38,.2);border-radius:7px;width:26px;height:26px;color:var(--red);font-size:.82rem;cursor:pointer;font-family:inherit">✕</button>
+    <div style="font-size:.65rem;font-weight:900;color:var(--primary);letter-spacing:.8px;text-transform:uppercase;margin-bottom:10px">Teacher ${idx+1}</div>
+    <div class="form-grid" style="margin-bottom:10px">
+      <div class="ff"><label>Full Name *</label><input type="text" class="tr-name" placeholder="e.g. Mr T. Khumalo" value="${t.name||''}"></div>
+      <div class="ff"><label>Email Address *</label><input type="email" class="tr-email" placeholder="teacher@school.co.za" value="${t.email||''}"></div>
+      <div class="ff"><label>Password <span style="font-weight:400;color:var(--text3)">(blank = auto)</span></label><input type="text" class="tr-pw" placeholder="Auto-generated if blank" value="${t.pw||''}"></div>
+    </div>
+    <div style="font-size:.68rem;font-weight:800;color:var(--text2);margin-bottom:6px">Subjects this teacher teaches</div>
+    <div class="tr-subjects" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:3px 10px;padding:10px;background:var(--bg);border:1.5px solid var(--border2);border-radius:9px">
+      ${SUBJECTS_FULL.map(s => `<label style="display:flex;align-items:center;gap:5px;font-size:.72rem;cursor:pointer;padding:2px 0"><input type="checkbox" value="${s}" style="accent-color:var(--primary)"${(t.subjects||[]).includes(s)?' checked':''}> ${s}</label>`).join('')}
+    </div>`;
+  container.appendChild(row);
+  updateRosterCount();
+}
+
+function updateRosterCount() {
+  const count = document.querySelectorAll('.tchr-roster-row').length;
+  const btn = document.querySelector('#teacher-form .btn-ghost');
+  if (btn) btn.textContent = count > 0 ? `+ Add Another Teacher (${count} in list)` : '+ Add Another Teacher';
+}
+
+function renderOnboardedPreview() {
+  const box = document.getElementById('onboardedTeachersPreview');
+  if (!box) return;
+  if (!ONBOARDED_TEACHERS.length) { box.innerHTML=''; return; }
+  box.innerHTML = `<div style="font-size:.72rem;font-weight:800;color:var(--green);margin-bottom:8px">✅ ${ONBOARDED_TEACHERS.length} teacher(s) saved — ready to assign to classes</div>` +
+    `<div style="display:flex;flex-wrap:wrap;gap:6px">` +
+    ONBOARDED_TEACHERS.map(t => `<span style="padding:5px 10px;background:var(--green-dim);border:1px solid rgba(5,150,105,.2);border-radius:20px;font-size:.7rem;font-weight:700;color:var(--green)">👩‍🏫 ${t.name}</span>`).join('') +
+    `</div>`;
+}
+
+async function saveAllTeachers() {
+  const rows = document.querySelectorAll('.tchr-roster-row');
+  const msg = document.getElementById('tchrMsg');
+  if (!rows.length) { msg.textContent='❌ Add at least one teacher'; msg.style.color='var(--red)'; return; }
+
+  const teachers = [];
+  let valid = true;
+  rows.forEach((row, i) => {
+    const name  = row.querySelector('.tr-name').value.trim();
+    const email = row.querySelector('.tr-email').value.trim();
+    const pw    = row.querySelector('.tr-pw').value.trim() || 'Matric'+Math.floor(1000+Math.random()*9000)+'!';
+    const subjects = Array.from(row.querySelectorAll('.tr-subjects input:checked')).map(c=>c.value);
+    if (!name || !email) { valid=false; msg.textContent=`❌ Teacher ${i+1}: name and email required`; msg.style.color='var(--red)'; }
+    else teachers.push({name, email, password:pw, subjects});
+  });
+  if (!valid) return;
+
+  msg.textContent='Saving teachers…'; msg.style.color='var(--text3)';
+
+  // Save each teacher to subject_teachers with class_id=null (pool of available teachers)
+  let saved=0, failed=0, results=[];
+  for (const t of teachers) {
+    // Check if already in ONBOARDED (avoid duplicates by email)
+    const existing = ONBOARDED_TEACHERS.find(x => x.email.toLowerCase() === t.email.toLowerCase());
+    if (existing) { Object.assign(existing, t); results.push({...t, status:'updated'}); saved++; continue; }
+
+    const r = await fetch(SUPA_URL+'/rest/v1/subject_teachers', {
+      method:'POST',
+      headers:{...H,'Prefer':'return=representation'},
+      body: JSON.stringify({
+        school_id: SCHOOL.id,
+        class_id:  null,
+        name:      t.name,
+        email:     t.email,
+        password:  btoa(t.password),
+        subjects:  t.subjects||[],
+        subject:   t.subjects[0]||null
+      })
+    });
+    if (r.ok || r.status===201) { saved++; results.push({...t, status:'saved'}); ONBOARDED_TEACHERS.push(t); }
+    else { failed++; results.push({...t, status:'failed'}); }
+  }
+
+  if (saved > 0) {
+    let html = `<div style="font-weight:800;color:var(--green)">✅ ${saved} teacher(s) saved!</div>`;
+    html += `<div style="margin-top:8px;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:10px;font-size:.7rem;font-family:'JetBrains Mono',monospace;line-height:2.2">`;
+    results.forEach(t => {
+      const icon = t.status==='failed'?'❌':t.status==='updated'?'🔄':'✅';
+      html += `<div>${icon} <strong>${t.name}</strong> · ${t.email} · 🔑 ${t.password}</div>`;
+    });
+    html += `</div>`;
+    if (saved > 0) html += `<div style="margin-top:10px;font-size:.73rem;font-weight:700;color:var(--primary)">✅ Teachers saved! Now <button onclick="switchPanel(null,'manage-classes')" style="color:var(--primary);font-weight:800;background:none;border:none;cursor:pointer;font-size:.73rem;text-decoration:underline;padding:0">go to Manage Classes →</button> to create your classes.</div>`;
+    msg.innerHTML = html;
+    showToast('✅ '+saved+' teacher(s) saved','success');
+    document.getElementById('tchrRoster').innerHTML='';
+    renderOnboardedPreview();
+    // Show the "Go to Manage Classes" button now that teachers are saved
+    const goBtn = document.getElementById('goToClassesBtn');
+    if (goBtn) goBtn.style.display='';
+    await loadData();
+  } else {
+    msg.textContent='❌ Failed to save teachers'; msg.style.color='var(--red)';
+  }
+}
+
+// Legacy stub kept to avoid errors if called elsewhere
+function addAssignmentRow() {}
+function updateAssignmentCount() {}
+function addExtraTeacherRow() {}
+
+// ── Edit Teachers Modal (ETM) ─────────────────────────────────
+var etmClassId = null;
+
+function openEditTeachersModal(classId) {
+  etmClassId = classId;
+  const c = CLASSES.find(x => x.id === classId);
+  if (!c) return;
+
+  document.getElementById('etmTitle').textContent    = 'Edit Teachers — Grade '+c.grade+(c.division||'');
+  document.getElementById('etmSubTitle').textContent = c.teacher_name ? '👑 Current main: '+c.teacher_name : 'No main teacher assigned';
+  document.getElementById('etmMsg').textContent      = '';
+
+  // Populate main teacher dropdown
+  const mainSel = document.getElementById('etmMainSelect');
+  mainSel.innerHTML = '<option value="">— Select main teacher —</option>';
+  ONBOARDED_TEACHERS.forEach((t, i) => {
+    const subjs = t.subjects && t.subjects.length ? t.subjects.join(', ') : 'General';
+    const opt = document.createElement('option');
+    opt.value = i;
+    opt.textContent = t.name + ' (' + subjs + ')';
+    // Pre-select if this teacher is the current main
+    if (c.teacher_email && t.email.toLowerCase() === c.teacher_email.toLowerCase()) opt.selected = true;
+    mainSel.appendChild(opt);
+  });
+
+  // Update info when main selection changes
+  mainSel.onchange = function() {
+    const t = ONBOARDED_TEACHERS[parseInt(this.value)];
+    document.getElementById('etmMainInfo').textContent = t ? '📧 '+t.email : '';
+    populateEtmSubjCheckboxes(classId);
+  };
+  const selT = ONBOARDED_TEACHERS[parseInt(mainSel.value)];
+  document.getElementById('etmMainInfo').textContent = selT ? '📧 '+selT.email : '';
+
+  // Populate subject teacher checkboxes
+  populateEtmSubjCheckboxes(classId);
+
+  document.getElementById('editTeachersModal').style.display = 'flex';
+}
+
+function populateEtmSubjCheckboxes(classId) {
+  const box = document.getElementById('etmSubjCheckboxes');
+  if (!box) return;
+  const currentSubjTchrs = allSubjectTeachers.filter(t => t.class_id === classId);
+  const mainIdx = document.getElementById('etmMainSelect')?.value;
+  const mainT = mainIdx !== '' ? ONBOARDED_TEACHERS[parseInt(mainIdx)] : null;
+
+  if (!ONBOARDED_TEACHERS.length) {
+    box.innerHTML = '<div style="grid-column:1/-1;font-size:.72rem;color:var(--text3);font-style:italic">No teachers in pool. Add teachers in Add People first.</div>';
+    return;
+  }
+  box.innerHTML = ONBOARDED_TEACHERS.map((t, i) => {
+    const subjs = t.subjects && t.subjects.length ? t.subjects.join(', ') : 'General';
+    const isMain = mainT && mainT.email && t.email.toLowerCase() === mainT.email.toLowerCase();
+    const isCurrentSubj = currentSubjTchrs.some(x => x.email.toLowerCase() === t.email.toLowerCase());
+    return `<label class="subj-tchr-label${isMain?' st-main':''}" style="display:flex;align-items:flex-start;gap:7px;padding:8px 10px;border-radius:8px;background:${isMain?'var(--primary-dim)':'var(--surface)'};border:1.5px solid ${isMain?'var(--primary)':'var(--border)'};cursor:${isMain?'not-allowed':'pointer'};font-size:.75rem;transition:all .15s;opacity:${isMain?'0.6':'1'}">
+      <input type="checkbox" value="${i}" class="etm-subj-cb" style="accent-color:var(--primary);margin-top:2px;flex-shrink:0" ${isMain?'disabled checked':isCurrentSubj?'checked':''}>
+      <span><strong style="color:var(--text)">${t.name}</strong>${isMain?' <span style="font-size:.6rem;color:var(--primary);font-weight:800">MAIN</span>':''}<br><span style="color:var(--text3)">${subjs}</span></span>
+    </label>`;
+  }).join('');
+}
+
+function closeEditTeachersModal() {
+  document.getElementById('editTeachersModal').style.display = 'none';
+  etmClassId = null;
+}
+
+async function saveEditTeachers() {
+  const msg = document.getElementById('etmMsg');
+  if (!etmClassId) return;
+  const c = CLASSES.find(x => x.id === etmClassId);
+  if (!c) return;
+
+  msg.textContent = 'Saving…'; msg.style.color = 'var(--text3)';
+
+  const mainIdx = document.getElementById('etmMainSelect').value;
+  const mainT   = mainIdx !== '' ? ONBOARDED_TEACHERS[parseInt(mainIdx)] : null;
+
+  // 1. Update the class record with new main teacher (if changed)
+  if (mainT) {
+    const pw = mainT.password || 'Matric'+Math.floor(1000+Math.random()*9000)+'!';
+    const ok = await sbPatch('school_classes?id=eq.'+etmClassId, {
+      teacher_name:     mainT.name,
+      teacher_email:    mainT.email,
+      teacher_password: btoa(pw)
+    });
+    if (!ok) { msg.textContent = '❌ Failed to update main teacher'; msg.style.color='var(--red)'; return; }
+  }
+
+  // 2. Remove all current subject_teacher rows for this class
+  try {
+    await fetch(SUPA_URL+'/rest/v1/subject_teachers?school_id=eq.'+SCHOOL.id+'&class_id=eq.'+etmClassId, {
+      method: 'DELETE', headers: H
+    });
+  } catch(e) { /* continue */ }
+
+  // 3. Re-insert checked subject teachers (excluding main)
+  const checkedIdxs = Array.from(document.querySelectorAll('.etm-subj-cb:checked'))
+    .map(cb => parseInt(cb.value))
+    .filter(i => mainT ? ONBOARDED_TEACHERS[i]?.email?.toLowerCase() !== mainT.email?.toLowerCase() : true);
+
+  let added = 0;
+  for (const i of checkedIdxs) {
+    const t = ONBOARDED_TEACHERS[i];
+    if (!t) continue;
+    const xr = await fetch(SUPA_URL+'/rest/v1/subject_teachers', {
+      method: 'POST',
+      headers: {...H, 'Content-Type':'application/json', 'Prefer':'return=minimal'},
+      body: JSON.stringify({
+        school_id: SCHOOL.id,
+        class_id:  etmClassId,
+        name:      t.name,
+        email:     t.email,
+        password:  t.password ? btoa(t.password) : null,
+        subject:   t.subjects && t.subjects[0] ? t.subjects[0] : null,
+        subjects:  t.subjects || []
+      })
+    });
+    if (xr.ok || xr.status === 201) added++;
+  }
+
+  msg.innerHTML = `<span style="color:var(--green);font-weight:800">✅ Teachers updated!</span> ${mainT?'Main: '+mainT.name+'.':''} ${added} subject teacher(s) assigned.`;
+  showToast('✅ Class teachers updated', 'success');
+  await loadData();
+  setTimeout(closeEditTeachersModal, 1800);
+}
+
+// ── Add Single Student ───────────────────────────────────────────
+async function addStudent() {
+  const name = document.getElementById('stuName').value.trim();
+  const grade = document.getElementById('stuGrade').value;
+  const classId = document.getElementById('stuClass').value;
+  const stuNum = document.getElementById('stuNum').value.trim();
+  const msg = document.getElementById('stuMsg');
+  if (!name) { msg.textContent = '❌ Student name required'; msg.style.color='var(--red)'; return; }
+  const school_prefix = (SCHOOL.name||'SCH').replace(/[^a-zA-Z]/g,'').toUpperCase().slice(0,3);
+  const username = stuNum || (school_prefix + String(Date.now()).slice(-5) + Math.floor(10+Math.random()*90));
+  const pw = document.getElementById('stuPw').value.trim() || 'Matric'+Math.floor(1000+Math.random()*9000)+'!';
+  msg.textContent = 'Creating…'; msg.style.color='var(--text3)';
+  const data = {school_id:SCHOOL.id, student_number:username, full_username:username, display_name:name, grade:parseInt(grade)||12, class_id:classId||null, preset_password:btoa(pw), registered:false};
+  try {
+    const r = await fetch(SUPA_URL+'/rest/v1/school_students', {
+      method:'POST',
+      headers:{...H,'Content-Type':'application/json','Prefer':'return=minimal'},
+      body:JSON.stringify(data)
+    });
+    if (r.ok || r.status===201) {
+      msg.innerHTML = '✅ Account created!<br>👤 Student number: <strong>'+username+'</strong><br>🔑 Password: <strong>'+pw+'</strong>';
+      msg.style.color='var(--green)';
+      showToast('✅ '+name+' added','success');
+      document.getElementById('stuName').value='';
+      document.getElementById('stuNum').value='';
+      document.getElementById('stuPw').value='';
+      await loadData();
+    } else {
+      const errTxt = await r.text().catch(()=>'');
+      if (r.status===409) msg.textContent='❌ Student number already exists — try a different one';
+      else if (r.status===403) msg.textContent='❌ Permission denied (403)';
+      else msg.textContent='❌ Error '+r.status+': '+errTxt.slice(0,200);
+      msg.style.color='var(--red)';
+    }
+  } catch(e) { msg.textContent='❌ Network error: '+e.message; msg.style.color='var(--red)'; }
+}
+
+// ── Bulk Add Students ─────────────────────────────────────────────
+document.getElementById('bulkNames')?.addEventListener('input', function() {
+  const names = this.value.split('\n').filter(n => n.trim().length > 1);
+  document.getElementById('bulkCount').textContent = names.length + ' student' + (names.length!==1?'s':'') + ' entered';
+});
+
+async function bulkAddStudents() {
+  const namesRaw = document.getElementById('bulkNames').value;
+  const grade = document.getElementById('bulkGrade').value;
+  const classId = document.getElementById('bulkClass').value;
+  const bulkPw = document.getElementById('bulkPw').value.trim() || 'Matric2025!';
+  const prefix = document.getElementById('bulkPrefix').value.trim().toUpperCase() ||
+    (SCHOOL.name||'SCH').replace(/[^a-zA-Z]/g,'').toUpperCase().slice(0,3);
+  const names = namesRaw.split('\n').map(n => n.trim()).filter(n => n.length > 1);
+  if (!names.length) { showToast('Enter at least one student name','error'); return; }
+  if (!classId) { showToast('Please select a class','error'); return; }
+  // Show progress
+  const prog = document.getElementById('bulkProgress');
+  const progBar = document.getElementById('bulkProgressBar');
+  const progLabel = document.getElementById('bulkProgressLabel');
+  const result = document.getElementById('bulkResult');
+  prog.style.display = 'block';
+  result.innerHTML = '';
+  let success = 0, failed = 0;
+  const created = [];
+  for (let i = 0; i < names.length; i++) {
+    const name = names[i];
+    progLabel.textContent = `Adding ${i+1} of ${names.length}: ${name}…`;
+    progBar.style.width = Math.round((i/names.length)*100)+'%';
+    const num = String(i+1).padStart(3,'0');
+    const username = prefix + num + '_' + name.replace(/[^a-zA-Z]/g,'').toLowerCase().slice(0,4);
+    const data = {
+      school_id: SCHOOL.id,
+      student_number: username,
+      full_username: username,
+      display_name: name,
+      grade: parseInt(grade)||12,
+      class_id: classId||null,
+      preset_password: btoa(bulkPw),
+      registered: false
+    };
+    const res = await sbPost('school_students', data);
+    if (res) { success++; created.push({name, username, pw: bulkPw}); }
+    else failed++;
+    await new Promise(r => setTimeout(r, 80)); // small delay to avoid rate limiting
+  }
+  progBar.style.width = '100%';
+  progLabel.textContent = `Done! ${success} added${failed>0?' · '+failed+' failed':''}`;
+  // Show results table
+  let html = `<div style="font-size:.78rem;font-weight:800;color:var(--green);margin-bottom:10px">✅ ${success} students added${failed>0?` · <span style="color:var(--red)">${failed} failed</span>`:''}</div>`;
+  if (created.length) {
+    html += `<div style="font-size:.72rem;color:var(--text3);margin-bottom:8px">Share these login details with students:</div>`;
+    html += `<div style="background:var(--bg);border:1px solid var(--border);border-radius:9px;padding:10px;font-family:'JetBrains Mono',monospace;font-size:.68rem;line-height:2;max-height:200px;overflow-y:auto">`;
+    created.forEach(s => {
+      html += `<div><strong>${s.name}</strong> — Student#: ${s.username} · Password: ${s.pw}</div>`;
+    });
+    html += '</div>';
+    html += `<button class="btn btn-ghost btn-sm" style="margin-top:8px" onclick="copyCredentials()">📋 Copy All Credentials</button>`;
+    window._lastBulkCreated = created;
+  }
+  result.innerHTML = html;
+  if (success > 0) { await loadData(); document.getElementById('bulkNames').value=''; document.getElementById('bulkCount').textContent='0 students entered'; }
+}
+
+function copyCredentials() {
+  if (!window._lastBulkCreated) return;
+  const text = window._lastBulkCreated.map(s => `${s.name} | Student#: ${s.username} | Password: ${s.pw}`).join('\n');
+  navigator.clipboard.writeText(text).then(() => showToast('📋 Credentials copied!','success'));
+}
+
+function downloadTemplate() {
+  const csv = 'Name\nThabo Mokoena\nAmahle Nkosi\nKeanu Pietersen\nSipho Ndlovu\nNomvula Sithole';
+  const blob = new Blob([csv], {type:'text/csv'});
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+  a.download = 'student-import-template.csv'; a.click();
+}
+
+function importCSV(input) {
+  const file = input.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    const lines = e.target.result.split('\n').map(l=>l.trim()).filter(Boolean);
+    // Skip header row if it looks like a header
+    const data = lines.filter(l => !/^name$/i.test(l));
+    document.getElementById('bulkNames').value = data.join('\n');
+    document.getElementById('bulkCount').textContent = data.length + ' students imported from CSV';
+    showToast('✅ '+data.length+' names imported','success');
+  };
+  reader.readAsText(file);
+}
+
+// ── Announcements ─────────────────────────────────────────────
+async function loadAnnouncements() {
+  const list = document.getElementById('annList');
+  if (!list) return;
+  let anns = []; try { anns = JSON.parse(localStorage.getItem('ma_school_anns')||'[]'); } catch(e){}
+  if (!anns.length) { list.innerHTML = '<div class="empty-state"><div class="empty-state-icon">📢</div><div class="empty-state-title">No announcements yet</div></div>'; return; }
+  list.innerHTML = anns.slice(0,6).map(a =>
+    `<div style="background:var(--bg);border:1px solid var(--border);border-radius:9px;padding:12px;margin-bottom:8px">
+      <div style="font-size:.8rem;font-weight:700;color:var(--text);margin-bottom:3px">${a.title}</div>
+      <div style="font-size:.63rem;color:var(--text3);font-family:'JetBrains Mono',monospace;margin-bottom:6px">${a.target} · ${a.date}</div>
+      <div style="font-size:.75rem;color:var(--text2)">${a.body}</div>
+    </div>`).join('');
+}
+async function sendAnnouncement() {
+  const title = document.getElementById('annTitle').value.trim();
+  const body = document.getElementById('annBody').value.trim();
+  const target = document.getElementById('annTarget').value;
+  if (!title || !body) { showToast('Title and message required','error'); return; }
+  let anns = []; try { anns = JSON.parse(localStorage.getItem('ma_school_anns')||'[]'); } catch(e){}
+  anns.unshift({title,body,target,date:new Date().toLocaleDateString()});
+  localStorage.setItem('ma_school_anns', JSON.stringify(anns));
+  document.getElementById('annTitle').value=''; document.getElementById('annBody').value='';
+  showToast('📢 Announcement sent!','success');
+  loadAnnouncements();
+}
+
+function setInviteTab(btn, formId) {
+  document.querySelectorAll('.invite-tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  ['teacher-form','student-form','bulk-form'].forEach(id => { const el = document.getElementById(id); if(el) el.style.display = id===formId?'block':'none'; });
+  // Populate class dropdowns based on current grade selection
+  if (formId==='student-form') filterClassesByGrade('stuClass', document.getElementById('stuGrade').value);
+  if (formId==='bulk-form') filterClassesByGrade('bulkClass', document.getElementById('bulkGrade').value);
+  if (formId==='teacher-form') {
+    // Init with one empty assignment row if none exist
+    const container = document.getElementById('tchrAssignments');
+    if (container && container.children.length === 0) addAssignmentRow();
+  }
+}
+
+function exportTeachers() { showToast('📥 Export feature coming soon'); }
+function saveSettings() {
+  showToast('✅ Settings saved','success');
+}
+function updateColor(color) {
+  document.documentElement.style.setProperty('--primary', color);
+  showToast('🎨 Colour updated');
+}
+
+// ── loadClasses ── (called by the Refresh button in Classes panel)
+function loadClasses() {
+  renderClasses();
+  renderManageClasses();
+  showToast('✅ Classes refreshed');
+}
+
+// ── Init ──────────────────────────────────────────────────────
+init();
+</script>
+
+<!-- ══════════════ TEACHER EDIT MODAL ══════════════ -->
+<div id="teacherModal" style="display:none;position:fixed;inset:0;z-index:9000;background:rgba(15,23,41,.6);backdrop-filter:blur(4px);align-items:center;justify-content:center;padding:20px">
+  <div style="background:var(--surface);border-radius:18px;padding:24px;width:100%;max-width:500px;box-shadow:0 20px 60px rgba(0,0,0,.2);animation:fadeUp .2s ease">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px">
+      <div>
+        <div style="font-family:'Outfit',sans-serif;font-size:1rem;font-weight:800;color:var(--text)" id="teacherModalTitle">Edit Teacher</div>
+        <div style="font-size:.72rem;color:var(--text3);margin-top:2px" id="teacherModalSub"></div>
+      </div>
+      <button onclick="closeTeacherModal()" style="width:32px;height:32px;border-radius:8px;background:var(--bg);border:1px solid var(--border);font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--text3)">✕</button>
+    </div>
+    <input type="hidden" id="tmClassId">
+    <div class="ff"><label>Teacher Full Name</label><input type="text" id="tmName" placeholder="e.g. Mr T. Khumalo"></div>
+    <div class="ff"><label>Teacher Email</label><input type="email" id="tmEmail" placeholder="teacher@school.co.za"></div>
+    <div class="ff"><label>New Password <span style="color:var(--text4);font-weight:400">(leave blank to keep current)</span></label><input type="text" id="tmPw" placeholder="Leave blank to keep current password"></div>
+    <div class="ff"><label>Assign to Different Class</label>
+      <select id="tmNewClass">
+        <option value="">— Keep in current class —</option>
+      </select>
+    </div>
+    <div style="background:var(--orange-dim);border:1px solid rgba(217,119,6,.2);border-radius:9px;padding:10px 12px;font-size:.75rem;color:var(--orange);margin-bottom:16px" id="tmWarning" style="display:none"></div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <button class="btn btn-primary" onclick="saveTeacherChanges()" style="flex:1">✓ Save Changes</button>
+      <button class="btn" onclick="removeTeacherFromClass()" style="background:var(--red-dim);border:1px solid rgba(220,38,38,.2);color:var(--red)">🚫 Remove Teacher</button>
+    </div>
+    <div id="tmMsg" style="margin-top:10px;font-size:.75rem;font-weight:700"></div>
+  </div>
+</div>
+
+<!-- ══════════════ STUDENT MIGRATE MODAL ══════════════ -->
+<div id="migrateModal" style="display:none;position:fixed;inset:0;z-index:9000;background:rgba(15,23,41,.6);backdrop-filter:blur(4px);align-items:center;justify-content:center;padding:20px">
+  <div style="background:var(--surface);border-radius:18px;padding:24px;width:100%;max-width:600px;box-shadow:0 20px 60px rgba(0,0,0,.2);max-height:90vh;overflow-y:auto;animation:fadeUp .2s ease">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
+      <div>
+        <div style="font-family:'Outfit',sans-serif;font-size:1rem;font-weight:800;color:var(--text)">Migrate Students</div>
+        <div style="font-size:.72rem;color:var(--text3);margin-top:2px">Move students to a new grade or class</div>
+      </div>
+      <button onclick="closeMigrateModal()" style="width:32px;height:32px;border-radius:8px;background:var(--bg);border:1px solid var(--border);font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--text3)">✕</button>
+    </div>
+
+    <!-- Migrate type tabs -->
+    <div style="display:flex;gap:0;border-bottom:1px solid var(--border);margin-bottom:16px">
+      <button class="mig-tab active" data-tab="promote" onclick="setMigTab(this,'promote')" style="padding:9px 16px;font-size:.8rem;font-weight:700;color:var(--primary);background:none;border:none;border-bottom:2.5px solid var(--primary);cursor:pointer">🎓 Promote Grade</button>
+      <button class="mig-tab" data-tab="move" onclick="setMigTab(this,'move')" style="padding:9px 16px;font-size:.8rem;font-weight:700;color:var(--text3);background:none;border:none;border-bottom:2.5px solid transparent;cursor:pointer">🔀 Move to Class</button>
+      <button class="mig-tab" data-tab="graduate" onclick="setMigTab(this,'graduate')" style="padding:9px 16px;font-size:.8rem;font-weight:700;color:var(--text3);background:none;border:none;border-bottom:2.5px solid transparent;cursor:pointer">🏆 Graduate (Grade 12)</button>
+    </div>
+
+    <!-- PROMOTE TAB -->
+    <div id="mig-promote" class="mig-section">
+      <div style="background:var(--blue-dim);border:1px solid rgba(27,79,216,.2);border-radius:9px;padding:12px;font-size:.78rem;color:var(--primary);margin-bottom:14px;line-height:1.6">
+        📋 Promotes all students from one grade to the next (10→11 or 11→12) and automatically assigns them to the target class division.
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px">
+        <div class="ff"><label>From Grade *</label>
+          <select id="promFromGrade" onchange="loadPromoteOptions()">
+            <option value="10">Grade 10</option><option value="11">Grade 11</option>
+          </select>
+        </div>
+        <div class="ff"><label>From Class</label>
+          <select id="promFromClass"><option value="">All classes in grade</option></select>
+        </div>
+        <div class="ff"><label>To Grade *</label><input type="text" id="promToGrade" readonly style="background:var(--bg3);cursor:not-allowed"></div>
+        <div class="ff"><label>To Class *</label>
+          <select id="promToClass"><option value="">— Select target class —</option></select>
+        </div>
+      </div>
+      <div id="promStudentCount" style="font-size:.78rem;color:var(--text3);margin-bottom:14px"></div>
+      <button class="btn btn-primary" onclick="promoteStudents()">🎓 Promote Students →</button>
+    </div>
+
+    <!-- MOVE TAB -->
+    <div id="mig-move" class="mig-section" style="display:none">
+      <div style="background:var(--blue-dim);border:1px solid rgba(27,79,216,.2);border-radius:9px;padding:12px;font-size:.78rem;color:var(--primary);margin-bottom:14px;line-height:1.6">
+        🔀 Move specific students from one class to another (same or different grade). Good for when a student changes class or repeats a year.
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px">
+        <div class="ff"><label>From Class *</label>
+          <select id="moveFromClass" onchange="loadMoveStudents()"><option value="">— Select source class —</option></select>
+        </div>
+        <div class="ff"><label>To Class *</label>
+          <select id="moveToClass"><option value="">— Select target class —</option></select>
+        </div>
+      </div>
+      <div class="ff"><label>Select Students to Move</label>
+        <div id="moveStudentList" style="background:var(--bg);border:1.5px solid var(--border2);border-radius:9px;padding:10px;max-height:200px;overflow-y:auto">
+          <div style="font-size:.78rem;color:var(--text3)">Select a source class first</div>
+        </div>
+      </div>
+      <div style="display:flex;gap:8px;margin-bottom:14px">
+        <button class="btn btn-ghost btn-sm" onclick="selectAllMoveStudents(true)">Select All</button>
+        <button class="btn btn-ghost btn-sm" onclick="selectAllMoveStudents(false)">Deselect All</button>
+        <span id="moveSelCount" style="font-size:.75rem;color:var(--text3);display:flex;align-items:center">0 selected</span>
+      </div>
+      <button class="btn btn-primary" onclick="moveStudents()">🔀 Move Selected Students →</button>
+    </div>
+
+    <!-- GRADUATE TAB -->
+    <div id="mig-graduate" class="mig-section" style="display:none">
+      <div style="background:var(--green-dim);border:1px solid rgba(5,150,105,.2);border-radius:9px;padding:12px;font-size:.78rem;color:var(--green);margin-bottom:14px;line-height:1.6">
+        🏆 Graduates Grade 12 students at the end of the year. Their accounts remain active but are marked as graduated and removed from active class rosters.
+      </div>
+      <div class="ff"><label>Which class to graduate</label>
+        <select id="gradClass"><option value="all_grade12">All Grade 12 students</option></select>
+      </div>
+      <div id="gradStudentCount" style="font-size:.78rem;color:var(--text3);margin-bottom:14px"></div>
+      <div style="background:var(--red-dim);border:1px solid rgba(220,38,38,.2);border-radius:9px;padding:10px 12px;font-size:.75rem;color:var(--red);margin-bottom:14px">
+        ⚠️ This will mark students as <strong>graduated</strong> and remove them from class rosters. Their accounts and progress data are kept.
+      </div>
+      <button class="btn" onclick="graduateStudents()" style="background:var(--green);color:#fff;border:none;padding:9px 18px;border-radius:9px;font-weight:700;cursor:pointer;font-family:inherit">🏆 Graduate Selected Class</button>
+    </div>
+
+    <div id="migMsg" style="margin-top:14px;font-size:.78rem;font-weight:700;line-height:1.8"></div>
+  </div>
+</div>
+
+<style>
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+.mig-tab{transition:all .15s}
+</style>
+
+</body>
+</html>
