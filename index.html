@@ -4080,5 +4080,110 @@ function showPage(id) {
 }
 </script>
 
+
+<!-- ══════════════════════════════════════════
+     FREE SAMPLE QUESTIONS — visible to Google
+══════════════════════════════════════════ -->
+<style>
+.sp-section { background:#0d0d18; padding:72px 24px 88px; }
+.sp-wrap { max-width:860px; margin:0 auto; }
+.sp-eyebrow { font-size:.62rem; font-weight:900; letter-spacing:2.5px; text-transform:uppercase; color:#ffb612; margin-bottom:12px; text-align:center; }
+.sp-h2 { font-family:'Bebas Neue',cursive; font-size:clamp(1.8rem,4vw,2.8rem); letter-spacing:2px; text-align:center; margin-bottom:10px; color:#fff; }
+.sp-sub { text-align:center; color:rgba(255,255,255,.6); font-size:.92rem; max-width:540px; margin:0 auto 44px; line-height:1.7; }
+.sp-card { background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.1); border-radius:14px; padding:22px; margin-bottom:16px; }
+.sp-label { font-size:.6rem; font-weight:900; letter-spacing:1.5px; text-transform:uppercase; margin-bottom:8px; }
+.sp-q { font-size:.95rem; font-weight:700; color:#fff; margin-bottom:16px; line-height:1.5; }
+.sp-opts { display:flex; flex-direction:column; gap:8px; }
+.sp-btn { padding:10px 14px; border-radius:8px; font-size:.85rem; color:rgba(255,255,255,.75); background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.1); cursor:pointer; text-align:left; font-family:inherit; transition:all .15s; }
+.sp-btn:hover { border-color:rgba(255,182,18,.4); background:rgba(255,182,18,.07); color:#fff; }
+.sp-btn.correct { background:rgba(5,150,105,.15); border-color:#059669; color:#6ee7b7; }
+.sp-btn.wrong { background:rgba(220,38,38,.12); border-color:#dc2626; color:#fca5a5; }
+.sp-exp { margin-top:12px; padding:10px 14px; background:rgba(5,150,105,.1); border-radius:8px; font-size:.82rem; color:#6ee7b7; display:none; line-height:1.6; }
+.sp-cta { text-align:center; margin-top:36px; }
+.sp-cta p { color:rgba(255,255,255,.5); font-size:.85rem; margin-bottom:16px; }
+.sp-cta-btn { display:inline-flex; align-items:center; gap:8px; background:#ffb612; color:#000; font-weight:900; font-size:.9rem; padding:13px 28px; border-radius:10px; border:none; cursor:pointer; font-family:inherit; }
+</style>
+
+<section class="sp-section" aria-label="Free practice questions">
+  <div class="sp-wrap">
+    <div class="sp-eyebrow">📝 Free Practice Questions</div>
+    <h2 class="sp-h2">Try Real CAPS Questions — Free</h2>
+    <p class="sp-sub">These are real Grade 12 CAPS-aligned questions from our question bank. No login required — click an answer to see the full explanation.</p>
+
+    <div class="sp-card">
+      <div class="sp-label" style="color:#4b9fff">Mathematics · Grade 12 · Functions (2 marks)</div>
+      <div class="sp-q">The axis of symmetry of f(x) = x² − 6x + 5 is:</div>
+      <div class="sp-opts">
+        <button class="sp-btn" onclick="spAns(this,true,'sp-e1')">A. x = 3</button>
+        <button class="sp-btn" onclick="spAns(this,false,'sp-e1')">B. x = −3</button>
+        <button class="sp-btn" onclick="spAns(this,false,'sp-e1')">C. x = 5</button>
+        <button class="sp-btn" onclick="spAns(this,false,'sp-e1')">D. x = 6</button>
+      </div>
+      <div class="sp-exp" id="sp-e1">✅ Axis of symmetry: x = −b/2a = −(−6)/2(1) = 6/2 = <strong>3</strong>. This is the vertical line that divides the parabola into two equal halves. It also gives the x-coordinate of the turning point.</div>
+    </div>
+
+    <div class="sp-card">
+      <div class="sp-label" style="color:#10b981">Life Sciences · Grade 12 · Cell Division (2 marks)</div>
+      <div class="sp-q">Meiosis differs from mitosis in that meiosis produces:</div>
+      <div class="sp-opts">
+        <button class="sp-btn" onclick="spAns(this,false,'sp-e2')">A. 2 genetically identical diploid cells</button>
+        <button class="sp-btn" onclick="spAns(this,true,'sp-e2')">B. 4 genetically unique haploid cells</button>
+        <button class="sp-btn" onclick="spAns(this,false,'sp-e2')">C. 2 genetically unique haploid cells</button>
+        <button class="sp-btn" onclick="spAns(this,false,'sp-e2')">D. 4 genetically identical diploid cells</button>
+      </div>
+      <div class="sp-exp" id="sp-e2">✅ Meiosis undergoes two divisions to produce <strong>4 haploid (n) gametes</strong> that are genetically unique due to crossing over and independent assortment. Mitosis produces 2 identical diploid cells for growth and repair.</div>
+    </div>
+
+    <div class="sp-card">
+      <div class="sp-label" style="color:#00c87a">Accounting · Grade 12 · Ratios (2 marks)</div>
+      <div class="sp-q">The ideal current ratio for a healthy business is:</div>
+      <div class="sp-opts">
+        <button class="sp-btn" onclick="spAns(this,false,'sp-e3')">A. 1:1</button>
+        <button class="sp-btn" onclick="spAns(this,true,'sp-e3')">B. 2:1</button>
+        <button class="sp-btn" onclick="spAns(this,false,'sp-e3')">C. 3:1</button>
+        <button class="sp-btn" onclick="spAns(this,false,'sp-e3')">D. 0.5:1</button>
+      </div>
+      <div class="sp-exp" id="sp-e3">✅ Current ratio = Current Assets ÷ Current Liabilities. The ideal is <strong>2:1</strong> — meaning the business can pay all short-term debts twice over. Below 1:1 signals serious liquidity problems.</div>
+    </div>
+
+    <div class="sp-card">
+      <div class="sp-label" style="color:#a78bfa">Physical Sciences · Grade 12 · Newton's Laws (3 marks)</div>
+      <div class="sp-q">A 5 kg box accelerates at 3 m/s². The net force acting on it is:</div>
+      <div class="sp-opts">
+        <button class="sp-btn" onclick="spAns(this,true,'sp-e4')">A. 15 N</button>
+        <button class="sp-btn" onclick="spAns(this,false,'sp-e4')">B. 8 N</button>
+        <button class="sp-btn" onclick="spAns(this,false,'sp-e4')">C. 1.67 N</button>
+        <button class="sp-btn" onclick="spAns(this,false,'sp-e4')">D. 0.6 N</button>
+      </div>
+      <div class="sp-exp" id="sp-e4">✅ Newton's 2nd Law: Fnet = ma = 5 × 3 = <strong>15 N</strong>. Always identify mass (kg) and acceleration (m/s²) first, then multiply. The unit of force is the Newton (N) = kg·m/s².</div>
+    </div>
+
+    <div class="sp-cta">
+      <p>MatricAce has 1 000+ questions like these for Grade 10, 11 and 12 — with AI explanations for every answer.</p>
+      <button class="sp-cta-btn" onclick="window.open('MatricAce_SA_Ultimate_v7.html','_blank')">🚀 Practice Free — No Login Required</button>
+    </div>
+  </div>
+</section>
+
+<script>
+function spAns(btn, isCorrect, expId) {
+  var box = btn.closest('.sp-card');
+  box.querySelectorAll('.sp-btn').forEach(function(b){ b.disabled = true; b.style.opacity = '0.65'; });
+  btn.style.opacity = '1';
+  if (isCorrect) {
+    btn.classList.add('correct');
+  } else {
+    btn.classList.add('wrong');
+    box.querySelectorAll('.sp-btn').forEach(function(b){
+      if (b.getAttribute('onclick') && b.getAttribute('onclick').includes('true')) {
+        b.classList.add('correct'); b.style.opacity = '1';
+      }
+    });
+  }
+  var exp = document.getElementById(expId);
+  if (exp) exp.style.display = 'block';
+}
+</script>
+
 </body>
 </html>
