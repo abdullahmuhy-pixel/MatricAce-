@@ -1,0 +1,22 @@
+User-agent: *
+Allow: /
+Allow: /index.html
+Allow: /about.html
+Allow: /privacy.html
+Allow: /terms.html
+Allow: /contact.html
+Allow: /blog.html
+Allow: /blog-pomodoro-technique.html
+Allow: /blog-mathematics-guide.html
+Allow: /blog-nsc-pass-requirements.html
+Allow: /blog-physical-sciences-guide.html
+Allow: /blog-exam-timetable.html
+
+# App requires authentication — do not index
+Disallow: /MatricAce_SA_Ultimate_v7.html
+Disallow: /teacher.html
+Disallow: /subject-teacher.html
+Disallow: /school-admin.html
+Disallow: /super-admin.html
+
+Sitemap: https://www.matricace.co.za/sitemap.xml
