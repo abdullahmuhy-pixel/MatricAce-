@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="robots" content="index, follow">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contact Us — MatricAce SA | Get in Touch</title>
+<meta name="description" content="Contact MatricAce SA — reach our support team for help with the app, school partnerships, billing questions, or general enquiries. We respond within 2 business days.">
+<link rel="canonical" href="https://www.matricace.co.za/contact.html">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.matricace.co.za/contact.html">
+<meta property="og:title" content="Contact MatricAce SA">
+<meta property="og:description" content="Get in touch with the MatricAce SA team for support, school partnerships, or general enquiries.">
+<meta name="twitter:card" content="summary_large_image">
+<meta property="og:image" content="https://www.matricace.co.za/og-image.png">
+<meta name="twitter:image" content="https://www.matricace.co.za/og-image.png">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23007A4D'/><text y='.9em' font-size='70' text-anchor='middle' x='50'>🎓</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --gold: #FFB612;
+  --green: #007A4D;
+  --primary: #1B4FD8;
+  --bg: #0B1220;
+  --bg2: #0F1729;
+  --bg3: #162038;
+  --text: #FFFFFF;
+  --text2: rgba(255,255,255,0.70);
+  --text3: rgba(255,255,255,0.45);
+  --border: rgba(255,255,255,0.08);
+  --radius: 14px;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'DM Sans', -apple-system, sans-serif;
+  background: var(--bg); color: var(--text); line-height: 1.7;
+}
+
+/* NAV */
+nav {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(11,18,32,0.95); backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  padding: 0 24px; display: flex; align-items: center;
+  justify-content: space-between; height: 64px;
+}
+.logo { font-family: 'DM Sans', sans-serif; font-weight: 900; font-size: 1.25rem; color: #fff; text-decoration: none; }
+.logo span { color: var(--gold); }
+.nav-links { display: flex; gap: 28px; list-style: none; }
+.nav-links a { color: var(--text2); text-decoration: none; font-size: .9rem; font-weight: 500; transition: color .2s; }
+.nav-links a:hover, .nav-links a.active { color: #fff; }
+.nav-cta { background: var(--gold); color: #000; border: none; padding: 9px 20px; border-radius: 8px; font-weight: 800; font-size: .85rem; cursor: pointer; text-decoration: none; }
+@media(max-width:600px){ .nav-links { display: none; } }
+
+/* HERO */
+.hero {
+  padding: 72px 24px 56px; text-align: center;
+  background: linear-gradient(135deg, #0B1220 0%, #0F1F3D 50%, #0B1220 100%);
+  border-bottom: 1px solid var(--border);
+  position: relative; overflow: hidden;
+}
+.hero::before {
+  content: ''; position: absolute; inset: 0;
+  background: radial-gradient(ellipse 60% 40% at 50% 0%, rgba(27,79,216,.15), transparent);
+  pointer-events: none;
+}
+.hero-badge {
+  display: inline-block;
+  background: rgba(0,200,122,.1); border: 1px solid rgba(0,200,122,.3);
+  color: #00C87A; font-size: .75rem; font-weight: 700;
+  letter-spacing: 1.5px; text-transform: uppercase;
+  padding: 6px 18px; border-radius: 20px; margin-bottom: 24px;
+}
+.hero h1 {
+  font-family: 'Bebas Neue', cursive;
+  font-size: clamp(2.8rem, 8vw, 4.5rem);
+  letter-spacing: 3px; line-height: 1.05; margin-bottom: 16px;
+}
+.hero h1 .gold { color: var(--gold); }
+.hero p { font-size: 1rem; color: var(--text2); max-width: 520px; margin: 0 auto; }
+
+/* MAIN GRID */
+.main-grid {
+  max-width: 1000px; margin: 0 auto;
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 40px; padding: 64px 24px;
+}
+@media(max-width:720px){ .main-grid { grid-template-columns: 1fr; } }
+
+/* CONTACT CARDS */
+.contact-cards { display: flex; flex-direction: column; gap: 16px; }
+.contact-card {
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 24px;
+  display: flex; align-items: flex-start; gap: 18px;
+  text-decoration: none; transition: border-color .2s, transform .2s;
+}
+.contact-card:hover { border-color: rgba(255,182,18,.4); transform: translateY(-2px); }
+.cc-icon {
+  width: 48px; height: 48px; border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.3rem; flex-shrink: 0;
+}
+.cc-label { font-size: .68rem; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text3); margin-bottom: 4px; }
+.cc-value { font-weight: 700; font-size: 1rem; color: #fff; margin-bottom: 4px; }
+.cc-note { font-size: .78rem; color: var(--text3); }
+
+/* FORM */
+.form-card {
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 32px;
+}
+.form-title { font-weight: 900; font-size: 1.3rem; color: #fff; margin-bottom: 6px; }
+.form-sub { font-size: .85rem; color: var(--text3); margin-bottom: 28px; }
+.field { margin-bottom: 18px; }
+.field label { display: block; font-size: .72rem; font-weight: 700; color: var(--text3); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 7px; }
+.field input, .field select, .field textarea {
+  width: 100%; background: var(--bg3); border: 1px solid var(--border);
+  border-radius: 10px; padding: 12px 14px; color: #fff;
+  font-size: .9rem; font-family: inherit; outline: none;
+  transition: border-color .2s; resize: vertical;
+}
+.field input:focus, .field select:focus, .field textarea:focus {
+  border-color: rgba(255,182,18,.5);
+}
+.field select option { background: #0F1729; }
+.field textarea { min-height: 120px; }
+.submit-btn {
+  width: 100%; padding: 14px; background: var(--gold); color: #000;
+  border: none; border-radius: 12px; font-weight: 900; font-size: 1rem;
+  cursor: pointer; font-family: inherit; transition: transform .15s, box-shadow .15s;
+}
+.submit-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(255,182,18,.3); }
+.form-success {
+  display: none; text-align: center; padding: 24px;
+  background: rgba(5,150,105,.1); border: 1px solid rgba(5,150,105,.3);
+  border-radius: 12px; margin-top: 16px;
+}
+.form-success.show { display: block; }
+.form-success .icon { font-size: 2rem; margin-bottom: 8px; }
+.form-success p { color: #00C87A; font-weight: 700; margin: 0; }
+
+/* FAQ */
+.faq-section {
+  background: var(--bg2); border-top: 1px solid var(--border);
+  padding: 64px 24px;
+}
+.faq-container { max-width: 760px; margin: 0 auto; }
+.eyebrow { font-size: .72rem; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 14px; }
+h2 { font-family: 'Bebas Neue', cursive; font-size: clamp(2rem, 5vw, 3rem); letter-spacing: 2px; line-height: 1.1; margin-bottom: 8px; }
+h2 .gold { color: var(--gold); }
+.faq-list { margin-top: 40px; display: flex; flex-direction: column; gap: 2px; }
+.faq-item { border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+.faq-q {
+  padding: 18px 20px; cursor: pointer; display: flex; align-items: center;
+  justify-content: space-between; font-weight: 700; font-size: .95rem;
+  color: #fff; background: var(--bg3); transition: background .2s;
+  border: none; width: 100%; text-align: left; font-family: inherit;
+}
+.faq-q:hover { background: rgba(255,255,255,.05); }
+.faq-q .arrow { font-size: .8rem; color: var(--gold); transition: transform .2s; flex-shrink: 0; }
+.faq-q.open .arrow { transform: rotate(180deg); }
+.faq-a {
+  display: none; padding: 0 20px 18px; font-size: .88rem;
+  color: var(--text2); line-height: 1.7; background: var(--bg3);
+  border-top: 1px solid var(--border);
+}
+.faq-a.show { display: block; padding-top: 14px; }
+.faq-a a { color: var(--gold); text-decoration: none; }
+
+/* LOCATION */
+.location-section { padding: 64px 24px; }
+.location-container { max-width: 760px; margin: 0 auto; }
+.location-card {
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 32px;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 32px;
+}
+@media(max-width:560px){ .location-card { grid-template-columns: 1fr; gap: 20px; } }
+.loc-item { display: flex; gap: 14px; align-items: flex-start; }
+.loc-icon { font-size: 1.3rem; margin-top: 2px; }
+.loc-label { font-size: .7rem; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; color: var(--text3); margin-bottom: 4px; }
+.loc-value { font-size: .95rem; color: #fff; font-weight: 600; }
+.loc-sub { font-size: .78rem; color: var(--text3); margin-top: 2px; }
+
+/* FOOTER */
+footer {
+  background: #060b14; border-top: 1px solid var(--border);
+  padding: 32px 24px; text-align: center;
+  color: var(--text3); font-size: .82rem;
+}
+footer a { color: var(--text3); text-decoration: none; margin: 0 10px; }
+footer a:hover { color: var(--gold); }
+</style>
+
+<!-- Google AdSense -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9072098748131636" crossorigin="anonymous"></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ContactPage",
+  "name": "Contact MatricAce",
+  "description": "Contact MatricAce for support, school partnerships or data requests.",
+  "url": "https://matricace.co.za/contact.html",
+  "publisher": {"@type": "Organization", "name": "MatricAce", "url": "https://matricace.co.za",
+    "contactPoint": {"@type": "ContactPoint", "email": "support@matricace.co.za", "contactType": "customer support"}}
+}
+</script>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="/" class="logo">Matric<span>Ace</span> SA</a>
+  <ul class="nav-links">
+    <li><a href="/">Home</a></li>
+    <li><a href="/about">About</a></li>
+    <li><a href="/blog.html">Blog</a></li>
+    <li><a href="/contact" class="active">Contact</a></li>
+    <li><a href="/privacy">Privacy</a></li>
+  </ul>
+  <a href="https://matricace.co.za/MatricAce_SA_Ultimate_v7.html" class="nav-cta">Launch App 🚀</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-badge">We respond within 2 business days</div>
+  <h1>Contact <span class="gold">Us</span></h1>
+  <p>Got a question, a problem, or want to bring MatricAce to your school? We'd love to hear from you.</p>
+</section>
+
+<!-- MAIN GRID -->
+<div class="main-grid">
+
+  <!-- CONTACT INFO -->
+  <div class="contact-cards">
+    <a href="mailto:s&#117;pport&#64;matricace.co.za" class="contact-card">
+      <div class="cc-icon" style="background:rgba(255,182,18,.1)">📧</div>
+      <div>
+        <div class="cc-label">General Support</div>
+        <div class="cc-value">s&#117;pport&#64;matricace.co.za</div>
+        <div class="cc-note">For app issues, account help, billing questions</div>
+      </div>
+    </a>
+
+    <a href="mailto:s&#117;pport&#64;matricace.co.za" class="contact-card">
+      <div class="cc-icon" style="background:rgba(27,79,216,.12)">🏫</div>
+      <div>
+        <div class="cc-label">School Partnerships</div>
+        <div class="cc-value">s&#117;pport&#64;matricace.co.za</div>
+        <div class="cc-note">Pricing, onboarding, school demo requests</div>
+      </div>
+    </a>
+
+    <a href="mailto:s&#117;pport&#64;matricace.co.za" class="contact-card">
+      <div class="cc-icon" style="background:rgba(5,150,105,.1)">🔐</div>
+      <div>
+        <div class="cc-label">Privacy &amp; Data (POPIA)</div>
+        <div class="cc-value">s&#117;pport&#64;matricace.co.za</div>
+        <div class="cc-note">Data access, correction or deletion requests</div>
+      </div>
+    </a>
+
+    <a href="https://matricace.co.za/" class="contact-card">
+      <div class="cc-icon" style="background:rgba(124,58,237,.12)">🚀</div>
+      <div>
+        <div class="cc-label">Student App</div>
+        <div class="cc-value">matricace.co.za</div>
+        <div class="cc-note">Free to use — no download required</div>
+      </div>
+    </a>
+
+    <!-- Response time box -->
+    <div style="background:rgba(255,182,18,.06);border:1px solid rgba(255,182,18,.2);border-radius:var(--radius);padding:20px 22px;margin-top:4px">
+      <div style="font-size:.7rem;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold);margin-bottom:8px">Our Response Commitment</div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div style="display:flex;justify-content:space-between;font-size:.85rem">
+          <span style="color:var(--text2)">General enquiries</span>
+          <span style="color:#fff;font-weight:700">2 business days</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;font-size:.85rem">
+          <span style="color:var(--text2)">School partnership</span>
+          <span style="color:#fff;font-weight:700">1 business day</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;font-size:.85rem">
+          <span style="color:var(--text2)">POPIA requests</span>
+          <span style="color:#fff;font-weight:700">10 business days</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;font-size:.85rem">
+          <span style="color:var(--text2)">Technical bugs</span>
+          <span style="color:#fff;font-weight:700">48 hours</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONTACT FORM -->
+  <div class="form-card">
+    <div class="form-title">Send Us a Message</div>
+    <div class="form-sub">Fill in the form and we'll get back to you by email.</div>
+
+    <div id="contactForm">
+      <div class="field">
+        <label>Your Name *</label>
+        <input type="text" id="cf-name" placeholder="e.g. Thabo Molefe" autocomplete="name" required>
+      </div>
+      <div class="field">
+        <label>Email Address *</label>
+        <input type="email" id="cf-email" placeholder="you@email.com" autocomplete="email" required>
+      </div>
+      <div class="field">
+        <label>I am a…</label>
+        <select id="cf-type">
+          <option value="">Select one</option>
+          <option value="student">Student</option>
+          <option value="parent">Parent / Guardian</option>
+          <option value="teacher">Teacher</option>
+          <option value="school">School Administrator</option>
+          <option value="other">Other</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Subject *</label>
+        <select id="cf-subject" required>
+          <option value="">Select a topic</option>
+          <option value="app-help">App / Technical Issue</option>
+          <option value="account">Account or Login</option>
+          <option value="billing">Billing / Premium</option>
+          <option value="school">School Partnership Enquiry</option>
+          <option value="content">Content Feedback</option>
+          <option value="privacy">Privacy / Data Request</option>
+          <option value="other">Other</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Message *</label>
+        <textarea id="cf-message" placeholder="Tell us how we can help..." required></textarea>
+      </div>
+      <button class="submit-btn" onclick="submitContactForm()">Send Message →</button>
+    </div>
+
+    <div class="form-success" id="formSuccess">
+      <div class="icon">✅</div>
+      <p>Message sent! We'll reply to your email within 2 business days.</p>
+    </div>
+  </div>
+</div>
+
+<!-- LOCATION & DETAILS -->
+<section class="location-section">
+  <div class="location-container">
+    <div class="eyebrow">Our Details</div>
+    <h2>Find <span class="gold">Us</span></h2>
+    <div class="location-card" style="margin-top:28px">
+      <div class="loc-item">
+        <div class="loc-icon">📍</div>
+        <div>
+          <div class="loc-label">Location</div>
+          <div class="loc-value">Johannesburg, Gauteng</div>
+          <div class="loc-sub">South Africa</div>
+        </div>
+      </div>
+      <div class="loc-item">
+        <div class="loc-icon">🌐</div>
+        <div>
+          <div class="loc-label">Website</div>
+          <div class="loc-value">www.matricace.co.za</div>
+          <div class="loc-sub">App available in browser</div>
+        </div>
+      </div>
+      <div class="loc-item">
+        <div class="loc-icon">📧</div>
+        <div>
+          <div class="loc-label">Support Email</div>
+          <div class="loc-value"><a href="mailto:s&#117;pport&#64;matricace.co.za">s&#117;pport&#64;matricace.co.za</a></div>
+          <div class="loc-sub">Primary contact for all enquiries</div>
+        </div>
+      </div>
+      <div class="loc-item">
+        <div class="loc-icon">🏢</div>
+        <div>
+          <div class="loc-label">Business</div>
+          <div class="loc-value">MatricAce SA</div>
+          <div class="loc-sub">Operated by Abdullah Muhydeen</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq-section">
+  <div class="faq-container">
+    <div class="eyebrow">Common Questions</div>
+    <h2>Frequently Asked <span class="gold">Questions</span></h2>
+
+    <div class="faq-list">
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          Is MatricAce completely free? <span class="arrow">▼</span>
+        </button>
+        <div class="faq-a">Yes — core features including AI tutoring, MCQ practice, flashcards, and past papers are free to use. A Premium subscription (R69/month) unlocks full mock exams, unlimited AI sessions, and ad-free access. No download or registration is required to get started.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          How do I bring MatricAce to my school? <span class="arrow">▼</span>
+        </button>
+        <div class="faq-a">Email us at <a href="mailto:s&#117;pport&#64;matricace.co.za">s&#117;pport&#64;matricace.co.za</a> or fill in the school partnership form above. We offer discounted group rates for schools with teacher and admin dashboards included. We reply within 1 business day and can do a free 15-minute demo over WhatsApp or video call.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          What subjects does MatricAce cover? <span class="arrow">▼</span>
+        </button>
+        <div class="faq-a">MatricAce covers 27+ NSC subjects across Grade 10, 11 and 12, including Mathematics, Physical Sciences, Life Sciences, Geography, History, Accounting, Business Studies, Economics, English HL, Afrikaans HL, Mathematical Literacy, CAT, IT, Agricultural Sciences, and more — all CAPS-aligned.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          How do I cancel my Premium subscription? <span class="arrow">▼</span>
+        </button>
+        <div class="faq-a">Email <a href="mailto:s&#117;pport&#64;matricace.co.za">s&#117;pport&#64;matricace.co.za</a> with your account email and we'll cancel your subscription immediately. Cancellations take effect at the end of your current billing period.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          How do I access or delete my personal data? <span class="arrow">▼</span>
+        </button>
+        <div class="faq-a">Under POPIA (South Africa's data protection law), you have the right to access, correct, or delete your personal information. Email <a href="mailto:s&#117;pport&#64;matricace.co.za">s&#117;pport&#64;matricace.co.za</a> with the subject "POPIA Request" and we will respond within 10 business days. You can also delete your data directly from the app's Profile → Privacy settings.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          Is MatricAce affiliated with the DBE? <span class="arrow">▼</span>
+        </button>
+        <div class="faq-a">No. MatricAce is an independent educational technology platform. We are not affiliated with, endorsed by, or officially associated with the Department of Basic Education (DBE), Umalusi, or any government body. Our content is aligned to the CAPS curriculum and DBE examination standards but is independently created.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          Does MatricAce work on a cheap Android phone? <span class="arrow">▼</span>
+        </button>
+        <div class="faq-a">Yes — MatricAce is a Progressive Web App (PWA) that runs entirely in your phone's browser. No download is required, it works on any Android or iPhone, and after the first visit much of the content works offline too. We designed it specifically to work well on lower-end devices and data-limited connections.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p style="font-size:.7rem;color:var(--text3);text-align:center;margin-bottom:8px">&copy; 2026 MatricAce SA. All rights reserved.</p>
+  <p style="margin-bottom:12px">
+    <a href="/">Home</a>
+    <a href="/blog.html">Blog</a>
+    <a href="/about">About Us</a>
+    <a href="/contact">Contact</a>
+    <a href="/privacy">Privacy Policy</a>
+    <a href="/terms">Terms of Service</a>
+  </p>
+  <p>
