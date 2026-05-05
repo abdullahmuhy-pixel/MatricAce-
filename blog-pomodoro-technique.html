@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Pomodoro Technique for Matric Study | MatricAce Blog</title>
+  <meta name="description" content="Learn how 25-minute focused study sessions can transform your Matric exam preparation. Science-backed techniques for Grade 10-12 students.">
+  <link rel="canonical" href="https://www.matricace.co.za/blog-pomodoro-technique.html">
+  <meta property="og:title" content="The Pomodoro Technique for Matric Study | MatricAce Blog">
+  <meta property="og:description" content="Learn how 25-minute focused study sessions can transform your Matric exam preparation. Science-backed techniques for Grade 10-12 students.">
+  <meta property="og:type" content="article">
+  <meta property="og:image" content="https://www.matricace.co.za/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://www.matricace.co.za/og-image.png">
+  <meta property="og:site_name" content="MatricAce">
+  <meta name="robots" content="index, follow">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,400;1,700;1,900&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+    
+  :root {
+    --bg-dark: #0a0a0f;
+    --gold: #ffb612;
+    --green: #00C87A;
+    --text2: rgba(255,255,255,0.65);
+    --text3: rgba(255,255,255,0.4);
+    --border: rgba(255,255,255,0.08);
+    --bg3: rgba(255,255,255,0.06);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #0a0a0f; color: #e8e8f0; font-family: 'DM Sans', sans-serif; }
+  a { color: var(--gold); }
+
+    
+.article-page { background: var(--bg-dark, #0a0a0f); color: #e8e8f0; font-family: 'DM Sans', sans-serif; min-height: 100vh; padding-top: 68px; }
+.article-wrap { max-width: 780px; margin: 0 auto; padding: 48px 24px 80px; }
+.article-back { display: inline-flex; align-items: center; gap: 8px; color: rgba(255,182,18,0.8); font-size: .82rem; font-weight: 700; cursor: pointer; margin-bottom: 32px; background: none; border: none; font-family: inherit; transition: color .2s; }
+.article-back:hover { color: #ffb612; }
+.article-eyebrow { font-size: .68rem; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; color: var(--gold, #ffb612); margin-bottom: 12px; }
+.article-h1 { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 5vw, 3.2rem); letter-spacing: 2px; line-height: 1.1; margin-bottom: 16px; color: #fff; }
+.article-meta { font-size: .78rem; color: rgba(255,255,255,0.45); margin-bottom: 40px; display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
+.article-meta span { display: flex; align-items: center; gap: 5px; }
+.article-body h2 { font-family: 'Playfair Display', serif; font-size: 1.6rem; letter-spacing: 1.5px; color: var(--gold, #ffb612); margin: 40px 0 14px; }
+.article-body h3 { font-size: 1.05rem; font-weight: 800; color: #fff; margin: 28px 0 10px; }
+.article-body p { font-size: .95rem; line-height: 1.8; color: rgba(255,255,255,0.82); margin-bottom: 18px; }
+.article-body ul, .article-body ol { padding-left: 22px; margin-bottom: 18px; }
+.article-body li { font-size: .92rem; line-height: 1.75; color: rgba(255,255,255,0.78); margin-bottom: 6px; }
+.article-body strong { color: #fff; font-weight: 700; }
+.article-callout { background: rgba(255,182,18,0.08); border-left: 3px solid var(--gold, #ffb612); border-radius: 0 10px 10px 0; padding: 16px 20px; margin: 24px 0; }
+.article-callout p { margin: 0; color: rgba(255,255,255,0.88); font-size: .9rem; }
+.sample-q-box { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 20px; margin: 20px 0; }
+.sample-q-box .q-label { font-size: .62rem; font-weight: 900; letter-spacing: 1.5px; color: var(--gold, #ffb612); text-transform: uppercase; margin-bottom: 8px; }
+.sample-q-box .q-text { font-size: .95rem; font-weight: 700; color: #fff; margin-bottom: 14px; line-height: 1.5; }
+.sample-q-box .q-options { display: flex; flex-direction: column; gap: 8px; }
+.sample-q-box .q-opt { padding: 9px 14px; border-radius: 8px; font-size: .85rem; color: rgba(255,255,255,0.75); background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); cursor: pointer; transition: all .15s; text-align: left; font-family: inherit; }
+.sample-q-box .q-opt:hover { border-color: rgba(255,182,18,0.4); background: rgba(255,182,18,0.07); color: #fff; }
+.sample-q-box .q-opt.correct { background: rgba(5,150,105,0.15); border-color: #059669; color: #6ee7b7; }
+.sample-q-box .q-opt.wrong { background: rgba(220,38,38,0.12); border-color: #dc2626; color: #fca5a5; }
+.sample-q-box .q-explanation { margin-top: 12px; padding: 10px 14px; background: rgba(5,150,105,0.1); border-radius: 8px; font-size: .82rem; color: #6ee7b7; display: none; }
+.article-cta-box { background: linear-gradient(135deg, rgba(255,182,18,0.1), rgba(255,182,18,0.04)); border: 1.5px solid rgba(255,182,18,0.25); border-radius: 16px; padding: 28px 24px; text-align: center; margin: 48px 0 0; }
+.article-cta-box h3 { font-family: 'Playfair Display', serif; font-size: 1.6rem; letter-spacing: 2px; color: #fff; margin-bottom: 8px; }
+.article-cta-box p { font-size: .88rem; color: rgba(255,255,255,0.65); margin-bottom: 20px; }
+.btn-article-cta { display: inline-flex; align-items: center; gap: 8px; background: var(--gold, #ffb612); color: #000; font-weight: 800; font-size: .9rem; padding: 13px 28px; border-radius: 10px; border: none; cursor: pointer; font-family: inherit; }
+
+    .article-page { padding-top: 80px; }
+  
+/* ── Sunset Editorial Marketing Override ── */
+body{background:linear-gradient(168deg,#1A0030 0%,#3A0A1A 28%,#6B1510 55%,#9B2E08 75%,#C4520A 100%) fixed!important;color:#FAF0E6!important;font-family:'DM Sans',sans-serif!important}
+.section-dark,.hero-section,.dark-section{background:transparent!important}
+.section-light,.card,.pricing-card,.feature-card,.blog-card,.stat-card{background:rgba(255,240,225,.06)!important;backdrop-filter:blur(16px)!important;-webkit-backdrop-filter:blur(16px)!important;border:1px solid rgba(255,200,150,.12)!important;color:#FAF0E6!important}
+nav.scrolled{background:rgba(12,0,7,.92)!important;backdrop-filter:blur(20px)!important;border-bottom:1px solid rgba(255,130,60,.1)!important}
+.hero-title,.section-heading,h1,h2{font-family:'Playfair Display',serif!important;font-style:italic!important}
+.nav-logo{font-family:'Playfair Display',serif!important;font-style:italic!important;font-weight:900!important}
+.cta-primary,.btn-primary,.hero-cta{background:linear-gradient(135deg,#FF7A30,#FFB612)!important;color:#1A0030!important;font-weight:800!important}
+input,textarea,select{background:rgba(255,240,225,.08)!important;border-color:rgba(255,200,150,.2)!important;color:#FAF0E6!important}
+input::placeholder,textarea::placeholder{color:rgba(250,240,230,.35)!important}
+
+</style>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "The Pomodoro Technique for Matric Study Blog",
+    "description": "Learn how 25-minute focused study sessions can transform your Matric exam preparation. Science-backed techniques for Grade 10-12 students.",
+    "author": {"@type": "Organization", "name": "MatricAce"},
+    "publisher": {"@type": "Organization", "name": "MatricAce", "url": "https://www.matricace.co.za"},
+    "educationalLevel": "Grade 10-12",
+    "inLanguage": "en-ZA",
+    "isAccessibleForFree": true,
+    "about": "South African CAPS curriculum NSC exam preparation"
+  }
+  </script>
+<!-- Google AdSense -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9072098748131636" crossorigin="anonymous"></script>
+</head>
+<body>
+<nav style="position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(10,10,15,0.95);backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,0.06);padding:0 20px;height:60px;display:flex;align-items:center;justify-content:space-between;">
+  <a href="index.html" style="display:flex;align-items:center;gap:10px;text-decoration:none;">
+    <span style="font-family:'Playfair Display',serif;font-size:1.4rem;letter-spacing:2px;color:#fff;">Matric<span style="color:#ffb612;">Ace</span></span>
+    <span style="font-size:.62rem;font-weight:800;color:#ffb612;letter-spacing:1px;opacity:.8">SA</span>
+  </a>
+  <div style="display:flex;gap:8px;align-items:center;">
+    <a href="blog.html" style="color:rgba(255,255,255,.6);font-size:.8rem;font-weight:700;text-decoration:none;padding:6px 12px;">Blog</a>
+    <a href="MatricAce_SA_Ultimate_v7.html" style="background:#ffb612;color:#000;font-size:.8rem;font-weight:900;text-decoration:none;padding:8px 16px;border-radius:8px;">Open App →</a>
+  </div>
+</nav>
+<div class="article-page">
+  <div class="article-wrap">
+<div class="article-wrap">
+    <button class="article-back" onclick="window.location.href='blog.html'">← Back to Blog</button>
+    <div class="article-eyebrow">Study Tips · 12 min read</div>
+    <h1 class="article-h1">The Pomodoro Technique: How 25-Minute Sessions Can Transform Your Matric Prep</h1>
+    <div class="article-meta">
+      <span>📅 Updated 2026</span>
+      <span>⏱️ 12 min read</span>
+      <span>🎓 Grade 10–12</span>
+    </div>
+    <div class="article-body">
+      <p>If you've ever sat down to study for three hours only to realise at the end that you absorbed almost nothing, you're not alone. The problem isn't your intelligence — it's how your brain processes information over extended, unstructured time. Human attention is not a tap you can leave open for hours. It's a renewable resource that depletes with use and recovers with rest. Study sessions that ignore this basic fact are systematically less effective than they should be.</p>
+
+      <p>This is where the Pomodoro Technique comes in — and for Matric students facing the pressure of NSC exams across six or seven subjects, it can be genuinely transformative. Not because it's complicated, but because it turns the way your brain actually works into a study system, rather than fighting against it.</p>
+
+      <h2>What Is the Pomodoro Technique?</h2>
+
+      <p>Developed by Francesco Cirillo in the late 1980s while he was a university student in Rome, the Pomodoro Technique is a time management method that breaks work into short, intensely focused intervals — typically 25 minutes — separated by 5-minute breaks. After four intervals (each called a "pomodoro"), you take a longer break of 15–30 minutes before beginning the next cycle.</p>
+
+      <p>The name comes from the Italian word for tomato (<em>pomodoro</em>) — Cirillo used a tomato-shaped kitchen timer to track his sessions as a student. The physical act of winding the timer, he found, created a sense of commitment to the work interval. Today you can use any timer, but the principle remains the same: you commit to 25 minutes of unbroken focus before allowing yourself any distraction.</p>
+
+      <div class="article-callout"><p><strong>The core cycle:</strong> 25 min focused work → 5 min break → 25 min focused work → 5 min break → 25 min focused work → 5 min break → 25 min focused work → 15–30 min long break. Then repeat.</p></div>
+
+      <p>The simplicity is the point. There are no complex rules, no special equipment, and no prerequisites. Any student can start today with nothing more than a phone timer. The difficulty — and where most students underestimate it — is the discipline of keeping the 25-minute window completely free of distraction. That means phone in another room, notifications off, no "quick checks." The technique only delivers its benefits when the focus is genuine.</p>
+
+      <h2>Why It Works: The Science Behind the Method</h2>
+
+      <h3>1. It Matches Your Brain's Natural Attention Span</h3>
+      <p>Research by cognitive psychologist K. Anders Ericsson on deliberate practice — the intensive, focused kind of practice that leads to expertise — found that elite performers across fields (musicians, chess players, athletes, academics) rarely sustain deep focused work for more than 90 minutes at a stretch without rest. Most effective practice sessions run 60–90 minutes total, not the marathon sessions many students attempt during exam preparation.</p>
+
+      <p>For teenagers under exam pressure, the effective attention window is often shorter still. Research on adolescent cognitive load suggests that sustained attention peaks at around 20–35 minutes before performance begins to decline. A 25-minute pomodoro sits squarely within this optimal window — long enough to make real progress, short enough that your focus remains sharp throughout the entire interval.</p>
+
+      <h3>2. It Eliminates the "Just One More Minute" Trap</h3>
+      <p>The most powerful feature of the Pomodoro Technique is psychological, not cognitive. Knowing that a break is coming in 25 minutes makes it dramatically easier to resist the urge to check your phone, open a new tab, or respond to a message. You're not giving up social media forever — just for 25 minutes. This reframing is surprisingly effective. The phone doesn't feel like a sacrifice when you know you'll have five minutes with it very soon.</p>
+
+      <p>Research from the University of Texas found that the mere presence of a smartphone — even face-down, even switched off — reduces available cognitive capacity because part of your brain is expending effort to not check it. Removing the phone from the room entirely eliminates this attentional drain and consistently improves performance on tasks requiring concentration and working memory.</p>
+
+      <h3>3. It Makes Invisible Progress Visible</h3>
+      <p>When you're preparing for six subjects across weeks of study, the progress can feel invisible and demoralising. You've been "studying" all afternoon but can't point to what you've achieved. Pomodoros fix this by giving you a concrete unit of progress. Eight completed pomodoros on Calculus in an afternoon is a tangible achievement you can see and record. This visibility sustains motivation across the long preparation period before NSC exams.</p>
+
+      <h3>4. It Forces You to Break Down Large Tasks</h3>
+      <p>The Pomodoro Technique requires you to define what you will do in each 25-minute block before you start. This forces a planning discipline that most students skip. Instead of "I'll study Trigonometry," you must ask: which part of Trigonometry? What specifically will I do — read notes, work examples, do past paper questions? This specificity is itself a significant improvement in study quality, independent of the timing structure.</p>
+
+      <h2>How to Apply It to Your Matric Subjects</h2>
+
+      <h3>Mathematics and Physical Sciences</h3>
+      <p>Use one pomodoro per topic type or question category. Don't try to cover "Functions" in one vague session — break it into discrete tasks: (1) review the theory and key formulas for parabolas and hyperbolas, (2) work through three or four textbook examples with your notes closed, (3) do five past paper questions under timed conditions. Three focused 25-minute blocks on this structure will cover more ground than a vague 90-minute "study Maths" session.</p>
+
+      <p>For problem-solving subjects, the 25-minute limit also mimics exam conditions — you'll never have unlimited time in the NSC exam, so practising under time awareness builds both speed and the discipline of moving on when stuck. If you've spent 8 minutes on one question in a pomodoro and you're going in circles, move to the next one. Return to difficult questions in a later pomodoro with a fresh approach.</p>
+
+      <h3>Essay Subjects (History, English, Business Studies, Geography)</h3>
+      <p>The Pomodoro Technique is particularly effective for essay writing and essay planning, where many students experience "blank page paralysis" — the inability to start that comes from facing a large, undefined task. Breaking the essay into pomodoros eliminates this paralysis completely.</p>
+
+      <p>Pomodoro 1: Plan your argument. Write bullet points for your introduction, each body paragraph's main claim, and your conclusion. Don't write prose yet — just structure. Pomodoro 2: Write the introduction and first body paragraph in full. Pomodoro 3: Write the remaining body paragraphs. Pomodoro 4: Write the conclusion and review for coherence. This approach turns a daunting "write an essay" task into four discrete, manageable steps that most students can complete without the paralysis that often delays getting started.</p>
+
+      <h3>Memorisation-Heavy Subjects (Life Sciences, History, Accounting)</h3>
+      <p>Active recall — the practice of trying to remember information without looking at your notes — is 2–3 times more effective than passive re-reading for long-term retention. The Pomodoro structure is ideal for combining content exposure with active recall in the same study session.</p>
+
+      <p>Pomodoro 1: Read through the content actively, highlighting key points and writing margin notes in your own words. Pomodoro 2: Close your notes and write down everything you can remember about the topic from memory. Don't look back yet. Pomodoro 3: Open your notes, check what you missed, and focus the rest of the session exclusively on the gaps you identified. This three-pomodoro cycle — expose, retrieve, correct — is the most efficient memorisation system available to a student preparing for CAPS content exams.</p>
+
+      <h3>Languages (English Home Language, Afrikaans, isiZulu)</h3>
+      <p>For comprehension and literature study, use one pomodoro per text or section: read actively, annotating as you go. For writing tasks (essays, summaries, transactional texts), apply the essay structure above. For grammar revision, one pomodoro of focused rule review followed by one pomodoro of timed practice exercises is more effective than reading grammar notes for an hour.</p>
+
+      <h2>Practical Tips for South African Matric Students</h2>
+
+      <ul>
+        <li><strong>Phone in another room — not face-down on the desk.</strong> Visible phones reduce concentration even when switched off (University of Texas research). The friction of having to walk to another room to check it is exactly the point.</li>
+        <li><strong>Track your pomodoros per subject.</strong> Keep a simple tally — either on paper or in a notes app. At the end of each week, count how many pomodoros you've done per subject. If you've done 20 on Maths and 4 on Life Sciences, you have a data problem, not just a feeling. Adjust accordingly.</li>
+        <li><strong>Don't break a pomodoro mid-session.</strong> If you're interrupted, restart the 25-minute timer from scratch. This trains you to protect your focus window and communicates to people around you that the session is non-negotiable during the interval.</li>
+        <li><strong>Rest genuinely during breaks.</strong> Stand up, walk to another room, drink water, eat a small snack. Do not scroll social media during the 5-minute break — this keeps your brain stimulated and defeats the cognitive recovery that the break is designed to provide.</li>
+        <li><strong>Use the long break intentionally.</strong> After four pomodoros (two hours of actual work), take 20–30 minutes completely away from studying. Eat a meal, go outside, listen to music. This long break is not wasted time — it's when your brain consolidates the work from the previous four sessions.</li>
+        <li><strong>Aim for 6–8 pomodoros per study day during exam prep.</strong> That's 2.5–3.5 hours of genuine focused study — which sounds less than "studying all day" but produces dramatically more actual learning. Quality over quantity is not a motivational phrase; it's a description of how memory formation works.</li>
+      </ul>
+
+      <h2>Try It: A Complete Afternoon Study Session</h2>
+
+      <p>Here's a realistic five-pomodoro afternoon for a Grade 12 student with Mathematics and Life Sciences the following week:</p>
+
+      <ul>
+        <li><strong>15:00–15:25 (P1):</strong> Maths — Differentiation rules review. Write out all differentiation rules, then apply each to two examples without looking at notes.</li>
+        <li><strong>15:25–15:30:</strong> Break — walk to kitchen, drink water, stand outside for two minutes.</li>
+        <li><strong>15:30–15:55 (P2):</strong> Maths — Five stationary point and optimisation questions from a past paper. Time yourself: no more than 5 minutes per question.</li>
+        <li><strong>15:55–16:00:</strong> Break.</li>
+        <li><strong>16:00–16:25 (P3):</strong> Life Sciences — DNA replication: read through the process, draw the diagram from memory, label every stage.</li>
+        <li><strong>16:25–16:30:</strong> Break.</li>
+        <li><strong>16:30–16:55 (P4):</strong> Life Sciences — Active recall: close notes, write out everything you know about DNA replication as if explaining it to someone who knows nothing. Check gaps after.</li>
+        <li><strong>16:55–17:20:</strong> Long break — eat something, rest properly. No study material.</li>
+        <li><strong>17:20–17:45 (P5):</strong> Maths — Review the past paper questions from P2. For any question you got wrong, rework it from scratch without looking at the solution first.</li>
+      </ul>
+
+      <p>That's five 25-minute blocks — just over two hours of study — covering two subjects with genuine depth. Most students who "study all afternoon" in a distracted, unstructured way would struggle to match the volume of learning this session produces.</p>
+
+      <h2>Common Objections — and Why They Don't Hold</h2>
+
+      <p><strong>"25 minutes isn't enough time to get into a topic properly."</strong> This is the most common objection and it's backwards. The 25-minute limit forces you to define a specific task before you start — which is itself the key to productive studying. Vague sessions that "get into a topic" without a defined outcome are the ones where hours pass without learning.</p>
+
+      <p><strong>"I'm in the zone after 25 minutes — I shouldn't stop."</strong> This is a valid exception. If you're in deep flow on a difficult problem and stopping would break your reasoning chain, finish the thought. Then take your break. The Pomodoro is a guideline, not a rigid rule. The discipline of the timer is what builds focus over time — once focus is natural, some flexibility is fine.</p>
+
+      <p><strong>"I don't have a quiet space to study without interruption."</strong> This is a real challenge for many South African students who share small spaces with extended families. Communicate your study schedule to people around you — let them know when you're starting a 25-minute block and ask not to be interrupted. Earphones playing ambient noise (rain sounds, white noise) can also help create a focus environment in a noisy space. Libraries and school study rooms are also worth using during exam preparation periods.</p>
+
+      <div class="article-callout"><p><strong>Key takeaway:</strong> Consistent focused sessions of 25 minutes, day after day across the weeks before your NSC exams, will do more for your marks than occasional marathon cramming sessions. Start with just two pomodoros today — that's 50 minutes. See how much you actually cover compared to your usual approach.</p></div>
+
+      <div class="article-callout"><p><strong>Related reading:</strong> See our guide on <a href="blog-exam-timetable.html">how to build the perfect NSC exam timetable</a> to structure your Pomodoro sessions within a full exam preparation calendar.</p></div>
+
+    </div>
+    <div class="article-cta-box">
+      <h3>Practice with MatricAce</h3>
+      <p>Our daily challenge mode is built for exactly this — 5 focused questions per session, matched to your grade and subjects.</p>
+      <button class="btn-article-cta" onclick="window.open('MatricAce_SA_Ultimate_v7.html','_blank')">🚀 Start Studying Free</button>
+    </div>
+  </div>
+  </div>
+</div>
+<footer style="background:#070709;border-top:1px solid rgba(255,255,255,0.06);padding:40px 24px;text-align:center;margin-top:0;">
+  <div style="max-width:780px;margin:0 auto;">
+    <div style="font-family:'Playfair Display',serif;font-size:1.3rem;letter-spacing:2px;color:#fff;margin-bottom:8px;">Matric<span style="color:#ffb612;">Ace</span> <span style="font-size:.62rem;font-weight:800;color:#ffb612;letter-spacing:1px;">SA</span></div>
+    <div style="font-size:.78rem;color:rgba(255,255,255,.4);margin-bottom:16px;">South Africa's CAPS study app for Grade 10–12</div>
+    <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;font-size:.78rem;">
+      <a href="index.html" style="color:rgba(255,255,255,.5);text-decoration:none;">Home</a>
+      <a href="privacy.html" style="color:rgba(255,255,255,.5);text-decoration:none;">Privacy Policy</a>
+      <a href="terms.html" style="color:rgba(255,255,255,.5);text-decoration:none;">Terms of Service</a>
+      <a href="blog.html" style="color:rgba(255,255,255,.5);text-decoration:none;">Blog</a>
+      <a href="MatricAce_SA_Ultimate_v7.html" style="color:#ffb612;text-decoration:none;">Start Studying Free →</a>
+    </div>
+    <div style="font-size:.68rem;color:rgba(255,255,255,.25);margin-top:20px;">© 2026 MatricAce. All rights reserved. CAPS-aligned content for educational purposes only.</div>
+  </div>
+</footer>
+<script>
+function answerQ(btn, isCorrect, explanationId) {
+  var box = btn.closest('.sample-q-box');
+  box.querySelectorAll('.q-opt').forEach(function(b){ b.disabled = true; });
+  if (isCorrect) { btn.classList.add('correct'); }
+  else { btn.classList.add('wrong'); box.querySelector('.q-opt[data-correct="true"]').classList.add('correct'); }
+  var exp = document.getElementById(explanationId);
+  if (exp) exp.style.display = 'block';
+}
+</script>
+</body>
+</html>
