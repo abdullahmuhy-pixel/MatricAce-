@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MatricAce — Loading…</title>
+<style>
+  body { margin:0; background:#140010; display:flex; align-items:center; justify-content:center;
+         height:100vh; font-family:'DM Sans',sans-serif; color:#FAF0E6; flex-direction:column; gap:16px; }
+  .logo { font-size:1.8rem; font-weight:900; }
+  .logo span { color:#FFB612; }
+  p { font-size:.9rem; color:rgba(255,255,255,.5); }
+</style>
+</head>
+<body>
+  <div class="logo">Matric<span>Ace</span> SA</div>
+  <p>Finding the app…</p>
+  <script>
+    // If someone lands on a MatricAce_SA_Ultimate*.html URL that doesn't exist,
+    // probe for the real filename and redirect to it.
+    var candidates = [
+      'MatricAce_SA_Ultimate_v9.html',
+      'MatricAce_SA_Ultimate_v9-144.html',
+      'MatricAce_SA_Ultimate_v9-167.html',
+      'MatricAce_SA_Ultimate_v9 (1).html',
+      'MatricAce_SA_Ultimate_v9.html'
+    ];
+
+    var path = location.pathname; // e.g. /MatricAce_SA_Ultimate_v9-144.html
+    var base = location.origin + '/';
+
+    // If they landed on an app URL, probe & redirect
+    if (path.indexOf('MatricAce_SA_Ultimate') !== -1) {
+      var i = 0;
+      function tryNext() {
+        if (i >= candidates.length) {
+          // Nothing found — go to homepage
+          location.href = '/';
+          return;
+        }
+        var name = candidates[i++];
+        fetch(base + name, { method: 'HEAD' })
+          .then(function(r) {
+            if (r.ok) { location.replace(base + name); }
+            else { tryNext(); }
+          })
+          .catch(function() { tryNext(); });
+      }
+      tryNext();
+    } else {
+      // Any other 404 — go home
+      location.href = '/';
+    }
+  </script>
+</body>
+</html>
