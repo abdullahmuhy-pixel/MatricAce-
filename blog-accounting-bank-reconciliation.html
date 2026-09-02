@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Accounting Grade 12: Bank Reconciliation Fully Explained | MatricAce</title>
+  <meta name="description" content="Step-by-step bank reconciliation, income statement, balance sheet, accruals, prepayments and ratio analysis for NSC Accounting Grade 12.">
+  <link rel="canonical" href="https://www.matricace.co.za/blog-accounting-bank-reconciliation.html">
+  <meta property="og:title" content="Accounting Grade 12: Bank Reconciliation Fully Explained | MatricAce">
+  <meta property="og:description" content="Step-by-step bank reconciliation, income statement, balance sheet, accruals, prepayments and ratio analysis for NSC Accounting Grade 12.">
+  <meta property="og:type" content="article">
+  <meta property="og:image" content="https://www.matricace.co.za/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://www.matricace.co.za/og-image.png">
+  <meta property="og:site_name" content="MatricAce">
+  <meta name="robots" content="index, follow">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,wght@0,700;0,800;0,900;1,400;1,700&family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+    
+  :root {
+    --bg-dark: #F7F9FC;
+    --gold: #B45309;
+    --green: #15803D;
+    --text2: rgba(15,23,42,0.68);
+    --text3: rgba(15,23,42,0.42);
+    --border: rgba(15,23,42,0.10);
+    --bg3: rgba(15,23,42,0.05);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #F7F9FC; color: #0F172A; font-family: 'Inter', sans-serif; }
+  a { color: var(--gold); }
+
+    
+.article-page { background: var(--bg-dark, #F7F9FC); color: #0F172A; font-family: 'Inter', sans-serif; min-height: 100vh; padding-top: 68px; }
+.article-wrap { max-width: 780px; margin: 0 auto; padding: 48px 24px 80px; }
+.article-back { display: inline-flex; align-items: center; gap: 8px; color: rgba(255,182,18,0.8); font-size: .82rem; font-weight: 700; cursor: pointer; margin-bottom: 32px; background: none; border: none; font-family: inherit; transition: color .2s; }
+.article-back:hover { color: #ffb612; }
+.article-eyebrow { font-size: .68rem; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; color: var(--gold, #ffb612); margin-bottom: 12px; }
+.article-h1 { font-family: 'Source Serif 4', serif; font-size: clamp(2rem, 5vw, 3.2rem); letter-spacing: 2px; line-height: 1.1; margin-bottom: 16px; color: #0F172A; }
+.article-meta { font-size: .78rem; color: rgba(15,23,42,0.45); margin-bottom: 40px; display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
+.article-meta span { display: flex; align-items: center; gap: 5px; }
+.article-body h2 { font-family: 'Source Serif 4', serif; font-size: 1.6rem; letter-spacing: 1.5px; color: var(--gold, #ffb612); margin: 40px 0 14px; }
+.article-body h3 { font-size: 1.05rem; font-weight: 800; color: #0F172A; margin: 28px 0 10px; }
+.article-body p { font-size: .95rem; line-height: 1.8; color: rgba(15,23,42,0.82); margin-bottom: 18px; }
+.article-body ul, .article-body ol { padding-left: 22px; margin-bottom: 18px; }
+.article-body li { font-size: .92rem; line-height: 1.75; color: rgba(15,23,42,0.78); margin-bottom: 6px; }
+.article-body strong { color: #0F172A; font-weight: 700; }
+.article-callout { background: rgba(255,182,18,0.08); border-left: 3px solid var(--gold, #ffb612); border-radius: 0 10px 10px 0; padding: 16px 20px; margin: 24px 0; }
+.article-callout p { margin: 0; color: rgba(15,23,42,0.88); font-size: .9rem; }
+.sample-q-box { background: rgba(15,23,42,0.04); border: 1px solid rgba(15,23,42,0.1); border-radius: 12px; padding: 20px; margin: 20px 0; }
+.sample-q-box .q-label { font-size: .62rem; font-weight: 900; letter-spacing: 1.5px; color: var(--gold, #ffb612); text-transform: uppercase; margin-bottom: 8px; }
+.sample-q-box .q-text { font-size: .95rem; font-weight: 700; color: #0F172A; margin-bottom: 14px; line-height: 1.5; }
+.sample-q-box .q-options { display: flex; flex-direction: column; gap: 8px; }
+.sample-q-box .q-opt { padding: 9px 14px; border-radius: 8px; font-size: .85rem; color: rgba(15,23,42,0.75); background: rgba(15,23,42,0.05); border: 1px solid rgba(15,23,42,0.1); cursor: pointer; transition: all .15s; text-align: left; font-family: inherit; }
+.sample-q-box .q-opt:hover { border-color: rgba(255,182,18,0.4); background: rgba(255,182,18,0.07); color: #0F172A; }
+.sample-q-box .q-opt.correct { background: rgba(21,128,61,0.10); border-color: #15803D; color: #15803D; }
+.sample-q-box .q-opt.wrong { background: rgba(220,38,38,0.10); border-color: #B91C1C; color: #B91C1C; }
+.sample-q-box .q-explanation { margin-top: 12px; padding: 10px 14px; background: rgba(21,128,61,0.08); border-radius: 8px; font-size: .82rem; color: #15803D; display: none; }
+.article-cta-box { background: linear-gradient(135deg, rgba(255,182,18,0.1), rgba(255,182,18,0.04)); border: 1.5px solid rgba(255,182,18,0.25); border-radius: 16px; padding: 28px 24px; text-align: center; margin: 48px 0 0; }
+.article-cta-box h3 { font-family: 'Source Serif 4', serif; font-size: 1.6rem; letter-spacing: 2px; color: #0F172A; margin-bottom: 8px; }
+.article-cta-box p { font-size: .88rem; color: rgba(15,23,42,0.65); margin-bottom: 20px; }
+.btn-article-cta { display: inline-flex; align-items: center; gap: 8px; background: linear-gradient(135deg,#1D5FBF,#4C8DE0); color: #fff; font-weight: 800; font-size: .9rem; padding: 13px 28px; border-radius: 10px; border: none; cursor: pointer; font-family: inherit; }
+
+    .article-page { padding-top: 80px; }
+  
+/* ── App-Match Override ── */
+body{background:#F7F9FC!important;color:#0F172A!important;font-family:'Inter',sans-serif!important}
+.section-dark,.hero-section,.dark-section{background:transparent!important}
+.section-light,.card,.pricing-card,.feature-card,.blog-card,.stat-card{background:#FFFFFF!important;box-shadow:0 1px 6px rgba(15,23,42,.06)!important;border:1px solid rgba(15,23,42,.10)!important;color:#0F172A!important}
+nav.scrolled{background:rgba(15,23,42,.92)!important;backdrop-filter:blur(20px)!important;border-bottom:1px solid rgba(15,23,42,.08)!important}
+.hero-title,.section-heading,h1,h2{font-family:'Source Serif 4',serif!important;font-style:normal!important}
+.nav-logo{font-family:'Source Serif 4',serif!important;font-style:normal!important;font-weight:900!important}
+.cta-primary,.btn-primary,.hero-cta{background:linear-gradient(135deg,#1D5FBF,#4C8DE0)!important;color:#0F172A!important;font-weight:800!important}
+input,textarea,select{background:#FFFFFF!important;border-color:rgba(15,23,42,.15)!important;color:#0F172A!important}
+input::placeholder,textarea::placeholder{color:rgba(15,23,42,.4)!important}
+
+</style>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Accounting Grade 12: Bank Reconciliation and Final Accounts Fully Explained",
+    "description": "A complete breakdown of the highest-weighted Mathematics topics in NSC Papers 1 and 2, with tips for Grade 10, 11 and 12 CAPS students.",
+    "author": {"@type": "Organization", "name": "MatricAce"},
+    "publisher": {"@type": "Organization", "name": "MatricAce", "url": "https://www.matricace.co.za"},
+    "educationalLevel": "Grade 10-12",
+    "inLanguage": "en-ZA",
+    "isAccessibleForFree": true,
+    "about": "South African CAPS curriculum NSC exam preparation"
+  }
+  </script>
+<!-- Google AdSense -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9072098748131636" crossorigin="anonymous"></script>
+</head>
+<body>
+<nav style="position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(255,255,255,0.95);backdrop-filter:blur(12px);border-bottom:1px solid rgba(15,23,42,0.06);padding:0 20px;height:60px;display:flex;align-items:center;justify-content:space-between;">
+  <a href="index.html" style="display:flex;align-items:center;gap:10px;text-decoration:none;">
+    <span style="font-family:'Source Serif 4',serif;font-size:1.4rem;letter-spacing:2px;color:#0F172A;">Matric<span style="color:#ffb612;">Ace</span></span>
+    <span style="font-size:.62rem;font-weight:800;color:#ffb612;letter-spacing:1px;opacity:.8">SA</span>
+  </a>
+  <div style="display:flex;gap:8px;align-items:center;">
+    <a href="blog.html" style="color:rgba(15,23,42,.6);font-size:.8rem;font-weight:700;text-decoration:none;padding:6px 12px;">Blog</a>
+    <a href="MatricAce_SA_Ultimate_v7.html" style="background:linear-gradient(135deg,#1D5FBF,#4C8DE0);color:#fff;font-size:.8rem;font-weight:900;text-decoration:none;padding:8px 16px;border-radius:8px;">Open App →</a>
+  </div>
+</nav>
+<div class="article-page">
+  <div class="article-wrap">
+<div class="article-wrap">
+    <button class="article-back" onclick="window.location.href='blog.html'">← Back to Blog</button>
+        <div class="article-eyebrow">Subject Guide · 15 min read</div>
+    <h1 class="article-h1">Accounting Grade 12: Bank Reconciliation and Final Accounts Fully Explained</h1>
+    <div class="article-meta">
+      <span>📅 Updated 2026</span>
+      <span>⏱️ 15 min read</span>
+      <span>🎓 Grade 12 · CAPS Accounting</span>
+    </div>
+    <div class="article-body">
+      <p>NSC Accounting is a subject that rewards systematic, methodical thinking. Unlike essay-based subjects, Accounting questions have one correct answer — and the marking is unambiguous. This means that every mark you lose is traceable to a specific error in your method or knowledge. It also means that a student who understands the underlying logic of each topic, rather than just memorising procedures, can score very highly and do so consistently.</p>
+
+      <p>Two topics together account for a substantial portion of NSC Accounting marks and cause the most difficulty for students: bank reconciliation statements and the preparation of final accounts (income statement and balance sheet). Both require you to apply accounting principles accurately under time pressure, and both are tested in virtually every NSC paper. This guide explains both topics from the ground up, with the exact steps and common pitfalls clearly laid out.</p>
+
+      <h2>Understanding the Accounting Framework First</h2>
+
+      <p>Before tackling bank reconciliation and final accounts, it helps to ground yourself in the double-entry principle that underlies all accounting: every financial transaction affects at least two accounts, with equal debit and credit entries. A debit increases assets and expenses; a credit increases liabilities, equity, and income. This principle is the logic behind every reconciliation and every ledger entry. If your accounts don't balance, it is always because a debit and credit have not been matched correctly somewhere.</p>
+
+      <p>The accounting equation — Assets = Equity + Liabilities — must always hold. When you prepare a balance sheet, this equation is your final check. If both sides don't agree, you have an error to find before submitting.</p>
+
+      <h2>Bank Reconciliation Statement — Complete Guide</h2>
+
+      <h3>What Is a Bank Reconciliation?</h3>
+      <p>A bank reconciliation is the process of matching the cash balance shown in the company's own records (the Cash Receipts Journal and Cash Payments Journal, which feed into the Bank account in the General Ledger) with the balance shown on the bank statement received from the bank. These two figures rarely agree — and that is expected, because transactions recorded in the company's books may not yet have been processed by the bank, and vice versa.</p>
+      <p>The goal of reconciliation is to explain every difference between the two balances. Once all differences are accounted for, the adjusted balance per the bank statement and the adjusted balance per the company's books must agree.</p>
+
+      <h3>Why the Balances Differ — The Four Categories of Difference</h3>
+      <p><strong>1. Outstanding deposits (deposits in transit):</strong> The company has recorded a receipt (cash received) and entered it in the Cash Receipts Journal, but the bank has not yet processed the deposit. This means the company's books show a higher balance than the bank statement. To reconcile: add the outstanding deposit to the bank statement balance.</p>
+      <p><strong>2. Outstanding cheques (unpresented cheques):</strong> The company has written and recorded a cheque payment in the Cash Payments Journal, but the recipient has not yet deposited the cheque, so the bank has not deducted it. The company's books show a lower balance than the bank statement. To reconcile: subtract the outstanding cheque from the bank statement balance.</p>
+      <p><strong>3. Bank charges and bank-recorded items:</strong> The bank may have deducted service fees, interest on overdraft, or dishonoured cheque amounts — or credited interest on a favourable balance — that the company hasn't yet recorded in its books. These items appear on the bank statement but not in the company's records. To reconcile: the company must update its own records (correct the Cash Journals or General Ledger) and then adjust the book balance accordingly.</p>
+      <p><strong>4. Errors:</strong> Either the company or the bank may have made a recording error. An error in the company's books must be corrected in the relevant journal or ledger. A bank error must be reported to the bank and shown as a reconciling item until corrected.</p>
+
+      <h3>The Step-by-Step Bank Reconciliation Method</h3>
+      <p><strong>Step 1:</strong> Obtain the closing balance from the bank statement and the closing balance from the company's bank account in the General Ledger (or from the Cash Journals). Note both figures.</p>
+      <p><strong>Step 2:</strong> Tick off all transactions that appear in both the bank statement and the company's records. These matching items are reconciled — they are not the source of any difference.</p>
+      <p><strong>Step 3:</strong> Identify all unticked items in the company's Cash Journals (transactions recorded in the company's books but not on the bank statement). These are the outstanding deposits and outstanding cheques.</p>
+      <p><strong>Step 4:</strong> Identify all unticked items on the bank statement (transactions the bank has processed but the company hasn't recorded). These are bank charges, interest, dishonoured cheques, and similar items. The company must now update its own records for these items.</p>
+      <p><strong>Step 5:</strong> Prepare the Bank Reconciliation Statement. Start with the closing balance per bank statement, add outstanding deposits, subtract outstanding cheques, and any adjusted figure should equal the corrected balance per the company's bank account in the General Ledger.</p>
+
+      <div class="article-callout"><p><strong>The reconciliation format:</strong><br>
+      Balance per bank statement (closing balance): R____<br>
+      Add: Outstanding deposits: R____<br>
+      Less: Outstanding cheques: (R____)<br>
+      = Adjusted bank balance: R____<br>
+      <br>
+      Balance per company records (after corrections): R____<br>
+      These two figures must agree. If they do not, there is an error to find.</p></div>
+
+      <h3>Common Bank Reconciliation Mistakes</h3>
+      <p>The most frequent error is treating items that should update the company's books (bank charges, dishonoured cheques) as reconciling items on the statement instead. Bank charges appear on the bank statement, not in the company's records — so the company must first record them in the Cash Payments Journal, then they become part of the corrected book balance and do not appear as reconciling items on the statement.</p>
+      <p>A second common error is getting the direction wrong — adding when you should subtract, or vice versa. Always ask: does this item make the bank statement show more or less than the company's books? Outstanding deposits: the company's books show more (company recorded receipt but bank hasn't credited yet) → add to bank statement balance to bring it up. Outstanding cheques: the company's books show less (company recorded payment but bank hasn't debited yet) → subtract from bank statement balance to bring it down.</p>
+      <p>A dishonoured cheque (a cheque that was deposited but subsequently bounced) requires special care. The original receipt was recorded in the Cash Receipts Journal. When the cheque is dishonoured, the bank reverses the credit — so the bank statement shows a deduction. The company must reverse the original receipt (credit the bank account, debit the debtor's account), then record any bank charges for the dishonour.</p>
+
+      <h2>Final Accounts: Income Statement and Balance Sheet</h2>
+
+      <h3>The Income Statement (Statement of Comprehensive Income)</h3>
+      <p>The income statement shows the profitability of the business over a specific period. It starts with revenue (sales), deducts the cost of goods sold to find gross profit, then deducts operating expenses to find operating profit, adjusts for interest income and interest expense to find net profit before tax, and finally deducts income tax to find net profit after tax.</p>
+      <p><strong>Gross Profit</strong> = Net Sales − Cost of Sales<br>
+      Cost of Sales = Opening Stock + Purchases + Carriage on Purchases − Returns − Closing Stock<br>
+      (Or simply: the cost of inventory that was actually sold during the period.)</p>
+      <p><strong>Operating Profit</strong> = Gross Profit + Other Operating Income − Operating Expenses<br>
+      Operating expenses include: depreciation, salaries and wages, rent expense, insurance, stationery, bad debts, packing materials, telephone, water and electricity, and similar day-to-day costs of running the business.</p>
+      <p><strong>Net Profit Before Tax</strong> = Operating Profit + Interest Income − Interest on Loan (finance costs)<br>
+      Interest income is earned on favourable bank balances or investments. Interest on loan is the cost of borrowing — it appears as a finance cost below operating profit, not as an operating expense.</p>
+
+      <div class="article-callout"><p><strong>Depreciation:</strong> Always calculate and record depreciation before preparing the income statement. Depreciation reduces the carrying value of fixed assets and is an operating expense. Two methods are tested — the straight-line method (fixed amount each year: Cost ÷ Useful life) and the diminishing balance method (fixed percentage of carrying value each year: Carrying value × Rate). The method affects the depreciation amount charged each year — always read which method applies.</p></div>
+
+      <h3>Accruals and Prepayments — The Matching Principle</h3>
+      <p>The most conceptually challenging aspect of final accounts for many students is adjustments for accruals and prepayments. These arise because the accounting period cut-off (year-end) rarely aligns perfectly with when expenses are paid or income is received.</p>
+      <p><strong>Accrued expense</strong> (expense incurred but not yet paid): Add to the expense in the income statement; show as a current liability on the balance sheet. Example: rent of R12,000 per year is paid quarterly, but at year-end one month's rent (R1,000) has been incurred but not yet paid. Increase rent expense by R1,000; show R1,000 accrued rent as a current liability.</p>
+      <p><strong>Prepaid expense</strong> (paid in advance for next period): Subtract from the expense in the income statement; show as a current asset on the balance sheet. Example: insurance of R6,000 was paid at the start of the year for 12 months. At year-end, 2 months of the year remain — R1,000 (2/12 × R6,000) is prepaid. Reduce insurance expense by R1,000; show R1,000 prepaid insurance as a current asset.</p>
+      <p><strong>Accrued income</strong> (income earned but not yet received): Add to income in the income statement; show as a current asset on the balance sheet.</p>
+      <p><strong>Income received in advance</strong> (received but not yet earned): Subtract from income in the income statement; show as a current liability on the balance sheet.</p>
+
+      <h3>The Balance Sheet (Statement of Financial Position)</h3>
+      <p>The balance sheet shows what the business owns (assets), what it owes (liabilities), and the owners' equity at a specific point in time. It must always balance: Total Assets = Equity + Total Liabilities.</p>
+      <p><strong>Non-Current Assets</strong> (used over more than one year): Land and buildings, vehicles, equipment, machinery — shown at carrying value (cost minus accumulated depreciation). Include the depreciation calculation to arrive at carrying value.</p>
+      <p><strong>Current Assets</strong> (converted to cash within one year): Inventories (stock), trade debtors (less provision for bad debts), prepaid expenses, accrued income, bank (positive balance), cash.</p>
+      <p><strong>Equity</strong>: Capital + Retained Income (accumulated net profits not distributed to owners). For a company, this is Share Capital + Retained Income + any reserves.</p>
+      <p><strong>Non-Current Liabilities</strong> (repayable after more than one year): Mortgage loans, long-term loans. Show only the portion due after 12 months here; move the current portion to current liabilities.</p>
+      <p><strong>Current Liabilities</strong> (due within one year): Trade creditors, bank overdraft, accrued expenses, income received in advance, current portion of long-term debt, SARS (income tax payable).</p>
+
+      <h3>The Provision for Bad Debts</h3>
+      <p>The provision for bad debts is a contra-asset that reduces the trade debtors figure to a more realistic (net realisable) value. If debtors are R80,000 and the provision for bad debts is R4,000 (5% of debtors), the balance sheet shows trade debtors at R76,000 net.</p>
+      <p>Adjusting the provision: if the required provision increases (e.g. from R3,000 to R4,000), the increase (R1,000) is an expense in the income statement. If the required provision decreases, the decrease is income (credit to income statement). This adjustment is separate from bad debts written off — a debt written off is a definite loss (debit bad debts expense, credit debtors control), while the provision is an estimate of future losses.</p>
+
+      <h2>Ratio Analysis — Quick Reference</h2>
+      <p>Liquidity ratios test whether the business can meet short-term obligations. Current ratio = Current Assets ÷ Current Liabilities (ideal: approximately 2:1). Acid test ratio = (Current Assets − Inventories) ÷ Current Liabilities (ideal: approximately 1:1 — tests liquidity without relying on stock being sold). Profitability ratios include gross profit percentage (Gross Profit ÷ Net Sales × 100), net profit percentage (Net Profit ÷ Net Sales × 100), and return on equity (Net Profit ÷ Average Equity × 100).</p>
+      <p>When interpreting ratios in the NSC exam, always compare to a benchmark or previous period and give a reason: "The current ratio has decreased from 2.3:1 to 1.8:1, indicating a decline in short-term liquidity. This may be due to the increase in trade creditors, suggesting the business is taking longer to pay suppliers." This structured interpretation earns full marks; a raw ratio with no comment earns nothing.</p>
+
+      <div class="article-callout"><p><strong>Related reading:</strong> See our <a href="blog-nsc-pass-requirements.html">guide to NSC pass requirements and APS</a> — Accounting is a powerful subject for boosting your APS score because the marks are highly predictable for well-prepared students.</p></div>
+
+    </div>
+    <div class="article-cta-box">
+      <h3>Practice Accounting on MatricAce</h3>
+      <p>Our Accounting question bank covers all NSC topics including bank reconciliation, final accounts, and ratio analysis — with full worked solutions.</p>
+      <button class="btn-article-cta" onclick="window.open('MatricAce_SA_Ultimate_v7.html','_blank')">📒 Start Accounting Practice Free</button>
+    </div>
+  </div>
+  </div>
+</div>
+<footer style="background:#FFFFFF;border-top:1px solid rgba(15,23,42,0.06);padding:40px 24px;text-align:center;margin-top:0;">
+  <div style="max-width:780px;margin:0 auto;">
+    <div style="font-family:'Source Serif 4',serif;font-size:1.3rem;letter-spacing:2px;color:#0F172A;margin-bottom:8px;">Matric<span style="color:#ffb612;">Ace</span> <span style="font-size:.62rem;font-weight:800;color:#ffb612;letter-spacing:1px;">SA</span></div>
+    <div style="font-size:.78rem;color:rgba(15,23,42,.4);margin-bottom:16px;">South Africa's CAPS study app for Grade 10–12</div>
+    <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;font-size:.78rem;">
+      <a href="index.html" style="color:rgba(15,23,42,.5);text-decoration:none;">Home</a>
+      <a href="privacy.html" style="color:rgba(15,23,42,.5);text-decoration:none;">Privacy Policy</a>
+      <a href="terms.html" style="color:rgba(15,23,42,.5);text-decoration:none;">Terms of Service</a>
+      <a href="blog.html" style="color:rgba(15,23,42,.5);text-decoration:none;">Blog</a>
+      <a href="MatricAce_SA_Ultimate_v7.html" style="color:#ffb612;text-decoration:none;">Start Studying Free →</a>
+    </div>
+    <div style="font-size:.68rem;color:rgba(15,23,42,.25);margin-top:20px;">© 2026 MatricAce. All rights reserved. CAPS-aligned content for educational purposes only.</div>
+  </div>
+</footer>
+<script>
+function answerQ(btn, isCorrect, explanationId) {
+  var box = btn.closest('.sample-q-box');
+  box.querySelectorAll('.q-opt').forEach(function(b){ b.disabled = true; });
+  if (isCorrect) { btn.classList.add('correct'); }
+  else { btn.classList.add('wrong'); box.querySelector('.q-opt[data-correct="true"]').classList.add('correct'); }
+  var exp = document.getElementById(explanationId);
+  if (exp) exp.style.display = 'block';
+}
+</script>
+
+<!-- WhatsApp floating contact bubble -->
+<a href="https://wa.me/27732891424?text=Hi%20MatricAce%2C%20I%27d%20like%20to%20find%20out%20more"
+   target="_blank" rel="noopener" aria-label="Chat with us on WhatsApp"
+   style="position:fixed;bottom:22px;right:22px;z-index:9999;width:56px;height:56px;border-radius:50%;
+          background:#25D366;display:flex;align-items:center;justify-content:center;
+          box-shadow:0 4px 16px rgba(0,0,0,.25);transition:transform .15s ease;text-decoration:none;"
+   onmouseover="this.style.transform='scale(1.08)'" onmouseout="this.style.transform='scale(1)'">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="30" height="30" fill="#fff">
+    <path d="M16.004 3C9.376 3 4 8.373 4 15c0 2.386.7 4.61 1.902 6.487L4 29l7.73-1.865A11.93 11.93 0 0 0 16.004 27C22.63 27 28 21.627 28 15S22.63 3 16.004 3zm0 21.75c-1.94 0-3.75-.53-5.31-1.45l-.38-.22-4.59 1.11 1.14-4.47-.25-.4A9.7 9.7 0 0 1 5.25 15c0-5.93 4.82-10.75 10.754-10.75S26.75 9.07 26.75 15 21.94 24.75 16.004 24.75zm5.86-8.06c-.32-.16-1.9-.94-2.2-1.05-.3-.11-.51-.16-.73.16-.21.32-.84 1.05-1.03 1.27-.19.21-.38.24-.7.08-.32-.16-1.36-.5-2.6-1.6-.96-.86-1.6-1.92-1.79-2.24-.19-.32-.02-.5.14-.66.14-.14.32-.38.48-.56.16-.19.21-.32.32-.53.11-.21.05-.4-.03-.56-.08-.16-.73-1.76-1-2.4-.26-.63-.53-.55-.73-.56h-.62c-.21 0-.56.08-.85.4-.29.32-1.12 1.09-1.12 2.66s1.14 3.08 1.3 3.3c.16.21 2.25 3.43 5.46 4.81.76.33 1.36.53 1.82.67.77.24 1.46.21 2.02.13.62-.09 1.9-.78 2.16-1.53.27-.75.27-1.4.19-1.53-.08-.13-.29-.21-.61-.37z"/>
+  </svg>
+</a>
+
+</body>
+</html>
