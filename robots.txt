@@ -13,7 +13,7 @@ Allow: /blog-physical-sciences-guide.html
 Allow: /blog-exam-timetable.html
 
 # App requires authentication — do not index
-Disallow: /MatricAce_SA_Ultimate_v7.html
+Disallow: /app/
 Disallow: /teacher.html
 Disallow: /subject-teacher.html
 Disallow: /school-admin.html
