@@ -410,7 +410,7 @@ const SB_HEADERS = {apikey:SUPA_KEY, Authorization:'Bearer '+SUPA_KEY, 'Content-
 
 function getSession(){
   let sess=null, users={};
-  for (const k of ['matric_ace_session','matric_session']) {
+  for (const k of ['ma_session','matric_ace_session','matric_session']) {
     try { const s = JSON.parse(localStorage.getItem(k)||'null'); if (s) { sess=s; break; } } catch(e){}
   }
   for (const k of ['matric_ace_users','matric_users']) {
