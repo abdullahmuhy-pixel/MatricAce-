@@ -1,0 +1,1201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
+<title>Simulations — MatricAce SA</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --primary:#1D5FBF;--primary-dark:#0F3D73;--primary-light:#4C8DE0;--primary-dim:rgba(29,95,191,.10);--primary-glow:rgba(29,95,191,.22);
+  --accent:#B45309;--accent-dim:rgba(180,83,9,.10);
+  --green:#15803D;--green-dim:rgba(21,128,61,.10);
+  --teal:#0891B2;--teal-dim:rgba(8,145,178,.10);
+  --purple:#6366F1;--purple-dim:rgba(99,102,241,.10);
+  --red:#B91C1C;--red-dim:rgba(185,28,28,.09);
+  --bg:#F7F9FC;--bg2:#FFFFFF;--bg3:#EEF3FA;--surface:#FFFFFF;
+  --text:#0F172A;--text2:rgba(15,23,42,.68);--text3:rgba(15,23,42,.42);--text4:rgba(15,23,42,.26);
+  --border:#E3E9F2;--border2:#D3DCE9;
+  --shadow-sm:0 1px 6px rgba(15,23,42,.06);--shadow:0 4px 16px rgba(15,23,42,.07),0 2px 6px rgba(15,23,42,.04);
+  --r:10px;--r-lg:14px;--header-h:60px;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100dvh}
+.header{height:var(--header-h);background:var(--surface);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 16px;gap:10px;position:sticky;top:0;z-index:20;box-shadow:var(--shadow-sm)}
+.back-btn{display:flex;align-items:center;gap:6px;padding:7px 12px;border-radius:8px;background:var(--bg);border:1.5px solid var(--border2);color:var(--text2);font-size:.78rem;font-weight:700;cursor:pointer;white-space:nowrap;transition:all .15s}
+.back-btn:hover{border-color:var(--primary);color:var(--primary)}
+.header-title{font-family:'Source Serif 4',serif;font-size:1rem;font-weight:800;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.header-title span{color:var(--text3);font-weight:500;font-size:.8rem;margin-left:8px}
+.role-badge{padding:4px 10px;border-radius:20px;font-size:.62rem;font-weight:800;font-family:'JetBrains Mono',monospace;text-transform:uppercase;letter-spacing:.4px;white-space:nowrap;flex-shrink:0}
+.role-badge.student{background:var(--primary-dim);color:var(--primary)}
+.role-badge.teacher{background:var(--accent-dim);color:var(--accent)}
+.role-badge.subject{background:var(--purple-dim);color:var(--purple)}
+.role-badge.admin{background:var(--green-dim);color:var(--green)}
+
+.wrap{max-width:960px;margin:0 auto;padding:20px 16px 60px}
+.intro{margin-bottom:20px}
+.intro h1{font-family:'Source Serif 4',serif;font-size:1.35rem;font-weight:800;margin-bottom:6px}
+.intro p{font-size:.85rem;color:var(--text2);max-width:60ch;line-height:1.5}
+
+.banner{display:none;background:linear-gradient(145deg,rgba(29,95,191,.08),rgba(29,95,191,.02));border:1.5px solid rgba(29,95,191,.25);border-radius:var(--r-lg);padding:14px 16px;margin-bottom:18px}
+.banner-head{display:flex;align-items:center;gap:8px;font-size:.7rem;font-weight:800;color:var(--primary);text-transform:uppercase;letter-spacing:.5px;font-family:'JetBrains Mono',monospace;margin-bottom:8px}
+.banner-item{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:8px 0;border-top:1px solid rgba(29,95,191,.12)}
+.banner-item:first-of-type{border-top:none}
+.banner-item-name{font-size:.82rem;font-weight:700}
+.banner-item-meta{font-size:.68rem;color:var(--text3)}
+.banner-item button{padding:6px 12px;border-radius:8px;background:var(--primary);color:#fff;border:none;font-size:.72rem;font-weight:700;cursor:pointer;white-space:nowrap}
+
+.filters{display:flex;gap:8px;margin-bottom:16px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px}
+.filters::-webkit-scrollbar{display:none}
+.filter-chip{padding:7px 14px;border-radius:20px;border:1.5px solid var(--border2);background:var(--surface);font-size:.76rem;font-weight:700;color:var(--text2);white-space:nowrap;cursor:pointer;transition:all .15s;flex-shrink:0}
+.filter-chip.active{background:var(--primary);border-color:var(--primary);color:#fff}
+.filter-chip:hover:not(.active){border-color:var(--primary);color:var(--primary)}
+
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}
+.sim-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:16px;box-shadow:var(--shadow-sm);cursor:pointer;transition:all .15s;position:relative;overflow:hidden;display:flex;flex-direction:column;gap:10px}
+.sim-card:hover{border-color:var(--primary);transform:translateY(-2px);box-shadow:var(--shadow)}
+.sim-icon{width:42px;height:42px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:1.25rem}
+.sim-icon.blue{background:var(--primary-dim)}
+.sim-icon.teal{background:var(--teal-dim)}
+.sim-icon.purple{background:var(--purple-dim)}
+.sim-icon.green{background:var(--green-dim)}
+.sim-name{font-family:'Source Serif 4',serif;font-weight:800;font-size:.92rem}
+.sim-desc{font-size:.72rem;color:var(--text3);line-height:1.45}
+.sim-tag{align-self:flex-start;padding:2px 8px;border-radius:20px;font-size:.6rem;font-weight:800;font-family:'JetBrains Mono',monospace;background:var(--green-dim);color:var(--green)}
+
+.attrib{margin-top:28px;font-size:.68rem;color:var(--text4);line-height:1.6;border-top:1px solid var(--border);padding-top:14px}
+
+/* ---- Sim runner ---- */
+.runner{display:none;background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);box-shadow:var(--shadow);overflow:hidden}
+.runner.active{display:block;animation:fadeUp .2s ease both}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.runner-head{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid var(--border)}
+.runner-head h2{font-family:'Source Serif 4',serif;font-size:1rem;font-weight:800}
+.close-btn{width:30px;height:30px;border-radius:8px;background:var(--bg);border:1.5px solid var(--border2);color:var(--text2);cursor:pointer;font-size:.9rem;display:flex;align-items:center;justify-content:center}
+.close-btn:hover{border-color:var(--red);color:var(--red)}
+
+.runner-body{display:flex;flex-wrap:wrap}
+.canvas-pane{flex:1 1 380px;min-width:280px;padding:14px;display:flex;flex-direction:column;align-items:center;gap:10px}
+canvas{width:100%;max-width:520px;background:linear-gradient(180deg,#EAF2FE 0%,#F7F9FC 78%,#DCE9F5 100%);border-radius:var(--r);border:1px solid var(--border)}
+.readouts{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;width:100%;max-width:520px}
+.readouts.cols2{grid-template-columns:repeat(2,1fr)}
+.ro{background:var(--bg);border:1px solid var(--border);border-radius:var(--r);padding:8px 6px;text-align:center}
+.ro-val{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:.88rem;color:var(--primary)}
+.ro-lbl{font-size:.58rem;color:var(--text3);margin-top:2px;font-weight:600}
+
+.controls-pane{flex:0 0 260px;padding:14px 16px;border-left:1px solid var(--border);display:flex;flex-direction:column;gap:14px;max-height:640px;overflow-y:auto}
+.ctrl label{display:flex;justify-content:space-between;font-size:.76rem;font-weight:700;color:var(--text2);margin-bottom:6px}
+.ctrl label b{color:var(--primary);font-family:'JetBrains Mono',monospace}
+.ctrl input[type=range]{width:100%;accent-color:var(--primary)}
+.ctrl select{width:100%;padding:7px 9px;border-radius:8px;border:1.5px solid var(--border2);background:var(--bg);font-size:.78rem;font-family:'Inter',sans-serif;color:var(--text)}
+.seg{display:flex;gap:6px;flex-wrap:wrap}
+.seg button{flex:1;padding:7px 4px;border-radius:8px;border:1.5px solid var(--border2);background:var(--bg);font-size:.68rem;font-weight:700;color:var(--text2);cursor:pointer;min-width:60px}
+.seg button.active{background:var(--primary);border-color:var(--primary);color:#fff}
+.action-row{display:flex;gap:8px;margin-top:auto}
+.btn{padding:9px 14px;border-radius:9px;font-size:.78rem;font-weight:700;display:inline-flex;align-items:center;justify-content:center;gap:5px;cursor:pointer;transition:all .15s;font-family:'Inter',sans-serif;flex:1}
+.btn-primary{background:linear-gradient(135deg,var(--primary),var(--primary-light));color:#fff;box-shadow:0 2px 8px var(--primary-glow);border:none}
+.btn-primary:hover{transform:translateY(-1px)}
+.btn-ghost{background:var(--bg);border:1.5px solid var(--border2);color:var(--text2)}
+.btn-ghost:hover{border-color:var(--primary);color:var(--primary)}
+.eq-display{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:.85rem;color:var(--text);background:var(--bg);border:1px solid var(--border);border-radius:var(--r);padding:8px 10px;text-align:center}
+
+/* ---- Assign box ---- */
+.assign-box{border-top:1px solid var(--border);padding-top:12px;display:flex;flex-direction:column;gap:8px}
+.assign-box-title{font-size:.7rem;font-weight:800;color:var(--accent);text-transform:uppercase;letter-spacing:.4px;font-family:'JetBrains Mono',monospace}
+.assign-box input,.assign-box select,.assign-box textarea{padding:7px 9px;border:1.5px solid var(--border2);border-radius:8px;background:var(--bg);font-size:.76rem;font-family:'Inter',sans-serif;color:var(--text);width:100%}
+.assign-box textarea{resize:vertical;min-height:44px}
+.assign-status{font-size:.68rem;font-weight:600}
+.assign-status.ok{color:var(--green)}
+.assign-status.err{color:var(--red)}
+
+.gate{max-width:420px;margin:80px auto;text-align:center;padding:0 20px}
+.gate h2{font-family:'Source Serif 4',serif;font-size:1.15rem;margin-bottom:8px}
+.gate p{font-size:.85rem;color:var(--text2);margin-bottom:18px;line-height:1.5}
+
+@media (max-width:640px){
+  .runner-body{flex-direction:column}
+  .controls-pane{border-left:none;border-top:1px solid var(--border);max-height:none}
+}
+</style>
+</head>
+<body>
+
+<div class="header" id="appHeader" style="display:none">
+  <button class="back-btn" onclick="goBack()">← Back</button>
+  <div class="header-title">Simulations<span id="headerSub"></span></div>
+  <div class="role-badge" id="roleBadge"></div>
+</div>
+
+<div id="gateView" class="gate" style="display:none">
+  <h2>Sign in to open Simulations</h2>
+  <p>You're viewing this as a guest. Simulations are part of your MatricAce account — log in as a student, teacher, subject teacher, school admin or founder to continue.</p>
+  <button class="btn btn-primary" style="width:100%" onclick="location.href='index.html'">Go to login</button>
+</div>
+
+<div id="mainView" class="wrap" style="display:none">
+  <div class="intro">
+    <h1>Interactive Simulations</h1>
+    <p>Hands-on CAPS science and maths interactives — adjust the variables, run it, and see what changes. Built for Grade 10–12, in-house.</p>
+  </div>
+
+  <div class="banner" id="assignedBanner">
+    <div class="banner-head">📌 Assigned by your teacher</div>
+    <div id="assignedList"></div>
+  </div>
+
+  <div class="filters" id="filters"></div>
+  <div class="grid" id="simGrid"></div>
+
+  <!-- ═══ PROJECTILE MOTION ═══ -->
+  <div class="runner" id="runner-projectile">
+    <div class="runner-head"><h2>Projectile Motion</h2><button class="close-btn" onclick="closeRunner()">✕</button></div>
+    <div class="runner-body">
+      <div class="canvas-pane">
+        <canvas id="pmCanvas" width="520" height="340"></canvas>
+        <div class="readouts">
+          <div class="ro"><div class="ro-val" id="roRange">—</div><div class="ro-lbl">RANGE (m)</div></div>
+          <div class="ro"><div class="ro-val" id="roHeight">—</div><div class="ro-lbl">MAX HEIGHT (m)</div></div>
+          <div class="ro"><div class="ro-val" id="roTime">—</div><div class="ro-lbl">FLIGHT TIME (s)</div></div>
+        </div>
+      </div>
+      <div class="controls-pane">
+        <div class="ctrl"><label>Launch angle <b id="valAngle">45°</b></label><input type="range" id="pmAngle" min="5" max="85" value="45"></div>
+        <div class="ctrl"><label>Initial velocity <b id="valVel">25 m/s</b></label><input type="range" id="pmVel" min="5" max="50" value="25"></div>
+        <div class="ctrl"><label>Gravity</label>
+          <div class="seg" id="pmGravity">
+            <button data-g="9.8" class="active">Earth</button>
+            <button data-g="1.6">Moon</button>
+            <button data-g="3.7">Mars</button>
+          </div>
+        </div>
+        <div class="action-row">
+          <button class="btn btn-ghost" onclick="resetPM()">Reset</button>
+          <button class="btn btn-primary" onclick="launchPM()">Launch ▶</button>
+        </div>
+        <div class="assign-box" id="assignBox-projectile"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ CIRCUITS ═══ -->
+  <div class="runner" id="runner-circuits">
+    <div class="runner-head"><h2>Series &amp; Parallel Circuits</h2><button class="close-btn" onclick="closeRunner()">✕</button></div>
+    <div class="runner-body">
+      <div class="canvas-pane">
+        <canvas id="ccCanvas" width="520" height="300"></canvas>
+        <div class="readouts">
+          <div class="ro"><div class="ro-val" id="roRtotal">—</div><div class="ro-lbl">R TOTAL (Ω)</div></div>
+          <div class="ro"><div class="ro-val" id="roItotal">—</div><div class="ro-lbl">I TOTAL (A)</div></div>
+          <div class="ro"><div class="ro-val" id="roPtotal">—</div><div class="ro-lbl">P TOTAL (W)</div></div>
+        </div>
+      </div>
+      <div class="controls-pane">
+        <div class="ctrl"><label>Configuration</label>
+          <div class="seg" id="ccMode"><button data-m="series" class="active">Series</button><button data-m="parallel">Parallel</button></div>
+        </div>
+        <div class="ctrl"><label>Battery voltage <b id="valVbat">12 V</b></label><input type="range" id="ccVbat" min="1" max="24" value="12"></div>
+        <div class="ctrl"><label>R1 <b id="valR1">10 Ω</b></label><input type="range" id="ccR1" min="1" max="100" value="10"></div>
+        <div class="ctrl"><label>R2 <b id="valR2">20 Ω</b></label><input type="range" id="ccR2" min="1" max="100" value="20"></div>
+        <div class="ctrl"><label>R3 <b id="valR3">30 Ω</b></label><input type="range" id="ccR3" min="1" max="100" value="30"></div>
+        <div class="assign-box" id="assignBox-circuits"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ TITRATION ═══ -->
+  <div class="runner" id="runner-titration">
+    <div class="runner-head"><h2>Acid–Base Titration</h2><button class="close-btn" onclick="closeRunner()">✕</button></div>
+    <div class="runner-body">
+      <div class="canvas-pane">
+        <canvas id="ttCanvas" width="520" height="320"></canvas>
+        <div class="readouts">
+          <div class="ro"><div class="ro-val" id="roPH">—</div><div class="ro-lbl">CURRENT pH</div></div>
+          <div class="ro"><div class="ro-val" id="roVeq">—</div><div class="ro-lbl">V AT EQUIV. (mL)</div></div>
+          <div class="ro"><div class="ro-val" id="roVadded">—</div><div class="ro-lbl">BASE ADDED (mL)</div></div>
+        </div>
+      </div>
+      <div class="controls-pane">
+        <div class="ctrl"><label>Acid conc. (HCl) <b id="valCa">0.10 M</b></label><input type="range" id="ttCa" min="1" max="50" value="10"></div>
+        <div class="ctrl"><label>Acid volume <b id="valVa">25 mL</b></label><input type="range" id="ttVa" min="10" max="50" value="25"></div>
+        <div class="ctrl"><label>Base conc. (NaOH) <b id="valCb">0.10 M</b></label><input type="range" id="ttCb" min="1" max="50" value="10"></div>
+        <div class="ctrl"><label>Base added <b id="valVb">0 mL</b></label><input type="range" id="ttVb" min="0" max="100" value="0"></div>
+        <div class="assign-box" id="assignBox-titration"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ PUNNETT SQUARE ═══ -->
+  <div class="runner" id="runner-punnett">
+    <div class="runner-head"><h2>Punnett Square Explorer</h2><button class="close-btn" onclick="closeRunner()">✕</button></div>
+    <div class="runner-body">
+      <div class="canvas-pane">
+        <canvas id="pnCanvas" width="420" height="420"></canvas>
+        <div class="readouts cols2">
+          <div class="ro"><div class="ro-val" id="roGeno">—</div><div class="ro-lbl">GENOTYPE RATIO</div></div>
+          <div class="ro"><div class="ro-val" id="roPheno">—</div><div class="ro-lbl">PHENOTYPE RATIO</div></div>
+        </div>
+      </div>
+      <div class="controls-pane">
+        <div class="ctrl"><label>Trait letter</label><input type="text" id="pnLetter" maxlength="1" value="A" style="padding:7px 9px;border-radius:8px;border:1.5px solid var(--border2);background:var(--bg);width:100%;font-family:'JetBrains Mono',monospace;font-weight:700;text-align:center"></div>
+        <div class="ctrl"><label>Parent 1 genotype</label>
+          <select id="pnP1"><option value="AA">Homozygous dominant (AA)</option><option value="Aa" selected>Heterozygous (Aa)</option><option value="aa">Homozygous recessive (aa)</option></select>
+        </div>
+        <div class="ctrl"><label>Parent 2 genotype</label>
+          <select id="pnP2"><option value="AA">Homozygous dominant (AA)</option><option value="Aa" selected>Heterozygous (Aa)</option><option value="aa">Homozygous recessive (aa)</option></select>
+        </div>
+        <div class="assign-box" id="assignBox-punnett"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ FUNCTION TRANSFORMER ═══ -->
+  <div class="runner" id="runner-functions">
+    <div class="runner-head"><h2>Function Transformer</h2><button class="close-btn" onclick="closeRunner()">✕</button></div>
+    <div class="runner-body">
+      <div class="canvas-pane">
+        <canvas id="fnCanvas" width="480" height="360"></canvas>
+        <div class="eq-display" id="fnEq" style="max-width:480px;width:100%">y = (x)²</div>
+      </div>
+      <div class="controls-pane">
+        <div class="ctrl"><label>Base function</label>
+          <select id="fnType"><option value="quad">Parabola: a(x−p)²+q</option><option value="hyp">Hyperbola: a/(x−p)+q</option><option value="sin">Sine: a·sin(b(x−p))+q</option></select>
+        </div>
+        <div class="ctrl"><label>a (stretch / reflect) <b id="valFa">1.0</b></label><input type="range" id="fnA" min="-30" max="30" value="10"></div>
+        <div class="ctrl"><label>p (horizontal shift) <b id="valFp">0</b></label><input type="range" id="fnP" min="-8" max="8" value="0"></div>
+        <div class="ctrl"><label>q (vertical shift) <b id="valFq">0</b></label><input type="range" id="fnQ" min="-8" max="8" value="0"></div>
+        <div class="ctrl" id="fnBwrap" style="display:none"><label>b (period) <b id="valFb">1.0</b></label><input type="range" id="fnB" min="1" max="40" value="10"></div>
+        <div class="assign-box" id="assignBox-functions"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ NEWTON'S SECOND LAW ═══ -->
+  <div class="runner" id="runner-newton">
+    <div class="runner-head"><h2>Newton's Second Law</h2><button class="close-btn" onclick="closeRunner()">✕</button></div>
+    <div class="runner-body">
+      <div class="canvas-pane">
+        <canvas id="nwCanvas" width="520" height="220"></canvas>
+        <div class="readouts">
+          <div class="ro"><div class="ro-val" id="roNetF">—</div><div class="ro-lbl">NET FORCE (N)</div></div>
+          <div class="ro"><div class="ro-val" id="roAccel">—</div><div class="ro-lbl">ACCELERATION (m/s²)</div></div>
+          <div class="ro"><div class="ro-val" id="roVel3s">—</div><div class="ro-lbl">VELOCITY AT 3s (m/s)</div></div>
+        </div>
+      </div>
+      <div class="controls-pane">
+        <div class="ctrl"><label>Applied force <b id="valNF">40 N</b></label><input type="range" id="nwF" min="0" max="150" value="40"></div>
+        <div class="ctrl"><label>Mass <b id="valNM">10 kg</b></label><input type="range" id="nwM" min="1" max="80" value="10"></div>
+        <div class="ctrl"><label>Friction force <b id="valNFr">10 N</b></label><input type="range" id="nwFr" min="0" max="100" value="10"></div>
+        <div class="action-row">
+          <button class="btn btn-ghost" onclick="resetNewton()">Reset</button>
+          <button class="btn btn-primary" onclick="runNewton()">Run ▶</button>
+        </div>
+        <div class="assign-box" id="assignBox-newton"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ WAVE INTERFERENCE ═══ -->
+  <div class="runner" id="runner-waves">
+    <div class="runner-head"><h2>Wave Interference</h2><button class="close-btn" onclick="closeRunner()">✕</button></div>
+    <div class="runner-body">
+      <div class="canvas-pane">
+        <canvas id="wvCanvas" width="420" height="300"></canvas>
+        <div class="readouts cols2">
+          <div class="ro"><div class="ro-val" id="roWvPathDiff">—</div><div class="ro-lbl">PATH DIFF. AT PROBE (λ)</div></div>
+          <div class="ro"><div class="ro-val" id="roWvType">—</div><div class="ro-lbl">AT PROBE</div></div>
+        </div>
+      </div>
+      <div class="controls-pane">
+        <div class="ctrl"><label>Wavelength <b id="valWvL">30 px</b></label><input type="range" id="wvL" min="10" max="60" value="30"></div>
+        <div class="ctrl"><label>Source separation <b id="valWvSep">120 px</b></label><input type="range" id="wvSep" min="30" max="250" value="120"></div>
+        <div class="assign-box" id="assignBox-waves"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ UNIT CIRCLE & TRIG RATIOS ═══ -->
+  <div class="runner" id="runner-trig">
+    <div class="runner-head"><h2>Unit Circle &amp; Trig Ratios</h2><button class="close-btn" onclick="closeRunner()">✕</button></div>
+    <div class="runner-body">
+      <div class="canvas-pane">
+        <canvas id="trCanvas" width="380" height="380"></canvas>
+        <div class="readouts">
+          <div class="ro"><div class="ro-val" id="roSin">—</div><div class="ro-lbl">SIN θ</div></div>
+          <div class="ro"><div class="ro-val" id="roCos">—</div><div class="ro-lbl">COS θ</div></div>
+          <div class="ro"><div class="ro-val" id="roTan">—</div><div class="ro-lbl">TAN θ</div></div>
+        </div>
+      </div>
+      <div class="controls-pane">
+        <div class="ctrl"><label>Angle θ <b id="valTrAngle">45°</b></label><input type="range" id="trAngle" min="0" max="360" value="45"></div>
+        <div class="ctrl"><label>Quadrant</label><div class="eq-display" id="trQuadrant">Quadrant I</div></div>
+        <div class="assign-box" id="assignBox-trig"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ ENZYME REACTION RATE ═══ -->
+  <div class="runner" id="runner-enzyme">
+    <div class="runner-head"><h2>Enzyme Reaction Rate</h2><button class="close-btn" onclick="closeRunner()">✕</button></div>
+    <div class="runner-body">
+      <div class="canvas-pane">
+        <canvas id="enCanvas" width="480" height="260"></canvas>
+        <div class="readouts">
+          <div class="ro"><div class="ro-val" id="roEnRate">—</div><div class="ro-lbl">RELATIVE RATE (%)</div></div>
+        </div>
+      </div>
+      <div class="controls-pane">
+        <div class="ctrl"><label>Temperature <b id="valEnT">37°C</b></label><input type="range" id="enT" min="0" max="80" value="37"></div>
+        <div class="ctrl"><label>pH <b id="valEnPH">7.0</b></label><input type="range" id="enPH" min="0" max="140" value="70"></div>
+        <div class="ctrl"><label>Substrate concentration <b id="valEnS">5.0</b></label><input type="range" id="enS" min="0" max="200" value="50"></div>
+        <div class="assign-box" id="assignBox-enzyme"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ SEASONS & EARTH'S TILT ═══ -->
+  <div class="runner" id="runner-seasons">
+    <div class="runner-head"><h2>Seasons &amp; Earth's Tilt</h2><button class="close-btn" onclick="closeRunner()">✕</button></div>
+    <div class="runner-body">
+      <div class="canvas-pane">
+        <canvas id="seCanvas" width="420" height="320"></canvas>
+        <div class="readouts">
+          <div class="ro"><div class="ro-val" id="roSeDec">—</div><div class="ro-lbl">SUN DECLINATION</div></div>
+          <div class="ro"><div class="ro-val" id="roSeDay">—</div><div class="ro-lbl">DAY LENGTH (hrs)</div></div>
+          <div class="ro"><div class="ro-val" id="roSeSeason">—</div><div class="ro-lbl">SEASON</div></div>
+        </div>
+      </div>
+      <div class="controls-pane">
+        <div class="ctrl"><label>Month <b id="valSeMonth">January</b></label><input type="range" id="seMonth" min="1" max="12" value="1"></div>
+        <div class="ctrl"><label>Latitude <b id="valSeLat">−26° (Johannesburg)</b></label><input type="range" id="seLat" min="-90" max="90" value="-26"></div>
+        <div class="assign-box" id="assignBox-seasons"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ PERIODIC TABLE TRENDS ═══ -->
+  <div class="runner" id="runner-periodic">
+    <div class="runner-head"><h2>Periodic Table Trends</h2><button class="close-btn" onclick="closeRunner()">✕</button></div>
+    <div class="runner-body">
+      <div class="canvas-pane">
+        <canvas id="ptCanvas" width="480" height="240"></canvas>
+        <div class="readouts">
+          <div class="ro"><div class="ro-val" id="roPtElement">—</div><div class="ro-lbl">ELEMENT</div></div>
+          <div class="ro"><div class="ro-val" id="roPtRadius">—</div><div class="ro-lbl">ATOMIC RADIUS (pm)</div></div>
+          <div class="ro"><div class="ro-val" id="roPtEneg">—</div><div class="ro-lbl">ELECTRONEGATIVITY</div></div>
+        </div>
+      </div>
+      <div class="controls-pane">
+        <div class="ctrl"><label>Trend view</label>
+          <div class="seg" id="ptMode"><button data-m="radius" class="active">Atomic radius</button><button data-m="eneg">Electronegativity</button></div>
+        </div>
+        <div class="ctrl"><label>Select element <b id="valPtIdx">Li</b></label><input type="range" id="ptIdx" min="0" max="15" value="0"></div>
+        <div class="assign-box" id="assignBox-periodic"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="attrib">
+    These simulations are built in-house for MatricAce SA and are not affiliated with or produced by PhET Interactive Simulations / University of Colorado Boulder.
+  </div>
+</div>
+
+<script>
+/* ══════════════════════════════════════════════════════════════════
+   AUTH / ROLE DETECTION — reuses the existing MatricAce session
+   ══════════════════════════════════════════════════════════════════ */
+const SUPA_URL = 'https://xdwexkmbhzkjivpayyrp.supabase.co';
+const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inhkd2V4a21iaHpraml2cGF5eXJwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIzNzI2NTMsImV4cCI6MjA4Nzk0ODY1M30.2GWkg-L86GL0mp0LCfmmW3waDHWiMcZhqzhuOTRpTJI';
+const SB_HEADERS = {apikey:SUPA_KEY, Authorization:'Bearer '+SUPA_KEY, 'Content-Type':'application/json'};
+const ADMIN_EMAILS = ['admin@matricace.co.za', 'matricace.sa@gmail.com', 'abdullahomuhy@gmail.com'];
+
+function getSession(){
+  let sess=null, users={};
+  for (const k of ['ma_session','matric_ace_session','matric_session']) {
+    try { const s = JSON.parse(localStorage.getItem(k)||'null'); if (s) { sess=s; break; } } catch(e){}
+  }
+  for (const k of ['matric_ace_users','matric_users']) {
+    try { const u = JSON.parse(localStorage.getItem(k)||'{}'); if (Object.keys(u).length) { users=u; break; } } catch(e){}
+  }
+  if (!sess || !sess.uid) return null;
+  const user = users[sess.uid];
+  if (!user) return null;
+  let role='student';
+  if ((sess.uid+'').startsWith('admin_') || ADMIN_EMAILS.includes((user.email||'').toLowerCase())) role='super';
+  else if (user.is_school_admin) role='admin';
+  else if (user.is_subject_teacher || (sess.uid+'').startsWith('st_')) role='subject';
+  else if (user.is_teacher || (sess.uid+'').startsWith('tch_')) role='teacher';
+  let teacherCtx=null;
+  if (role==='teacher' || role==='subject') {
+    try { teacherCtx = JSON.parse(localStorage.getItem('ma_teacher_ctx')||'null'); } catch(e){}
+  }
+  return {user, role, teacherCtx};
+}
+function goBack(){
+  const role = (window.MA_SESSION && window.MA_SESSION.role) || 'student';
+  const map = {student:'app/MatricAce_SA_Ultimate_v9.html', teacher:'teacher.html', subject:'subject-teacher.html', admin:'school-admin.html', super:'super-admin.html'};
+  location.href = map[role] || 'index.html';
+}
+
+const ROLE_LABEL = {student:'STUDENT', teacher:'TEACHER', subject:'SUBJECT TEACHER', admin:'SCHOOL ADMIN', super:'FOUNDER'};
+const ROLE_CLASS = {student:'student', teacher:'teacher', subject:'subject', admin:'admin', super:'admin'};
+
+function initAuth(){
+  const s = getSession();
+  if (!s) { document.getElementById('gateView').style.display='block'; return; }
+  window.MA_SESSION = s;
+  document.getElementById('appHeader').style.display='flex';
+  document.getElementById('mainView').style.display='block';
+  const badge = document.getElementById('roleBadge');
+  badge.textContent = ROLE_LABEL[s.role];
+  badge.className = 'role-badge ' + ROLE_CLASS[s.role];
+  document.getElementById('headerSub').textContent = s.user.name ? ('· ' + s.user.name) : '';
+
+  if (s.role === 'student') loadAssignedForStudent();
+  SIMS.forEach(sim => renderAssignBox(sim.id, sim.name, sim.subject));
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   ASSIGN-TO-CLASS  (teacher / subject teacher → students)
+   ══════════════════════════════════════════════════════════════════ */
+function renderAssignBox(simId, simName, subject){
+  const el = document.getElementById('assignBox-'+simId);
+  if (!el) return;
+  const s = window.MA_SESSION;
+  if (!s || (s.role!=='teacher' && s.role!=='subject')) return;
+
+  const ctx = s.teacherCtx || {};
+  const classes = (ctx.allClasses && ctx.allClasses.length) ? ctx.allClasses : (ctx.classInfo ? [ctx.classInfo] : []);
+  if (!classes.length) {
+    el.innerHTML = `<div class="assign-box-title">Assign to class</div><div class="assign-status">No class linked to this account yet.</div>`;
+    return;
+  }
+  const classOpts = classes.map(c=>`<option value="${c.id}">${c.name||c.grade||'My class'}</option>`).join('');
+  el.innerHTML = `
+    <div class="assign-box-title">Assign to class</div>
+    ${classes.length>1 ? `<select id="asgClass-${simId}">${classOpts}</select>` : ''}
+    <input type="date" id="asgDue-${simId}">
+    <textarea id="asgNote-${simId}" placeholder="Optional instructions for students…"></textarea>
+    <button class="btn btn-primary" style="width:100%" onclick="submitAssign('${simId}','${simName.replace(/'/g,"\\'")}','${(subject||'').replace(/'/g,"\\'")}')">Assign to class</button>
+    <div class="assign-status" id="asgStatus-${simId}"></div>
+  `;
+  el._classes = classes;
+}
+
+async function submitAssign(simId, simName, subject){
+  const s = window.MA_SESSION;
+  const statusEl = document.getElementById('asgStatus-'+simId);
+  const ctx = s.teacherCtx || {};
+  const classSel = document.getElementById('asgClass-'+simId);
+  const classes = (ctx.allClasses && ctx.allClasses.length) ? ctx.allClasses : (ctx.classInfo ? [ctx.classInfo] : []);
+  const classId = classSel ? classSel.value : (classes[0] && classes[0].id);
+  if (!classId) { statusEl.textContent='No class selected.'; statusEl.className='assign-status err'; return; }
+
+  const body = {
+    school_id: (ctx.school && ctx.school.id) || null,
+    class_id: classId,
+    sim_id: simId,
+    sim_name: simName,
+    subject: subject || null,
+    assigned_by_email: s.user.email || null,
+    assigned_by_name: s.user.name || null,
+    assigned_by_role: s.role,
+    note: (document.getElementById('asgNote-'+simId)||{}).value || null,
+    due_date: (document.getElementById('asgDue-'+simId)||{}).value || null
+  };
+  statusEl.textContent = 'Assigning…'; statusEl.className='assign-status';
+  try {
+    const res = await fetch(SUPA_URL+'/rest/v1/assigned_simulations', {
+      method:'POST', headers: Object.assign({}, SB_HEADERS, {'Prefer':'return=minimal'}),
+      body: JSON.stringify(body)
+    });
+    if (!res.ok) throw new Error('Request failed');
+    statusEl.textContent = '✓ Assigned to your class.'; statusEl.className='assign-status ok';
+    const noteEl = document.getElementById('asgNote-'+simId); if (noteEl) noteEl.value='';
+  } catch(e) {
+    statusEl.textContent = 'Could not assign — the assigned_simulations table may not be set up yet.';
+    statusEl.className = 'assign-status err';
+  }
+}
+
+async function loadAssignedForStudent(){
+  const s = window.MA_SESSION;
+  const classId = s.user.class_id;
+  if (!classId) return;
+  try {
+    const res = await fetch(SUPA_URL+'/rest/v1/assigned_simulations?class_id=eq.'+encodeURIComponent(classId)+'&order=created_at.desc&limit=5', {headers:SB_HEADERS});
+    if (!res.ok) return;
+    const rows = await res.json();
+    if (!rows.length) return;
+    const list = document.getElementById('assignedList');
+    list.innerHTML = rows.map(r=>`
+      <div class="banner-item">
+        <div>
+          <div class="banner-item-name">${r.sim_name}</div>
+          <div class="banner-item-meta">${r.assigned_by_name?('by '+r.assigned_by_name+' · '):''}${r.due_date?('due '+r.due_date):'no due date'}${r.note?(' · '+r.note):''}</div>
+        </div>
+        <button onclick="openRunner('${r.sim_id}')">Open</button>
+      </div>`).join('');
+    document.getElementById('assignedBanner').style.display='block';
+  } catch(e) { /* table may not exist yet — fail quietly */ }
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   SIM CATALOG
+   ══════════════════════════════════════════════════════════════════ */
+const SIMS = [
+  {id:'projectile', name:'Projectile Motion', desc:'Launch angle, velocity and gravity — trace the trajectory and read off range, height and flight time.', subject:'Physical Sciences', icon:'🎯', color:'blue'},
+  {id:'circuits', name:'Series & Parallel Circuits', desc:'Build a circuit and see how current, voltage and resistance behave in each configuration.', subject:'Physical Sciences', icon:'🔌', color:'teal'},
+  {id:'titration', name:'Acid–Base Titration', desc:'Add NaOH drop by drop into HCl and watch the pH curve form in real time.', subject:'Physical Sciences', icon:'🧪', color:'green'},
+  {id:'punnett', name:'Punnett Square Explorer', desc:'Cross two parent genotypes and see offspring genotype and phenotype ratios generate live.', subject:'Life Sciences', icon:'🧬', color:'purple'},
+  {id:'functions', name:'Function Transformer', desc:'Drag sliders to shift, stretch and reflect a parabola, hyperbola or sine graph and watch the equation update.', subject:'Mathematics', icon:'📈', color:'blue'},
+  {id:'newton', name:"Newton's Second Law", desc:'Adjust applied force, mass and friction and watch a cart accelerate — with live force vectors.', subject:'Physical Sciences', icon:'🛒', color:'teal'},
+  {id:'waves', name:'Wave Interference', desc:'Two wave sources overlap — see the constructive and destructive interference pattern form.', subject:'Physical Sciences', icon:'〰️', color:'blue'},
+  {id:'trig', name:'Unit Circle & Trig Ratios', desc:'Sweep an angle around the unit circle and watch sin, cos and tan update live.', subject:'Mathematics', icon:'📐', color:'purple'},
+  {id:'enzyme', name:'Enzyme Reaction Rate', desc:'Change temperature, pH and substrate concentration and see how enzyme activity responds.', subject:'Life Sciences', icon:'🦠', color:'green'},
+  {id:'seasons', name:"Seasons & Earth's Tilt", desc:"Move through the months and see how the sun's declination and day length change with latitude.", subject:'Earth & Space Sciences', icon:'🌍', color:'teal'},
+  {id:'periodic', name:'Periodic Table Trends', desc:'Step across Periods 2 and 3 and see how atomic radius and electronegativity trend.', subject:'Physical Sciences', icon:'⚛️', color:'purple'},
+];
+const SUBJECTS = ['All', ...new Set(SIMS.map(s=>s.subject))];
+
+let activeFilter='All';
+function renderFilters(){
+  document.getElementById('filters').innerHTML = SUBJECTS.map(s=>`<button class="filter-chip ${s===activeFilter?'active':''}" onclick="setFilter('${s}')">${s}</button>`).join('');
+}
+function setFilter(s){ activeFilter=s; renderFilters(); renderGrid(); }
+function renderGrid(){
+  const list = SIMS.filter(s=>activeFilter==='All'||s.subject===activeFilter);
+  document.getElementById('simGrid').innerHTML = list.map(s=>`
+    <div class="sim-card" onclick="openRunner('${s.id}')">
+      <div class="sim-icon ${s.color}">${s.icon}</div>
+      <div class="sim-name">${s.name}</div>
+      <div class="sim-desc">${s.desc}</div>
+      <div class="sim-tag">READY</div>
+    </div>`).join('');
+}
+function openRunner(id){
+  document.getElementById('simGrid').style.display='none';
+  document.getElementById('filters').style.display='none';
+  document.querySelector('.intro').style.display='none';
+  document.getElementById('assignedBanner').style.display='none';
+  document.getElementById('runner-'+id).classList.add('active');
+  if (id==='projectile') { resetPM(); drawPM([]); }
+  if (id==='circuits') drawCircuit();
+  if (id==='titration') drawTitration();
+  if (id==='punnett') drawPunnett();
+  if (id==='functions') drawFunction();
+  if (id==='newton') { resetNewton(); }
+  if (id==='waves') drawWaves();
+  if (id==='trig') drawTrig();
+  if (id==='enzyme') drawEnzyme();
+  if (id==='seasons') drawSeasons();
+  if (id==='periodic') drawPeriodic();
+}
+function closeRunner(){
+  document.querySelectorAll('.runner').forEach(r=>r.classList.remove('active'));
+  document.getElementById('simGrid').style.display='grid';
+  document.getElementById('filters').style.display='flex';
+  document.querySelector('.intro').style.display='block';
+  if (window.MA_SESSION && window.MA_SESSION.role==='student') loadAssignedForStudent();
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   1. PROJECTILE MOTION
+   ══════════════════════════════════════════════════════════════════ */
+const pmCanvas = document.getElementById('pmCanvas');
+const pmCtx = pmCanvas.getContext('2d');
+let pmG = 9.8, pmAnim = null;
+
+document.getElementById('pmAngle').addEventListener('input', e=>{ document.getElementById('valAngle').textContent = e.target.value+'°'; drawPM([]); });
+document.getElementById('pmVel').addEventListener('input', e=>{ document.getElementById('valVel').textContent = e.target.value+' m/s'; drawPM([]); });
+document.getElementById('pmGravity').addEventListener('click', e=>{
+  const btn = e.target.closest('button'); if (!btn) return;
+  document.querySelectorAll('#pmGravity button').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active'); pmG = parseFloat(btn.dataset.g); drawPM([]);
+});
+function pmParams(){
+  const angle = parseFloat(document.getElementById('pmAngle').value) * Math.PI/180;
+  const v0 = parseFloat(document.getElementById('pmVel').value);
+  const vx = v0*Math.cos(angle), vy = v0*Math.sin(angle);
+  const tFlight = 2*vy/pmG;
+  return {angle, v0, vx, vy, tFlight, range: vx*tFlight, maxH: (vy*vy)/(2*pmG)};
+}
+function drawPM(trail){
+  const p = pmParams();
+  const W = pmCanvas.width, H = pmCanvas.height;
+  pmCtx.clearRect(0,0,W,H);
+  const padL=40, padB=30, padT=20, padR=20;
+  const plotW = W-padL-padR, plotH = H-padT-padB;
+  const maxX = Math.max(p.range*1.15, 10), maxY = Math.max(p.maxH*1.35, 5);
+  const sx = plotW/maxX, sy = plotH/maxY;
+  const gx = x => padL + x*sx, gy = y => H-padB - y*sy;
+  pmCtx.strokeStyle = '#B9C6D9'; pmCtx.lineWidth=1.5;
+  pmCtx.beginPath(); pmCtx.moveTo(padL, H-padB); pmCtx.lineTo(W-padR, H-padB); pmCtx.stroke();
+  pmCtx.beginPath(); pmCtx.moveTo(padL, padT); pmCtx.lineTo(padL, H-padB); pmCtx.stroke();
+  pmCtx.strokeStyle = 'rgba(29,95,191,.25)'; pmCtx.lineWidth=1.5; pmCtx.setLineDash([4,4]);
+  pmCtx.beginPath();
+  for (let t=0; t<=p.tFlight; t+=p.tFlight/60) { const x=p.vx*t, y=p.vy*t-0.5*pmG*t*t; t===0?pmCtx.moveTo(gx(x),gy(y)):pmCtx.lineTo(gx(x),gy(y)); }
+  pmCtx.stroke(); pmCtx.setLineDash([]);
+  if (trail.length>1){
+    pmCtx.strokeStyle = '#1D5FBF'; pmCtx.lineWidth=2.5; pmCtx.beginPath();
+    trail.forEach((pt,i)=> i===0?pmCtx.moveTo(gx(pt.x),gy(pt.y)):pmCtx.lineTo(gx(pt.x),gy(pt.y)));
+    pmCtx.stroke();
+  }
+  const last = trail.length ? trail[trail.length-1] : {x:0,y:0};
+  pmCtx.fillStyle = '#B45309'; pmCtx.beginPath(); pmCtx.arc(gx(last.x), gy(last.y), 6, 0, 7); pmCtx.fill();
+  document.getElementById('roRange').textContent = p.range.toFixed(1);
+  document.getElementById('roHeight').textContent = p.maxH.toFixed(1);
+  document.getElementById('roTime').textContent = p.tFlight.toFixed(2);
+}
+function launchPM(){
+  if (pmAnim) cancelAnimationFrame(pmAnim);
+  const p = pmParams(); const start = performance.now();
+  const durationMs = Math.min(Math.max(p.tFlight*450, 700), 3500);
+  const trail = [];
+  function step(now){
+    const frac = Math.min((now-start)/durationMs, 1); const t = frac*p.tFlight;
+    trail.push({x: p.vx*t, y: Math.max(p.vy*t - 0.5*pmG*t*t, 0)});
+    drawPM(trail);
+    if (frac<1) pmAnim = requestAnimationFrame(step);
+  }
+  pmAnim = requestAnimationFrame(step);
+}
+function resetPM(){ if (pmAnim) cancelAnimationFrame(pmAnim); drawPM([]); }
+
+/* ══════════════════════════════════════════════════════════════════
+   2. CIRCUITS
+   ══════════════════════════════════════════════════════════════════ */
+const ccCanvas = document.getElementById('ccCanvas');
+const ccCtx = ccCanvas.getContext('2d');
+let ccMode = 'series';
+['ccVbat','ccR1','ccR2','ccR3'].forEach(id=>{
+  document.getElementById(id).addEventListener('input', drawCircuit);
+});
+document.getElementById('ccMode').addEventListener('click', e=>{
+  const btn = e.target.closest('button'); if (!btn) return;
+  document.querySelectorAll('#ccMode button').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active'); ccMode = btn.dataset.m; drawCircuit();
+});
+function ccResistor(x,y,label,val,color){
+  ccCtx.save(); ccCtx.translate(x,y);
+  ccCtx.strokeStyle = color; ccCtx.lineWidth = 2.5;
+  ccCtx.beginPath();
+  ccCtx.moveTo(-30,0);
+  const zig=[-22,-14,-6,2,10,18]; let dir=1;
+  ccCtx.lineTo(zig[0], dir*10);
+  for (let i=1;i<zig.length;i++){ dir*=-1; ccCtx.lineTo(zig[i], dir*10); }
+  ccCtx.lineTo(30,0);
+  ccCtx.stroke();
+  ccCtx.fillStyle = '#0F172A'; ccCtx.font = '700 11px Inter, sans-serif'; ccCtx.textAlign='center';
+  ccCtx.fillText(label+' = '+val+'Ω', 0, -20);
+  ccCtx.restore();
+}
+function drawCircuit(){
+  const Vbat = parseFloat(document.getElementById('ccVbat').value);
+  const R1 = parseFloat(document.getElementById('ccR1').value);
+  const R2 = parseFloat(document.getElementById('ccR2').value);
+  const R3 = parseFloat(document.getElementById('ccR3').value);
+  document.getElementById('valVbat').textContent = Vbat+' V';
+  document.getElementById('valR1').textContent = R1+' Ω';
+  document.getElementById('valR2').textContent = R2+' Ω';
+  document.getElementById('valR3').textContent = R3+' Ω';
+
+  let Rtotal, Itotal;
+  if (ccMode==='series') { Rtotal = R1+R2+R3; Itotal = Vbat/Rtotal; }
+  else { Rtotal = 1/(1/R1+1/R2+1/R3); Itotal = Vbat/Rtotal; }
+  const Ptotal = Vbat*Itotal;
+  document.getElementById('roRtotal').textContent = Rtotal.toFixed(1);
+  document.getElementById('roItotal').textContent = Itotal.toFixed(2);
+  document.getElementById('roPtotal').textContent = Ptotal.toFixed(1);
+
+  const W=ccCanvas.width, H=ccCanvas.height;
+  ccCtx.clearRect(0,0,W,H);
+  ccCtx.strokeStyle = '#0F172A'; ccCtx.lineWidth = 2.5;
+  const colors = ['#1D5FBF','#0891B2','#6366F1'];
+
+  if (ccMode==='series'){
+    const y = H/2, xs=[110,230,350];
+    ccCtx.beginPath();
+    ccCtx.moveTo(60,y); ccCtx.lineTo(xs[0]-30,y);
+    ccCtx.moveTo(xs[0]+30,y); ccCtx.lineTo(xs[1]-30,y);
+    ccCtx.moveTo(xs[1]+30,y); ccCtx.lineTo(xs[2]-30,y);
+    ccCtx.moveTo(xs[2]+30,y); ccCtx.lineTo(460,y);
+    ccCtx.lineTo(460,80); ccCtx.lineTo(60,80); ccCtx.lineTo(60,y);
+    ccCtx.stroke();
+    ccResistor(xs[0], y, 'R1', R1, colors[0]);
+    ccResistor(xs[1], y, 'R2', R2, colors[1]);
+    ccResistor(xs[2], y, 'R3', R3, colors[2]);
+    // battery symbol
+    ccCtx.beginPath(); ccCtx.moveTo(60,80); ccCtx.lineTo(60,60); ccCtx.stroke();
+    ccCtx.font='700 12px Inter'; ccCtx.fillStyle='#0F172A'; ccCtx.textAlign='left';
+    ccCtx.fillText(Vbat+'V', 66, 55);
+    [R1,R2,R3].forEach((R,i)=>{
+      const I = Itotal, Vi = I*R;
+      ccCtx.fillStyle = colors[i]; ccCtx.font='600 10px JetBrains Mono, monospace'; ccCtx.textAlign='center';
+      ccCtx.fillText('I='+I.toFixed(2)+'A  V='+Vi.toFixed(1)+'V', xs[i], y+35);
+    });
+  } else {
+    const y0=70, y1=170, y2=270, xL=110, xR=420;
+    ccCtx.beginPath();
+    ccCtx.moveTo(60,y1); ccCtx.lineTo(xL-30,y0); ccCtx.moveTo(xL+30,y0); ccCtx.lineTo(xR-30,y0);
+    ccCtx.moveTo(xL-30,y1); ccCtx.lineTo(xL+30,y1); // placeholder connector avoided below
+    ccCtx.stroke();
+    // simpler: 3 vertical branches between two horizontal rails
+    ccCtx.beginPath();
+    ccCtx.moveTo(60,170); ccCtx.lineTo(60,60); ccCtx.lineTo(460,60); ccCtx.lineTo(460,280); ccCtx.lineTo(60,280); ccCtx.lineTo(60,170);
+    ccCtx.stroke();
+    const branchX=[160,290,420];
+    [R1,R2,R3].forEach((R,i)=>{
+      ccCtx.save(); ccCtx.translate(branchX[i],0);
+      ccCtx.beginPath(); ccCtx.moveTo(0,60); ccCtx.lineTo(0,110); ccCtx.stroke();
+      ccCtx.beginPath(); ccCtx.moveTo(0,220); ccCtx.lineTo(0,280); ccCtx.stroke();
+      ccCtx.restore();
+      ccResistor(branchX[i], 165, 'R'+(i+1), R, colors[i]);
+      const Ii = Vbat/R;
+      ccCtx.fillStyle = colors[i]; ccCtx.font='600 9px JetBrains Mono, monospace'; ccCtx.textAlign='center';
+      ccCtx.fillText('I='+Ii.toFixed(2)+'A', branchX[i], 200);
+    });
+    ccCtx.font='700 12px Inter'; ccCtx.fillStyle='#0F172A'; ccCtx.textAlign='left';
+    ccCtx.fillText(Vbat+'V (across each branch)', 66, 50);
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   3. TITRATION
+   ══════════════════════════════════════════════════════════════════ */
+const ttCanvas = document.getElementById('ttCanvas');
+const ttCtx = ttCanvas.getContext('2d');
+['ttCa','ttVa','ttCb','ttVb'].forEach(id=> document.getElementById(id).addEventListener('input', drawTitration));
+
+function ttPH(Ca,Va,Cb,Vb){
+  // strong acid (HCl) titrated with strong base (NaOH); concentrations in mol/L, volumes in mL
+  const molAcid = Ca*Va/1000, molBase = Cb*Vb/1000;
+  const totalV = (Va+Vb)/1000;
+  if (molAcid > molBase) {
+    const Hplus = (molAcid-molBase)/totalV;
+    return -Math.log10(Hplus);
+  } else if (molBase > molAcid) {
+    const OHminus = (molBase-molAcid)/totalV;
+    const pOH = -Math.log10(OHminus);
+    return 14-pOH;
+  }
+  return 7;
+}
+function drawTitration(){
+  const Ca = parseFloat(document.getElementById('ttCa').value)/100;
+  const Va = parseFloat(document.getElementById('ttVa').value);
+  const Cb = parseFloat(document.getElementById('ttCb').value)/100;
+  const Vb = parseFloat(document.getElementById('ttVb').value);
+  document.getElementById('valCa').textContent = Ca.toFixed(2)+' M';
+  document.getElementById('valVa').textContent = Va+' mL';
+  document.getElementById('valCb').textContent = Cb.toFixed(2)+' M';
+  document.getElementById('valVb').textContent = Vb+' mL';
+
+  const Veq = (Ca*Va)/Cb;
+  const curPH = ttPH(Ca,Va,Cb,Vb);
+  document.getElementById('roPH').textContent = curPH.toFixed(2);
+  document.getElementById('roVeq').textContent = Veq.toFixed(1);
+  document.getElementById('roVadded').textContent = Vb.toFixed(0);
+
+  const W=ttCanvas.width, H=ttCanvas.height;
+  ttCtx.clearRect(0,0,W,H);
+  const padL=42,padB=32,padT=18,padR=16;
+  const plotW=W-padL-padR, plotH=H-padT-padB;
+  const maxVb = Math.max(Veq*2.2, 100);
+  const sx = plotW/maxVb, sy = plotH/14;
+  const gx = v => padL+v*sx, gy = ph => H-padB-ph*sy;
+  ttCtx.strokeStyle='#B9C6D9'; ttCtx.lineWidth=1.5;
+  ttCtx.beginPath(); ttCtx.moveTo(padL,H-padB); ttCtx.lineTo(W-padR,H-padB); ttCtx.stroke();
+  ttCtx.beginPath(); ttCtx.moveTo(padL,padT); ttCtx.lineTo(padL,H-padB); ttCtx.stroke();
+  ttCtx.fillStyle='#94A3B8'; ttCtx.font='9px JetBrains Mono, monospace'; ttCtx.textAlign='right';
+  [0,7,14].forEach(ph=>{ ttCtx.fillText(ph, padL-6, gy(ph)+3); });
+  // equivalence marker
+  ttCtx.strokeStyle='rgba(180,83,9,.4)'; ttCtx.setLineDash([3,3]); ttCtx.lineWidth=1;
+  ttCtx.beginPath(); ttCtx.moveTo(gx(Veq),padT); ttCtx.lineTo(gx(Veq),H-padB); ttCtx.stroke(); ttCtx.setLineDash([]);
+  // curve up to current Vb
+  ttCtx.strokeStyle='#15803D'; ttCtx.lineWidth=2.5; ttCtx.beginPath();
+  const steps=80;
+  for (let i=0;i<=steps;i++){
+    const v = (Vb*i)/steps;
+    const ph = ttPH(Ca,Va,Cb,v);
+    i===0?ttCtx.moveTo(gx(v),gy(ph)):ttCtx.lineTo(gx(v),gy(ph));
+  }
+  ttCtx.stroke();
+  // current point
+  ttCtx.fillStyle='#B45309'; ttCtx.beginPath(); ttCtx.arc(gx(Vb),gy(curPH),5,0,7); ttCtx.fill();
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   4. PUNNETT SQUARE
+   ══════════════════════════════════════════════════════════════════ */
+const pnCanvas = document.getElementById('pnCanvas');
+const pnCtx = pnCanvas.getContext('2d');
+['pnLetter','pnP1','pnP2'].forEach(id=> document.getElementById(id).addEventListener('input', drawPunnett));
+function drawPunnett(){
+  let L = (document.getElementById('pnLetter').value || 'A').charAt(0);
+  if (!L) L='A';
+  const l = L.toLowerCase(), U = L.toUpperCase();
+  const g1 = document.getElementById('pnP1').value, g2 = document.getElementById('pnP2').value;
+  const alleles = g => g==='AA'?[U,U] : g==='aa'?[l,l] : [U,l];
+  const a1 = alleles(g1), a2 = alleles(g2);
+  const cells = [];
+  for (const x of a1) for (const y of a2) cells.push([x,y].sort().join(''));
+  const counts = {};
+  cells.forEach(c=>counts[c]=(counts[c]||0)+1);
+  const genoStr = Object.entries(counts).map(([k,v])=>v+' '+k).join(' : ');
+
+  const isDom = c => c.includes(U);
+  const domCount = cells.filter(isDom).length, recCount = cells.length-domCount;
+  const phenoStr = recCount===0 ? `4 : 0 (all dominant)` : domCount===0 ? `0 : 4 (all recessive)` : `${domCount} : ${recCount} (dominant : recessive)`;
+
+  document.getElementById('roGeno').textContent = genoStr;
+  document.getElementById('roPheno').textContent = phenoStr;
+
+  const W=pnCanvas.width,H=pnCanvas.height;
+  pnCtx.clearRect(0,0,W,H);
+  const size=300, ox=(W-size)/2+40, oy=(H-size)/2+20, cell=size/2;
+  pnCtx.strokeStyle='#0F172A'; pnCtx.lineWidth=2;
+  pnCtx.strokeRect(ox,oy,size,size);
+  pnCtx.beginPath(); pnCtx.moveTo(ox+cell,oy); pnCtx.lineTo(ox+cell,oy+size); pnCtx.moveTo(ox,oy+cell); pnCtx.lineTo(ox+size,oy+cell); pnCtx.stroke();
+  pnCtx.font='800 15px JetBrains Mono, monospace'; pnCtx.textAlign='center'; pnCtx.fillStyle='#1D5FBF';
+  a2.forEach((al,i)=> pnCtx.fillText(al, ox - 22, oy + cell*i + cell/2 + 5));
+  a1.forEach((al,i)=> pnCtx.fillText(al, ox + cell*i + cell/2, oy - 14));
+  pnCtx.font='700 20px JetBrains Mono, monospace';
+  for (let i=0;i<2;i++) for (let j=0;j<2;j++){
+    const c = [a1[i],a2[j]].sort().join('');
+    pnCtx.fillStyle = isDom(c) ? '#15803D' : '#B91C1C';
+    pnCtx.fillText(c, ox+cell*i+cell/2, oy+cell*j+cell/2+7);
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   5. FUNCTION TRANSFORMER
+   ══════════════════════════════════════════════════════════════════ */
+const fnCanvas = document.getElementById('fnCanvas');
+const fnCtx = fnCanvas.getContext('2d');
+document.getElementById('fnType').addEventListener('change', e=>{
+  document.getElementById('fnBwrap').style.display = e.target.value==='sin' ? 'flex' : 'none';
+  drawFunction();
+});
+['fnA','fnP','fnQ','fnB'].forEach(id=> document.getElementById(id).addEventListener('input', drawFunction));
+
+function fnVal(type,a,p,q,b,x){
+  if (type==='quad') return a*(x-p)*(x-p)+q;
+  if (type==='hyp') return Math.abs(x-p)<0.05 ? NaN : a/(x-p)+q;
+  if (type==='sin') return a*Math.sin(b*(x-p))+q;
+}
+function drawFunction(){
+  const type = document.getElementById('fnType').value;
+  const a = parseFloat(document.getElementById('fnA').value)/10;
+  const p = parseFloat(document.getElementById('fnP').value);
+  const q = parseFloat(document.getElementById('fnQ').value);
+  const b = parseFloat(document.getElementById('fnB').value)/10;
+  document.getElementById('valFa').textContent = a.toFixed(1);
+  document.getElementById('valFp').textContent = p;
+  document.getElementById('valFq').textContent = q;
+  document.getElementById('valFb').textContent = b.toFixed(1);
+
+  const eqEl = document.getElementById('fnEq');
+  if (type==='quad') eqEl.textContent = `y = ${a.toFixed(1)}(x ${p>=0?'−':'+'} ${Math.abs(p)})² ${q>=0?'+':'−'} ${Math.abs(q)}`;
+  else if (type==='hyp') eqEl.textContent = `y = ${a.toFixed(1)}/(x ${p>=0?'−':'+'} ${Math.abs(p)}) ${q>=0?'+':'−'} ${Math.abs(q)}`;
+  else eqEl.textContent = `y = ${a.toFixed(1)}·sin(${b.toFixed(1)}(x ${p>=0?'−':'+'} ${Math.abs(p)})) ${q>=0?'+':'−'} ${Math.abs(q)}`;
+
+  const W=fnCanvas.width,H=fnCanvas.height;
+  fnCtx.clearRect(0,0,W,H);
+  const xMin=-10,xMax=10,yMin=-10,yMax=10;
+  const sx=W/(xMax-xMin), sy=H/(yMax-yMin);
+  const gx = x=> (x-xMin)*sx, gy = y=> H-(y-yMin)*sy;
+  fnCtx.strokeStyle='#D3DCE9'; fnCtx.lineWidth=1;
+  for (let x=xMin;x<=xMax;x+=2){ fnCtx.beginPath(); fnCtx.moveTo(gx(x),0); fnCtx.lineTo(gx(x),H); fnCtx.stroke(); }
+  for (let y=yMin;y<=yMax;y+=2){ fnCtx.beginPath(); fnCtx.moveTo(0,gy(y)); fnCtx.lineTo(W,gy(y)); fnCtx.stroke(); }
+  fnCtx.strokeStyle='#94A3B8'; fnCtx.lineWidth=2;
+  fnCtx.beginPath(); fnCtx.moveTo(0,gy(0)); fnCtx.lineTo(W,gy(0)); fnCtx.stroke();
+  fnCtx.beginPath(); fnCtx.moveTo(gx(0),0); fnCtx.lineTo(gx(0),H); fnCtx.stroke();
+
+  fnCtx.strokeStyle='#1D5FBF'; fnCtx.lineWidth=2.5; fnCtx.beginPath();
+  let started=false;
+  for (let px=0; px<=W; px++){
+    const x = xMin + (px/W)*(xMax-xMin);
+    const y = fnVal(type,a,p,q,b,x);
+    if (isNaN(y) || y<yMin-4 || y>yMax+4) { started=false; continue; }
+    started ? fnCtx.lineTo(px,gy(y)) : (fnCtx.moveTo(px,gy(y)), started=true);
+  }
+  fnCtx.stroke();
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   6. NEWTON'S SECOND LAW
+   ══════════════════════════════════════════════════════════════════ */
+const nwCanvas = document.getElementById('nwCanvas');
+const nwCtx = nwCanvas.getContext('2d');
+let nwAnim=null, nwCartX=60;
+['nwF','nwM','nwFr'].forEach(id=> document.getElementById(id).addEventListener('input', drawNewton));
+function nwParams(){
+  const F = parseFloat(document.getElementById('nwF').value);
+  const m = parseFloat(document.getElementById('nwM').value);
+  const Fr = parseFloat(document.getElementById('nwFr').value);
+  document.getElementById('valNF').textContent = F+' N';
+  document.getElementById('valNM').textContent = m+' kg';
+  document.getElementById('valNFr').textContent = Fr+' N';
+  const net = Math.max(F-Fr, F<Fr? -0 : F-Fr);
+  const netSigned = F-Fr;
+  const a = netSigned>0 ? netSigned/m : 0;
+  return {F,m,Fr,net:netSigned,a};
+}
+function drawNewton(){
+  const p = nwParams();
+  document.getElementById('roNetF').textContent = p.net.toFixed(1);
+  document.getElementById('roAccel').textContent = p.a.toFixed(2);
+  document.getElementById('roVel3s').textContent = (p.a*3).toFixed(2);
+  const W=nwCanvas.width,H=nwCanvas.height;
+  nwCtx.clearRect(0,0,W,H);
+  const trackY = H-50;
+  nwCtx.strokeStyle='#B9C6D9'; nwCtx.lineWidth=2;
+  nwCtx.beginPath(); nwCtx.moveTo(20,trackY); nwCtx.lineTo(W-20,trackY); nwCtx.stroke();
+  // cart
+  const cx = Math.min(Math.max(nwCartX,50), W-70);
+  nwCtx.fillStyle='#1D5FBF'; nwCtx.fillRect(cx,trackY-30,60,30);
+  nwCtx.beginPath(); nwCtx.arc(cx+14,trackY,7,0,7); nwCtx.arc(cx+46,trackY,7,0,7); nwCtx.fillStyle='#0F172A'; nwCtx.fill();
+  // force arrow (forward)
+  const fLen = Math.min(p.F*1.1, 160);
+  nwCtx.strokeStyle='#15803D'; nwCtx.lineWidth=3;
+  nwCtx.beginPath(); nwCtx.moveTo(cx+60,trackY-15); nwCtx.lineTo(cx+60+fLen,trackY-15); nwCtx.stroke();
+  nwCtx.beginPath(); nwCtx.moveTo(cx+60+fLen,trackY-15); nwCtx.lineTo(cx+60+fLen-8,trackY-20); nwCtx.lineTo(cx+60+fLen-8,trackY-10); nwCtx.closePath(); nwCtx.fillStyle='#15803D'; nwCtx.fill();
+  nwCtx.fillStyle='#15803D'; nwCtx.font='700 11px Inter'; nwCtx.fillText('F applied', cx+60, trackY-22);
+  // friction arrow (backward)
+  const frLen = Math.min(p.Fr*1.1, 160);
+  nwCtx.strokeStyle='#B91C1C'; nwCtx.lineWidth=3;
+  nwCtx.beginPath(); nwCtx.moveTo(cx,trackY-15); nwCtx.lineTo(cx-frLen,trackY-15); nwCtx.stroke();
+  nwCtx.beginPath(); nwCtx.moveTo(cx-frLen,trackY-15); nwCtx.lineTo(cx-frLen+8,trackY-20); nwCtx.lineTo(cx-frLen+8,trackY-10); nwCtx.closePath(); nwCtx.fillStyle='#B91C1C'; nwCtx.fill();
+  nwCtx.fillStyle='#B91C1C'; nwCtx.font='700 11px Inter'; nwCtx.textAlign='right'; nwCtx.fillText('Friction', cx-4, trackY-22); nwCtx.textAlign='left';
+}
+function runNewton(){
+  if (nwAnim) cancelAnimationFrame(nwAnim);
+  const p = nwParams();
+  const start = performance.now(); nwCartX = 60;
+  function step(now){
+    const t = Math.min((now-start)/1000, 3);
+    nwCartX = 60 + 0.5*p.a*t*t*4;
+    drawNewton();
+    if (t<3 && nwCartX < nwCanvas.width-90) nwAnim = requestAnimationFrame(step);
+  }
+  nwAnim = requestAnimationFrame(step);
+}
+function resetNewton(){ if (nwAnim) cancelAnimationFrame(nwAnim); nwCartX=60; drawNewton(); }
+
+/* ══════════════════════════════════════════════════════════════════
+   7. WAVE INTERFERENCE
+   ══════════════════════════════════════════════════════════════════ */
+const wvCanvas = document.getElementById('wvCanvas');
+const wvCtx = wvCanvas.getContext('2d');
+['wvL','wvSep'].forEach(id=> document.getElementById(id).addEventListener('input', drawWaves));
+function drawWaves(){
+  const lambda = parseFloat(document.getElementById('wvL').value);
+  const sep = parseFloat(document.getElementById('wvSep').value);
+  document.getElementById('valWvL').textContent = lambda+' px';
+  document.getElementById('valWvSep').textContent = sep+' px';
+  const W=wvCanvas.width,H=wvCanvas.height;
+  const s1={x:W/2-sep/2,y:40}, s2={x:W/2+sep/2,y:40};
+  const img = wvCtx.createImageData(W,H);
+  for (let y=0;y<H;y++){
+    for (let x=0;x<W;x++){
+      const r1 = Math.hypot(x-s1.x,y-s1.y), r2 = Math.hypot(x-s2.x,y-s2.y);
+      const amp = Math.cos(2*Math.PI*r1/lambda) + Math.cos(2*Math.PI*r2/lambda);
+      const v = (amp+2)/4; // 0..1
+      const idx = (y*W+x)*4;
+      // diverging blue-white-red
+      const r = Math.round(255*v), b = Math.round(255*(1-v));
+      img.data[idx]=r; img.data[idx+1]=Math.round(230*(1-Math.abs(v-0.5)*2)); img.data[idx+2]=b; img.data[idx+3]=255;
+    }
+  }
+  wvCtx.putImageData(img,0,0);
+  wvCtx.fillStyle='#0F172A';
+  [s1,s2].forEach(s=>{ wvCtx.beginPath(); wvCtx.arc(s.x,s.y,4,0,7); wvCtx.fill(); });
+  // probe point bottom center
+  const probe = {x:W/2, y:H-20};
+  const r1 = Math.hypot(probe.x-s1.x,probe.y-s1.y), r2 = Math.hypot(probe.x-s2.x,probe.y-s2.y);
+  const diff = Math.abs(r1-r2)/lambda;
+  wvCtx.strokeStyle='#0F172A'; wvCtx.beginPath(); wvCtx.arc(probe.x,probe.y,6,0,7); wvCtx.lineWidth=2; wvCtx.stroke();
+  const nearestInt = Math.round(diff);
+  const isConstructive = Math.abs(diff-nearestInt) < 0.15;
+  document.getElementById('roWvPathDiff').textContent = diff.toFixed(2)+'λ';
+  document.getElementById('roWvType').textContent = isConstructive ? 'Constructive' : 'Destructive-ish';
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   8. UNIT CIRCLE & TRIG RATIOS
+   ══════════════════════════════════════════════════════════════════ */
+const trCanvas = document.getElementById('trCanvas');
+const trCtx = trCanvas.getContext('2d');
+document.getElementById('trAngle').addEventListener('input', drawTrig);
+function drawTrig(){
+  const deg = parseFloat(document.getElementById('trAngle').value);
+  const rad = deg*Math.PI/180;
+  document.getElementById('valTrAngle').textContent = deg+'°';
+  const sinV = Math.sin(rad), cosV = Math.cos(rad), tanV = Math.tan(rad);
+  document.getElementById('roSin').textContent = sinV.toFixed(3);
+  document.getElementById('roCos').textContent = cosV.toFixed(3);
+  document.getElementById('roTan').textContent = Math.abs(cosV)<0.02 ? 'undefined' : tanV.toFixed(2);
+  const q = deg%360<0?deg%360+360:deg%360;
+  const qn = q<90?'I':q<180?'II':q<270?'III':'IV';
+  document.getElementById('trQuadrant').textContent = 'Quadrant '+qn;
+
+  const W=trCanvas.width,H=trCanvas.height, cx=W/2, cy=H/2, R=140;
+  trCtx.clearRect(0,0,W,H);
+  trCtx.strokeStyle='#D3DCE9'; trCtx.lineWidth=1;
+  trCtx.beginPath(); trCtx.moveTo(0,cy); trCtx.lineTo(W,cy); trCtx.moveTo(cx,0); trCtx.lineTo(cx,H); trCtx.stroke();
+  trCtx.strokeStyle='#94A3B8'; trCtx.lineWidth=2; trCtx.beginPath(); trCtx.arc(cx,cy,R,0,7); trCtx.stroke();
+  const px = cx+R*cosV, py = cy-R*sinV;
+  // cos projection
+  trCtx.strokeStyle='#1D5FBF'; trCtx.setLineDash([4,4]); trCtx.lineWidth=2;
+  trCtx.beginPath(); trCtx.moveTo(px,py); trCtx.lineTo(px,cy); trCtx.stroke();
+  trCtx.strokeStyle='#B45309';
+  trCtx.beginPath(); trCtx.moveTo(px,py); trCtx.lineTo(cx,py); trCtx.stroke();
+  trCtx.setLineDash([]);
+  // radius line
+  trCtx.strokeStyle='#0F172A'; trCtx.lineWidth=2.5;
+  trCtx.beginPath(); trCtx.moveTo(cx,cy); trCtx.lineTo(px,py); trCtx.stroke();
+  trCtx.fillStyle='#15803D'; trCtx.beginPath(); trCtx.arc(px,py,6,0,7); trCtx.fill();
+  trCtx.fillStyle='#1D5FBF'; trCtx.font='700 11px Inter'; trCtx.fillText('cos θ', px+6, cy-6);
+  trCtx.fillStyle='#B45309'; trCtx.fillText('sin θ', cx-40, py-6);
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   9. ENZYME REACTION RATE
+   ══════════════════════════════════════════════════════════════════ */
+const enCanvas = document.getElementById('enCanvas');
+const enCtx = enCanvas.getContext('2d');
+['enT','enPH','enS'].forEach(id=> document.getElementById(id).addEventListener('input', drawEnzyme));
+function enRateAt(T,pH,S){
+  const tempFactor = T<=45 ? Math.exp(-Math.pow(T-37,2)/(2*13*13)) : Math.exp(-Math.pow(T-37,2)/(2*13*13)) * Math.max(0, 1-(T-45)/15);
+  const phFactor = Math.exp(-Math.pow(pH-7,2)/(2*1.6*1.6));
+  const subFactor = S/(5+S);
+  return Math.max(0, tempFactor*phFactor*subFactor*100);
+}
+function drawEnzyme(){
+  const T = parseFloat(document.getElementById('enT').value);
+  const pH = parseFloat(document.getElementById('enPH').value)/10;
+  const S = parseFloat(document.getElementById('enS').value)/10;
+  document.getElementById('valEnT').textContent = T+'°C';
+  document.getElementById('valEnPH').textContent = pH.toFixed(1);
+  document.getElementById('valEnS').textContent = S.toFixed(1);
+  const rate = enRateAt(T,pH,S);
+  document.getElementById('roEnRate').textContent = rate.toFixed(0);
+
+  const W=enCanvas.width,H=enCanvas.height;
+  enCtx.clearRect(0,0,W,H);
+  const padL=36,padB=24,padT=14,padR=10, plotW=W-padL-padR, plotH=H-padT-padB;
+  enCtx.strokeStyle='#B9C6D9'; enCtx.lineWidth=1.5;
+  enCtx.beginPath(); enCtx.moveTo(padL,H-padB); enCtx.lineTo(W-padR,H-padB); enCtx.stroke();
+  enCtx.beginPath(); enCtx.moveTo(padL,padT); enCtx.lineTo(padL,H-padB); enCtx.stroke();
+  // temp-rate curve (holding pH, S fixed)
+  enCtx.strokeStyle='#15803D'; enCtx.lineWidth=2.5; enCtx.beginPath();
+  for (let t=0;t<=80;t++){
+    const r = enRateAt(t,pH,S);
+    const x = padL + (t/80)*plotW, y = H-padB-(r/100)*plotH;
+    t===0?enCtx.moveTo(x,y):enCtx.lineTo(x,y);
+  }
+  enCtx.stroke();
+  const mx = padL+(T/80)*plotW, my = H-padB-(rate/100)*plotH;
+  enCtx.fillStyle='#B45309'; enCtx.beginPath(); enCtx.arc(mx,my,6,0,7); enCtx.fill();
+  enCtx.fillStyle='#64748B'; enCtx.font='10px Inter'; enCtx.fillText('Rate vs temperature (at current pH & substrate)', padL, padT-2);
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   10. SEASONS & EARTH'S TILT
+   ══════════════════════════════════════════════════════════════════ */
+const seCanvas = document.getElementById('seCanvas');
+const seCtx = seCanvas.getContext('2d');
+const MONTHS=['January','February','March','April','May','June','July','August','September','October','November','December'];
+['seMonth','seLat'].forEach(id=> document.getElementById(id).addEventListener('input', drawSeasons));
+function drawSeasons(){
+  const month = parseInt(document.getElementById('seMonth').value);
+  const lat = parseFloat(document.getElementById('seLat').value);
+  document.getElementById('valSeMonth').textContent = MONTHS[month-1];
+  document.getElementById('valSeLat').textContent = lat+'°';
+  const dec = 23.45*Math.sin(2*Math.PI*(month-3)/12); // approx solar declination by month
+  document.getElementById('roSeDec').textContent = dec.toFixed(1)+'°';
+  const latR = lat*Math.PI/180, decR = dec*Math.PI/180;
+  let cosH = -Math.tan(latR)*Math.tan(decR);
+  let dayLen;
+  if (cosH<=-1) dayLen = 24; else if (cosH>=1) dayLen = 0; else dayLen = (24/Math.PI)*Math.acos(cosH);
+  document.getElementById('roSeDay').textContent = dayLen.toFixed(1);
+  const isSouthern = lat<0;
+  let season;
+  if (Math.abs(dec)<3) season = 'Equinox';
+  else if ((dec>0 && !isSouthern) || (dec<0 && isSouthern)) season='Summer';
+  else season='Winter';
+  document.getElementById('roSeSeason').textContent = season;
+
+  const W=seCanvas.width,H=seCanvas.height,cx=W/2,cy=H/2-20,R=110;
+  seCtx.clearRect(0,0,W,H);
+  seCtx.fillStyle='#FFB012'; seCtx.beginPath(); seCtx.arc(cx,cy,14,0,7); seCtx.fill();
+  seCtx.strokeStyle='#B9C6D9'; seCtx.lineWidth=1.5; seCtx.beginPath(); seCtx.arc(cx,cy,R,0,7); seCtx.stroke();
+  const ang = (month-1)/12*2*Math.PI - Math.PI/2;
+  const ex = cx+R*Math.cos(ang), ey = cy+R*Math.sin(ang);
+  seCtx.fillStyle='#1D5FBF'; seCtx.beginPath(); seCtx.arc(ex,ey,9,0,7); seCtx.fill();
+  // tilt axis indicator
+  seCtx.strokeStyle='#B45309'; seCtx.lineWidth=2;
+  seCtx.beginPath(); seCtx.moveTo(ex-14,ey+14); seCtx.lineTo(ex+14,ey-14); seCtx.stroke();
+  seCtx.fillStyle='#0F172A'; seCtx.font='600 10px Inter'; seCtx.textAlign='center';
+  seCtx.fillText(MONTHS[month-1], ex, ey+26);
+  seCtx.fillText('Sun', cx, cy+32);
+  seCtx.font='10px Inter'; seCtx.fillStyle='#64748B';
+  seCtx.fillText('Simplified orbit — illustrative, not to scale', cx, H-8);
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   11. PERIODIC TABLE TRENDS  (Periods 2 & 3, CAPS Grade 10 scope)
+   ══════════════════════════════════════════════════════════════════ */
+const PT_ELEMENTS = [
+  {sym:'Li',radius:152,eneg:0.98},{sym:'Be',radius:112,eneg:1.57},{sym:'B',radius:85,eneg:2.04},{sym:'C',radius:77,eneg:2.55},
+  {sym:'N',radius:75,eneg:3.04},{sym:'O',radius:73,eneg:3.44},{sym:'F',radius:72,eneg:3.98},{sym:'Ne',radius:154,eneg:0},
+  {sym:'Na',radius:186,eneg:0.93},{sym:'Mg',radius:160,eneg:1.31},{sym:'Al',radius:143,eneg:1.61},{sym:'Si',radius:118,eneg:1.90},
+  {sym:'P',radius:110,eneg:2.19},{sym:'S',radius:104,eneg:2.58},{sym:'Cl',radius:99,eneg:3.16},{sym:'Ar',radius:188,eneg:0}
+];
+const ptCanvas = document.getElementById('ptCanvas');
+const ptCtx = ptCanvas.getContext('2d');
+let ptMode='radius';
+document.getElementById('ptMode').addEventListener('click', e=>{
+  const btn=e.target.closest('button'); if(!btn) return;
+  document.querySelectorAll('#ptMode button').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active'); ptMode=btn.dataset.m; drawPeriodic();
+});
+document.getElementById('ptIdx').addEventListener('input', drawPeriodic);
+function drawPeriodic(){
+  const idx = parseInt(document.getElementById('ptIdx').value);
+  const el = PT_ELEMENTS[idx];
+  document.getElementById('valPtIdx').textContent = el.sym;
+  document.getElementById('roPtElement').textContent = el.sym;
+  document.getElementById('roPtRadius').textContent = el.radius;
+  document.getElementById('roPtEneg').textContent = el.eneg||'—';
+
+  const W=ptCanvas.width,H=ptCanvas.height;
+  ptCtx.clearRect(0,0,W,H);
+  const n=16, colW=W/n, baseY=H-40;
+  const maxVal = ptMode==='radius' ? 190 : 4;
+  PT_ELEMENTS.forEach((e,i)=>{
+    const v = ptMode==='radius'? e.radius : e.eneg;
+    const h = (v/maxVal)*(H-70);
+    const x = i*colW+colW/2;
+    ptCtx.fillStyle = i===idx ? '#B45309' : (i<8?'rgba(29,95,191,.55)':'rgba(99,102,241,.55)');
+    ptCtx.fillRect(x-colW*0.35, baseY-h, colW*0.7, h);
+    ptCtx.fillStyle='#0F172A'; ptCtx.font='600 9px Inter'; ptCtx.textAlign='center';
+    ptCtx.fillText(e.sym, x, baseY+12);
+  });
+  ptCtx.fillStyle='#64748B'; ptCtx.font='10px Inter'; ptCtx.textAlign='left';
+  ptCtx.fillText(ptMode==='radius' ? 'Atomic radius — Period 2 (left) then Period 3 (right)' : 'Electronegativity (Pauling scale) — noble gases shown as 0', 8, 14);
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   BOOT
+   ══════════════════════════════════════════════════════════════════ */
+initAuth();
+renderFilters();
+renderGrid();
+window.addEventListener('resize', ()=>{
+  if(document.getElementById('runner-projectile').classList.contains('active')) drawPM([]);
+});
+</script>
+</body>
+</html>
