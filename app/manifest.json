@@ -1,0 +1,20 @@
+{
+  "name": "MatricAce SA",
+  "short_name": "MatricAce",
+  "description": "South Africa's #1 CAPS study app for Grade 10–12",
+  "start_url": "./MatricAce_SA_Ultimate_v9.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#0A0C10",
+  "theme_color": "#007A4D",
+  "orientation": "portrait",
+  "categories": ["education"],
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
