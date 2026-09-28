@@ -1,0 +1,1829 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
+<title>Learn to Code — MatricAce SA</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --primary:#1D5FBF;--primary-dark:#0F3D73;--primary-light:#4C8DE0;--primary-dim:rgba(29,95,191,.10);--primary-glow:rgba(29,95,191,.22);
+  --accent:#B45309;--accent-dim:rgba(180,83,9,.10);
+  --green:#15803D;--green-dim:rgba(21,128,61,.10);
+  --teal:#0891B2;--teal-dim:rgba(8,145,178,.10);
+  --purple:#6366F1;--purple-dim:rgba(99,102,241,.10);
+  --red:#B91C1C;--red-dim:rgba(185,28,28,.09);
+  --bg:#F7F9FC;--bg2:#FFFFFF;--bg3:#EEF3FA;--surface:#FFFFFF;
+  --text:#0F172A;--text2:rgba(15,23,42,.68);--text3:rgba(15,23,42,.42);--text4:rgba(15,23,42,.26);
+  --border:#E3E9F2;--border2:#D3DCE9;
+  --shadow-sm:0 1px 6px rgba(15,23,42,.06);--shadow:0 4px 16px rgba(15,23,42,.07),0 2px 6px rgba(15,23,42,.04);
+  --r:10px;--r-lg:14px;--header-h:60px;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100dvh}
+.header{height:var(--header-h);background:var(--surface);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 16px;gap:10px;position:sticky;top:0;z-index:20;box-shadow:var(--shadow-sm)}
+.back-btn{display:flex;align-items:center;gap:6px;padding:7px 12px;border-radius:8px;background:var(--bg);border:1.5px solid var(--border2);color:var(--text2);font-size:.78rem;font-weight:700;cursor:pointer;white-space:nowrap;transition:all .15s}
+.back-btn:hover{border-color:var(--primary);color:var(--primary)}
+.header-title{font-family:'Source Serif 4',serif;font-size:1rem;font-weight:800;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.header-title span{color:var(--text3);font-weight:500;font-size:.8rem;margin-left:8px}
+.role-badge{padding:4px 10px;border-radius:20px;font-size:.62rem;font-weight:800;font-family:'JetBrains Mono',monospace;text-transform:uppercase;letter-spacing:.4px;white-space:nowrap;flex-shrink:0}
+.role-badge.student{background:var(--primary-dim);color:var(--primary)}
+
+.wrap{max-width:760px;margin:0 auto;padding:20px 16px 80px}
+.intro{margin-bottom:18px}
+.intro h1{font-family:'Source Serif 4',serif;font-size:1.35rem;font-weight:800;margin-bottom:6px}
+.intro p{font-size:.85rem;color:var(--text2);max-width:60ch;line-height:1.5}
+
+.gate{max-width:420px;margin:80px auto;text-align:center;padding:0 20px}
+.gate h2{font-family:'Source Serif 4',serif;font-size:1.15rem;margin-bottom:8px}
+.gate p{font-size:.85rem;color:var(--text2);margin-bottom:18px;line-height:1.5}
+.btn{padding:9px 14px;border-radius:9px;font-size:.78rem;font-weight:700;display:inline-flex;align-items:center;justify-content:center;gap:5px;cursor:pointer;transition:all .15s;font-family:'Inter',sans-serif}
+.btn-primary{background:linear-gradient(135deg,var(--primary),var(--primary-light));color:#fff;box-shadow:0 2px 8px var(--primary-glow);border:none}
+.btn-primary:hover{transform:translateY(-1px)}
+
+/* ---- Stats strip ---- */
+.stats-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:20px}
+.stat-box{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:12px 8px;text-align:center}
+.stat-val{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:1.05rem;color:var(--primary)}
+.stat-lbl{font-size:.62rem;color:var(--text3);margin-top:2px;font-weight:600}
+
+/* ---- Daily challenge ---- */
+.daily-card{background:linear-gradient(135deg,rgba(180,83,9,.08),rgba(180,83,9,.02));border:1.5px solid rgba(180,83,9,.3);border-radius:var(--r-lg);padding:16px;margin-bottom:16px}
+.daily-head{display:flex;align-items:center;gap:8px;font-size:.68rem;font-weight:800;color:var(--accent);text-transform:uppercase;letter-spacing:.5px;font-family:'JetBrains Mono',monospace;margin-bottom:10px}
+.daily-q{font-weight:700;font-size:.86rem;margin-bottom:12px}
+.daily-done{display:flex;align-items:center;gap:8px;font-size:.8rem;font-weight:700;color:var(--green)}
+
+/* ---- Quick actions (Weak Spots / Achievements) ---- */
+.quick-actions{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:18px}
+.qa-btn{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--r-lg);padding:10px 6px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:4px;cursor:pointer;transition:all .15s}
+.qa-btn:hover{border-color:var(--primary)}
+.qa-icon{font-size:1.3rem}
+.qa-label{font-size:.7rem;font-weight:700}
+.qa-count{background:var(--bg3);color:var(--text2);font-size:.68rem;font-weight:800;padding:2px 8px;border-radius:20px;font-family:'JetBrains Mono',monospace}
+.qa-count.has-items{background:var(--accent);color:#fff}
+
+/* ---- Badges grid ---- */
+.badges-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px}
+.badge-card{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--r-lg);padding:14px 10px;text-align:center;transition:all .15s}
+.badge-card.earned{border-color:rgba(180,83,9,.4);background:linear-gradient(145deg,rgba(180,83,9,.06),rgba(180,83,9,.01))}
+.badge-card.locked{opacity:.4}
+.badge-icon{font-size:1.8rem;margin-bottom:6px}
+.badge-title{font-size:.74rem;font-weight:800}
+.badge-desc{font-size:.62rem;color:var(--text3);margin-top:3px;line-height:1.4}
+
+
+/* ---- Leaderboard ---- */
+.lb-card{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--r-lg);padding:14px;margin-bottom:14px}
+.lb-card p{font-size:.74rem;color:var(--text2);line-height:1.5;margin-bottom:10px}
+.lb-tabs{display:flex;gap:8px;margin-bottom:12px}
+.lb-tab{flex:1;text-align:center;padding:9px;border-radius:10px;border:1.5px solid var(--border2);background:var(--bg);font-size:.76rem;font-weight:700;cursor:pointer;color:var(--text2)}
+.lb-tab.active{border-color:var(--primary);color:var(--primary);background:var(--primary-dim)}
+.lb-row{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;background:var(--surface);border:1px solid var(--border);margin-bottom:6px}
+.lb-row.me{border-color:var(--primary);background:var(--primary-dim)}
+.lb-rank{width:30px;text-align:center;font-family:'JetBrains Mono',monospace;font-weight:800;font-size:.8rem;color:var(--text3)}
+.lb-name{flex:1;font-weight:700;font-size:.82rem;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.lb-meta{font-size:.62rem;color:var(--text3);font-weight:500;display:block}
+.lb-xp{font-family:'JetBrains Mono',monospace;font-weight:800;font-size:.8rem;color:var(--primary)}
+.lb-msg{text-align:center;color:var(--text3);font-size:.78rem;padding:24px 10px;line-height:1.5}
+
+/* ---- Exam mode timer ---- */
+.exam-timer{position:sticky;top:0;background:var(--surface);border:1.5px solid var(--accent);border-radius:10px;padding:8px 14px;margin-bottom:14px;text-align:center;font-family:'JetBrains Mono',monospace;font-weight:800;font-size:.95rem;color:var(--accent);z-index:5}
+.exam-timer.low{color:#B91C1C;border-color:#B91C1C;animation:pulse 1s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.55}}
+.mode-choice-btn{display:block;width:100%;text-align:left;padding:14px;margin-bottom:10px;border-radius:12px;border:1.5px solid var(--border2);background:var(--surface);cursor:pointer;font-family:inherit}
+.mode-choice-btn:hover{border-color:var(--primary)}
+.mode-choice-title{font-weight:800;font-size:.86rem}
+.mode-choice-desc{font-size:.7rem;color:var(--text3);margin-top:3px}
+.explain-box{background:var(--bg3);border-left:3px solid var(--primary);border-radius:6px;padding:10px 12px;margin-top:8px;font-size:.76rem;color:var(--text2);line-height:1.5}
+
+/* ---- Track cards ---- */
+.track-card{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--r-lg);padding:16px;margin-bottom:12px;display:flex;align-items:center;gap:14px;cursor:pointer;transition:all .15s;box-shadow:var(--shadow-sm)}.track-card:hover{border-color:var(--primary);transform:translateY(-1px);box-shadow:var(--shadow)}
+.track-card.locked{opacity:.55;cursor:default}
+.track-card.locked:hover{transform:none;box-shadow:var(--shadow-sm);border-color:var(--border)}
+.track-icon{width:48px;height:48px;border-radius:13px;display:flex;align-items:center;justify-content:center;font-size:1.5rem;flex-shrink:0}
+.track-icon.blue{background:var(--primary-dim)}
+.track-icon.gold{background:var(--accent-dim)}
+.track-icon.teal{background:var(--teal-dim)}
+.track-icon.purple{background:var(--purple-dim)}
+.track-body{flex:1;min-width:0}
+.track-name{font-family:'Source Serif 4',serif;font-weight:800;font-size:.98rem}
+.track-desc{font-size:.72rem;color:var(--text3);margin-top:3px;line-height:1.4}
+.track-progress-bar{height:5px;background:var(--bg3);border-radius:4px;overflow:hidden;margin-top:8px;max-width:200px}
+.track-progress-fill{height:100%;background:var(--green);border-radius:4px}
+.track-soon{font-size:.6rem;font-weight:800;color:var(--text3);font-family:'JetBrains Mono',monospace;flex-shrink:0}
+.chev{color:var(--text3);font-size:1.1rem;flex-shrink:0}
+
+/* ---- Skill-tree path (module list within a track) ---- */
+.path-wrap{position:relative;padding-left:8px}
+.path-line{position:absolute;left:29px;top:24px;bottom:24px;width:2px;background:var(--border2)}
+.node{position:relative;display:flex;align-items:center;gap:14px;padding:12px 0;cursor:pointer}
+.node-dot{width:36px;height:36px;border-radius:50%;background:var(--surface);border:2.5px solid var(--border2);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.8rem;color:var(--text3);flex-shrink:0;z-index:1;transition:all .15s}
+.node.done .node-dot{background:var(--green);border-color:var(--green);color:#fff}
+.node.current .node-dot{border-color:var(--primary);color:var(--primary);box-shadow:0 0 0 4px var(--primary-dim)}
+.node-body{flex:1;background:var(--surface);border:1.5px solid var(--border);border-radius:12px;padding:11px 14px;transition:all .15s}
+.node:hover .node-body{border-color:var(--primary)}
+.node.done .node-body{border-color:rgba(21,128,61,.35)}
+.node-title{font-weight:700;font-size:.84rem}
+.node-sub{font-size:.66rem;color:var(--text3);margin-top:2px}
+.node.test .node-dot{border-color:var(--accent);color:var(--accent)}
+.node.test.done .node-dot{background:var(--accent);border-color:var(--accent);color:#fff}
+.tier-header{font-size:.68rem;font-weight:800;color:var(--text3);letter-spacing:.6px;text-transform:uppercase;font-family:'JetBrains Mono',monospace;padding:14px 0 6px 46px}
+
+/* ---- Lesson / quiz runner ---- */
+.runner{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);box-shadow:var(--shadow);padding:18px;animation:fadeUp .2s ease both}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.lesson-box{background:var(--bg);border:1.5px solid var(--border);border-radius:var(--r);padding:14px 16px;margin-bottom:16px;font-size:.84rem;line-height:1.65;color:var(--text2)}
+.lesson-box code{background:var(--bg3);padding:1px 5px;border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:.82em;color:var(--primary-dark)}
+.q-title{font-weight:800;font-size:.92rem;margin-bottom:12px}
+.opt-btn{display:block;width:100%;text-align:left;padding:12px 14px;margin-bottom:9px;border-radius:10px;border:1.5px solid var(--border2);background:var(--bg);color:var(--text);font-size:.82rem;font-family:inherit;cursor:pointer;transition:all .12s}
+.opt-btn:hover:not(:disabled){border-color:var(--primary)}
+.opt-btn:disabled{cursor:default}
+.opt-btn.correct{border-color:var(--green);background:var(--green-dim)}
+.opt-btn.wrong{border-color:var(--red);background:var(--red-dim)}
+.feedback{margin-top:10px}
+.feedback.ok{color:var(--green);font-weight:800;font-size:.8rem;margin-bottom:10px}
+.feedback.bad{color:var(--red);font-weight:800;font-size:.8rem;margin-bottom:10px}
+.continue-btn{width:100%;padding:12px;border-radius:10px;border:none;background:linear-gradient(135deg,var(--primary),var(--primary-light));color:#fff;font-weight:800;font-size:.85rem;cursor:pointer;font-family:inherit}
+.qprog{font-size:.68rem;color:var(--text3);font-weight:700;margin-bottom:10px;font-family:'JetBrains Mono',monospace}
+
+/* ---- Predict-the-output card (Python — no live execution) ---- */
+.code-block{background:#0F172A;color:#E2E8F0;border-radius:10px;padding:14px 16px;font-family:'JetBrains Mono',monospace;font-size:.78rem;line-height:1.6;white-space:pre;overflow-x:auto;margin-bottom:12px}
+.predict-input{width:100%;padding:10px 12px;border:1.5px solid var(--border2);border-radius:9px;font-family:'JetBrains Mono',monospace;font-size:.82rem;margin-bottom:10px}
+
+/* ---- Live JS playground ---- */
+.pg-wrap{display:flex;flex-direction:column;gap:10px;margin-bottom:12px}
+.pg-editor{width:100%;min-height:120px;background:#0F172A;color:#E2E8F0;border:none;border-radius:10px;padding:14px;font-family:'JetBrains Mono',monospace;font-size:.78rem;line-height:1.55;resize:vertical}
+.pg-run-row{display:flex;gap:8px}
+.pg-run-btn{padding:9px 16px;border-radius:9px;border:none;background:var(--green);color:#fff;font-weight:800;font-size:.78rem;cursor:pointer;font-family:inherit}
+.pg-reset-btn{padding:9px 14px;border-radius:9px;border:1.5px solid var(--border2);background:var(--bg);color:var(--text2);font-weight:700;font-size:.78rem;cursor:pointer;font-family:inherit}
+.pg-console{background:#0F172A;color:#7EE787;border-radius:10px;padding:12px 14px;font-family:'JetBrains Mono',monospace;font-size:.76rem;min-height:40px;white-space:pre-wrap;word-break:break-word}
+.pg-console.err{color:#FF8A80}
+.pg-hint{font-size:.7rem;color:var(--text3);margin-top:-4px}
+
+.complete-screen{text-align:center;padding:30px 10px}
+.complete-emoji{font-size:2.6rem;margin-bottom:10px}
+.complete-title{font-size:1.1rem;font-weight:900;margin-bottom:6px;font-family:'Source Serif 4',serif}
+.complete-sub{font-size:.8rem;color:var(--text3);margin-bottom:22px}
+
+.attrib{margin-top:28px;font-size:.68rem;color:var(--text4);line-height:1.6;border-top:1px solid var(--border);padding-top:14px}
+</style>
+</head>
+<body>
+
+<div class="header" id="appHeader" style="display:none">
+  <button class="back-btn" onclick="goBack()">← Back</button>
+  <div class="header-title" id="headerTitle">Learn to Code<span id="headerSub"></span></div>
+  <div class="role-badge student">STUDENT</div>
+</div>
+
+<div id="gateView" class="gate" style="display:none">
+  <h2>Sign in to start coding</h2>
+  <p>You're viewing this as a guest. Learn to Code is part of your MatricAce account — log in to save your progress.</p>
+  <button class="btn btn-primary" style="width:100%" onclick="location.href='index.html'">Go to login</button>
+</div>
+
+<div id="mainView" class="wrap" style="display:none">
+
+  <!-- ══ TRACKS VIEW ══ -->
+  <div id="view-tracks">
+    <div class="intro">
+      <h1>Learn to Code 💻</h1>
+      <p>Free, self-paced coding tracks — no experience needed. Learn a real skill alongside your Matric studies, at your own pace, all year round.</p>
+    </div>
+
+    <div class="stats-strip">
+      <div class="stat-box"><div class="stat-val" id="stat-modules">0</div><div class="stat-lbl">MODULES DONE</div></div>
+      <div class="stat-box"><div class="stat-val" id="stat-xp">0</div><div class="stat-lbl">CODE XP</div></div>
+      <div class="stat-box"><div class="stat-val" id="stat-streak">0</div><div class="stat-lbl">DAY STREAK</div></div>
+    </div>
+
+    <div id="daily-challenge-box"></div>
+
+    <div class="quick-actions">
+      <div class="qa-btn" onclick="openWeakReview()">
+        <div class="qa-icon">🎯</div>
+        <div class="qa-label">Weak Spots</div>
+        <div class="qa-count" id="qa-weak-count">0</div>
+      </div>
+      <div class="qa-btn" onclick="showView('achievements');renderAchievements();">
+        <div class="qa-icon">🏅</div>
+        <div class="qa-label">Badges</div>
+        <div class="qa-count" id="qa-badge-count">0</div>
+      </div>
+      <div class="qa-btn" onclick="openLeaderboard()">
+        <div class="qa-icon">🏆</div>
+        <div class="qa-label">Leaderboard</div>
+        <div class="qa-count">Top 25</div>
+      </div>
+    </div>
+
+    <div id="tracks-list"></div>
+
+    <div class="attrib">
+      Built in-house for MatricAce SA. Curriculum inspired by freeCodeCamp, roadmap.sh and Coddy — written from scratch for a South African student audience. This is a companion to your Matric studies, not a replacement for a full computer science course.
+    </div>
+  </div>
+
+  <!-- ══ MODULE PATH VIEW (skill tree) ══ -->
+  <div id="view-path" style="display:none">
+    <div class="intro">
+      <h1 id="path-title"></h1>
+      <p id="path-desc"></p>
+    </div>
+    <div class="path-wrap">
+      <div class="path-line"></div>
+      <div id="path-nodes"></div>
+    </div>
+  </div>
+
+  <!-- ══ LESSON / QUIZ RUNNER VIEW ══ -->
+  <div id="view-lesson" style="display:none">
+    <div class="runner" id="lesson-runner"></div>
+  </div>
+
+  <!-- ══ WEAK-SPOT REVIEW VIEW ══ -->
+  <div id="view-weakreview" style="display:none">
+    <div class="intro">
+      <h1>🎯 Weak Spot Review</h1>
+      <p>Every question you've missed, collected in one place. Answer correctly to clear it from this list.</p>
+    </div>
+    <div class="runner" id="weakreview-runner"></div>
+  </div>
+
+  <!-- ══ LEADERBOARD VIEW ══ -->
+  <div id="view-leaderboard" style="display:none">
+    <div class="intro">
+      <h1>🏆 Leaderboard</h1>
+      <p>See how your Code XP stacks up. Only students who opt in appear, shown as first name and last initial.</p>
+    </div>
+    <div id="lb-optin"></div>
+    <div class="lb-tabs">
+      <div class="lb-tab active" id="lb-tab-all" onclick="setLbScope('all')">Everyone</div>
+      <div class="lb-tab" id="lb-tab-school" onclick="setLbScope('school')">My school</div>
+    </div>
+    <div id="lb-list"></div>
+  </div>
+
+  <!-- ══ ACHIEVEMENTS VIEW ══ -->
+  <div id="view-achievements" style="display:none">
+    <div class="intro">
+      <h1>🏅 Achievements</h1>
+      <p>Badges you've earned across every track.</p>
+    </div>
+    <div id="badges-grid"></div>
+  </div>
+
+</div>
+
+<script>
+/* ══════════════════════════════════════════════════════════════════
+   AUTH / ROLE DETECTION — reuses the existing MatricAce session
+   ══════════════════════════════════════════════════════════════════ */
+function getSession(){
+  let sess=null, users={};
+  for (const k of ['ma_session','matric_ace_session','matric_session']) {
+    try { const s = JSON.parse(localStorage.getItem(k)||'null'); if (s) { sess=s; break; } } catch(e){}
+  }
+  for (const k of ['matric_ace_users','matric_users']) {
+    try { const u = JSON.parse(localStorage.getItem(k)||'{}'); if (Object.keys(u).length) { users=u; break; } } catch(e){}
+  }
+  if (!sess || !sess.uid) return null;
+  const user = users[sess.uid] || { name: sess.name || 'Student' };
+  return { user, uid: sess.uid };
+}
+function goBack(){ location.href = 'app/student-portal.html'; }
+
+let SESSION = null;
+let UID = 'guest';
+
+function initAuth(){
+  SESSION = getSession();
+  if (!SESSION) {
+    // Allow guest use too — coding practice doesn't strictly need a MatricAce
+    // account, but progress won't sync. Show the app anyway with a guest uid.
+    UID = 'guest';
+  } else {
+    UID = SESSION.uid;
+  }
+  document.getElementById('appHeader').style.display = 'flex';
+  document.getElementById('mainView').style.display = 'block';
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   DAILY CHALLENGE — one question a day, same for everyone that day,
+   small bonus XP, encourages a daily open-the-app habit
+   ══════════════════════════════════════════════════════════════════ */
+const DAILY_CHALLENGES = [
+  { q:'What will `print(3 + "3")` do in Python?', opts:['Raise an error — can\'t add a number and a string','Print 6','Print "33"','Print 3'], correct:0 },
+  { q:'In JavaScript, what does `typeof "17"` return?', opts:['"string"','"number"','17','undefined'], correct:0 },
+  { q:'Which loop is guaranteed to run at least once?', opts:['do...while','for','while','forEach'], correct:0 },
+  { q:'What does CSS stand for?', opts:['Cascading Style Sheets','Computer Style Sheets','Creative Style System','Code Styling Syntax'], correct:0 },
+  { q:'In Python, what is `len([1,2,3])`?', opts:['3','2','1','Error'], correct:0 },
+  { q:'What symbol starts a comment in Python?', opts:['#','//','<!--','**'], correct:0 },
+  { q:'Which HTML tag creates a hyperlink?', opts:['<a>','<link>','<href>','<url>'], correct:0 },
+  { q:'What does `==` check in most languages?', opts:['If two values are equal','If two variables share memory','If a variable exists','Nothing — it\'s invalid'], correct:0 },
+  { q:'In JavaScript, `let` vs `const` — what\'s the key difference?', opts:['const cannot be reassigned after it\'s set','let is faster','const only works with numbers','There is no difference'], correct:0 },
+  { q:'What does an `if` statement let your code do?', opts:['Make a decision and run different code based on a condition','Repeat code many times','Store a value','Define a function'], correct:0 },
+  { q:'In a Python list `fruit = ["apple","pear"]`, what is `fruit[0]`?', opts:['"apple"','"pear"','0','Error'], correct:0 },
+  { q:'What does a `function` let you do?', opts:['Package up reusable logic you can call by name','Only store one number','Delete variables','Only run once ever'], correct:0 },
+  { q:'Which of these is NOT a real data type in Python?', opts:['character','integer','string','boolean'], correct:0 },
+  { q:'What does the CSS property `padding` control?', opts:['Space inside an element, between its content and border','Space outside an element','The text colour','The font size'], correct:0 },
+];
+
+function dailyKey(){ return 'coding_daily_' + UID; }
+function todayIndex(){
+  const start = new Date(new Date().getFullYear(), 0, 0);
+  const diff = Date.now() - start.getTime();
+  const dayOfYear = Math.floor(diff / 86400000);
+  return dayOfYear % DAILY_CHALLENGES.length;
+}
+function getDailyState(){
+  try { return JSON.parse(localStorage.getItem(dailyKey()) || 'null'); } catch(e){ return null; }
+}
+function renderDailyChallenge(){
+  const box = document.getElementById('daily-challenge-box');
+  const today = new Date().toDateString();
+  const state = getDailyState();
+  const c = DAILY_CHALLENGES[todayIndex()];
+
+  if (state && state.date === today) {
+    box.innerHTML = `<div class="daily-card">
+      <div class="daily-head">🔥 DAILY CHALLENGE</div>
+      <div class="daily-done">✓ Done for today — come back tomorrow for a new one!</div>
+    </div>`;
+    return;
+  }
+
+  let html = `<div class="daily-card">
+    <div class="daily-head">🔥 DAILY CHALLENGE — +20 BONUS XP</div>
+    <div class="daily-q">${c.q}</div>
+    <div id="daily-opts"></div>
+    <div id="daily-feedback"></div>
+  </div>`;
+  box.innerHTML = html;
+  const optsEl = document.getElementById('daily-opts');
+  c.opts.forEach((opt, oi) => {
+    const b = document.createElement('button');
+    b.className = 'opt-btn';
+    b.id = 'daily-opt-' + oi;
+    b.textContent = opt;
+    b.onclick = () => answerDaily(oi, c);
+    optsEl.appendChild(b);
+  });
+}
+function answerDaily(oi, c){
+  const correct = oi === c.correct;
+  c.opts.forEach((_, i) => {
+    const btn = document.getElementById('daily-opt-' + i);
+    btn.disabled = true;
+    if (i === c.correct) btn.classList.add('correct');
+    else if (i === oi) btn.classList.add('wrong');
+  });
+  if (correct) addXP(20);
+  bumpStreak();
+  localStorage.setItem(dailyKey(), JSON.stringify({ date: new Date().toDateString() }));
+  document.getElementById('daily-feedback').innerHTML =
+    (correct ? '<div class="feedback ok">✓ Correct! +20 XP</div>' : '<div class="feedback bad">✗ Not quite — see you tomorrow for another one!</div>');
+  renderStatsStrip();
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   CONTENT — Python Fundamentals & JavaScript Fundamentals
+   ══════════════════════════════════════════════════════════════════ */
+
+const TRACKS = [
+  {
+    id: 'python', title: 'Python: Beginner → Advanced', icon: '🐍', iconClass: 'blue',
+    desc: 'Start from zero and work all the way up to OOP, recursion, and algorithms — with practice tests along the way.',
+    modules: [
+      { id:'m1', title:'1. What Is Code?', kind:'quiz',
+        lesson: `Code is a set of precise instructions a computer follows, step by step. Python is a great first language because it reads almost like plain English. You write code in a file, the computer "runs" it top to bottom, and it does exactly what you told it — no more, no less.`,
+        questions: [
+          { q:'What does a computer do when it "runs" your code?', opts:['Follows the instructions in order, top to bottom','Guesses what you meant','Randomly picks lines to execute','Only reads the first line'], correct:0 },
+          { q:'Why is Python considered beginner-friendly?', opts:['It reads similarly to plain English','It has no rules at all','It only works on phones','It cannot make mistakes'], correct:0 },
+        ]},
+      { id:'m2', title:'2. Variables & Data Types', kind:'quiz',
+        lesson: `A variable is a labelled box that stores a value, e.g. <code>age = 17</code>. Python's core data types: integers (whole numbers), floats (decimals), strings (text, in quotes), and booleans (True/False). You can change what's in a variable any time — that's why it's called "variable".`,
+        questions: [
+          { q:'What will `name = "Thabo"` store in `name`?', opts:['A string (text) value','A whole number','A True/False value','Nothing — this is an error'], correct:0 },
+          { q:'Which of these is a float?', opts:['3.14','"3.14"','True','three'], correct:0 },
+          { q:'Can you change what value a variable holds later in the code?', opts:['Yes, that\'s exactly what makes it a variable','No, once set it is permanent','Only for numbers, not text','Only if you restart the program'], correct:0 },
+        ]},
+      { id:'m3', title:'3. Operators', kind:'quiz',
+        lesson: `Operators let you work with values: <code>+ - * /</code> for maths, <code>==</code> to check if two things are equal (double equals, not one!), and <code>&gt; &lt; &gt;= &lt;=</code> to compare sizes. Mixing up <code>=</code> (assign) and <code>==</code> (compare) is the #1 beginner mistake.`,
+        questions: [
+          { q:'What does `==` do in Python?', opts:['Checks if two values are equal','Assigns a value to a variable','Divides two numbers','Adds two numbers'], correct:0 },
+          { q:'What is `10 % 3` (the modulo operator)?', opts:['1 (the remainder)','3.33','30','Error'], correct:0 },
+        ]},
+      { id:'m4', title:'4. Predict the Output', kind:'predict',
+        lesson: `Reading code and predicting what it prints is one of the best ways to build real understanding — better than just memorising rules. Try to work out the output before revealing the answer.`,
+        challenges: [
+          { code: `x = 5\ny = 2\nprint(x + y * 2)`, answer: '9', hint:'Multiplication happens before addition' },
+          { code: `name = "Zanele"\nprint(name.upper())`, answer: 'ZANELE', hint:'.upper() converts text to capitals' },
+          { code: `a = 10\na = a + 1\nprint(a)`, answer: '11', hint:'a is reassigned to its old value + 1' },
+        ]},
+      { id:'m5', title:'5. Conditionals', kind:'quiz',
+        lesson: `<code>if</code>, <code>elif</code>, and <code>else</code> let your program make decisions. Python checks each condition top to bottom and runs the first block that's True. Indentation (spaces at the start of a line) shows Python which code belongs inside the <code>if</code> — get it wrong and the program breaks.`,
+        questions: [
+          { q:'What runs if the `if` condition is False and there\'s an `else`?', opts:['The code inside `else`','Nothing runs at all','The program crashes','The `if` block runs anyway'], correct:0 },
+          { q:'Why does indentation matter in Python?', opts:['It shows which code belongs inside a block','It\'s just for looks','It makes code run faster','It\'s only needed in loops'], correct:0 },
+        ]},
+      { id:'m6', title:'6. Loops', kind:'quiz',
+        lesson: `A <code>for</code> loop repeats code a set number of times (e.g. once per item in a list). A <code>while</code> loop repeats as long as a condition stays True. Anytime you're repeating an action, a loop is probably the answer.`,
+        questions: [
+          { q:'When would you use a `for` loop over a `while` loop?', opts:['When you know how many times (or over what items) to repeat','When you never want the code to repeat','When you want the code to run exactly once','Never — they do the same thing'], correct:0 },
+          { q:'What happens if a `while` loop\'s condition never becomes False?', opts:['It becomes an infinite loop','It runs once and stops','Python fixes it automatically','It skips to the next line'], correct:0 },
+        ]},
+      { id:'m7', title:'7. Lists', kind:'quiz',
+        lesson: `A list stores many values in one variable, in order: <code>subjects = ["Maths","Physics","Life Sciences"]</code>. Access an item with its index, starting from 0: <code>subjects[0]</code> is "Maths". Lists can grow with <code>.append()</code> and shrink with <code>.remove()</code>.`,
+        questions: [
+          { q:'In `subjects = ["Maths","Physics","Life Sciences"]`, what is `subjects[1]`?', opts:['"Physics"','"Maths"','"Life Sciences"','Error — indexing starts at 1'], correct:0 },
+          { q:'Which method adds an item to the end of a list?', opts:['.append()','.add()','.push()','.insert()'], correct:0 },
+        ]},
+      { id:'m8', title:'8. Dictionaries', kind:'quiz',
+        lesson: `A dictionary stores key–value pairs: <code>student = {"name":"Lindiwe","grade":11}</code>. Instead of a numbered index, you look values up by key: <code>student["name"]</code> gives "Lindiwe". Perfect for describing one "thing" with several properties.`,
+        questions: [
+          { q:'In `student = {"name":"Lindiwe","grade":11}`, what does `student["grade"]` return?', opts:['11','"grade"','"Lindiwe"','Error'], correct:0 },
+          { q:'What is the main difference between a list and a dictionary?', opts:['A dictionary uses named keys instead of numbered positions','A dictionary can only store numbers','A list can only hold one value','There is no difference'], correct:0 },
+        ]},
+      { id:'m9', title:'9. Functions', kind:'quiz',
+        lesson: `A function is a reusable block of code you define once with <code>def</code> and call as many times as you like: <code>def greet(name): print("Hi " + name)</code>. Functions keep code organised — write the logic once, reuse it everywhere.`,
+        questions: [
+          { q:'What keyword defines a function in Python?', opts:['def','function','func','define'], correct:0 },
+          { q:'Why use a function instead of writing the same code twice?', opts:['So you write the logic once and reuse it','Because Python requires it','It makes code run twice as fast','It has no real benefit'], correct:0 },
+        ]},
+      { id:'m10', title:'10. Mini Project: Grade Calculator', kind:'predict',
+        lesson: `Time to put it together. Below is a small program that calculates a percentage and prints a message. Read it carefully and predict what each one prints — this is exactly how real debugging works.`,
+        challenges: [
+          { code: `marks = 68\ntotal = 80\npct = marks / total * 100\nprint(round(pct))`, answer: '85', hint:'68/80 = 0.85, times 100 = 85' },
+          { code: `pct = 55\nif pct >= 50:\n    print("Pass")\nelse:\n    print("Fail")`, answer: 'Pass', hint:'55 is greater than or equal to 50' },
+        ]},
+      { id:'pt1', title:'✅ Practice Test: Beginner', kind:'test', tier:'Beginner checkpoint',
+        questions: [
+          { q:'Which of these correctly assigns the number 10 to a variable called `x`?', opts:['x = 10','x == 10','10 = x','var x 10'], correct:0 },
+          { q:'What data type is `True`?', opts:['Boolean','String','Integer','Float'], correct:0 },
+          { q:'What does `15 % 4` evaluate to?', opts:['3','3.75','1','11'], correct:0 },
+          { q:'What will `if 5 > 10:` followed by an indented `print("hi")` do?', opts:['Print nothing — the condition is False','Print "hi"','Raise an error','Print "False"'], correct:0 },
+          { q:'How many times does `for i in range(4):` loop?', opts:['4 times','3 times','5 times','Forever'], correct:0 },
+          { q:'What does `my_list.append(5)` do?', opts:['Adds 5 to the end of the list','Removes 5 from the list','Replaces the whole list with 5','Raises an error'], correct:0 },
+          { q:'In `student = {"grade": 11}`, how do you access the grade?', opts:['student["grade"]','student.grade()','student(grade)','get student grade'], correct:0 },
+          { q:'What keyword starts a function definition?', opts:['def','function','func','method'], correct:0 },
+          { q:'What will `print("5" + "5")` output in Python?', opts:['"55"','10','Error','"5 5"'], correct:0 },
+          { q:'Why is indentation important in Python?', opts:['It defines which code belongs inside a block','It\'s optional styling','It only matters in loops','It makes code run faster'], correct:0 },
+        ]},
+
+      /* ── INTERMEDIATE TIER ── */
+      { id:'pi1', title:'11. String Methods & f-strings', kind:'quiz', tier:'Intermediate',
+        lesson: `Strings have built-in methods: <code>.lower()</code>, <code>.upper()</code>, <code>.strip()</code> (removes whitespace), <code>.split()</code> (breaks into a list). f-strings make building messages easy: <code>f"Hello {name}, you are {age}"</code> inserts variables directly.`,
+        questions: [
+          { q:'What does `"  hi  ".strip()` return?', opts:['"hi" (no surrounding spaces)','"  hi  "','"HI"','Error'], correct:0 },
+          { q:'What does `f"Score: {score}"` do if `score = 90`?', opts:['Produces the string "Score: 90"','Raises an error','Produces "Score: {score}"','Produces just 90'], correct:0 },
+          { q:'What does `"a,b,c".split(",")` return?', opts:['["a", "b", "c"]','"a,b,c"','("a","b","c") only as a string','Error'], correct:0 },
+        ]},
+      { id:'pi2', title:'12. Handling Errors: try/except', kind:'quiz', tier:'Intermediate',
+        lesson: `Real programs hit errors — bad input, missing files. <code>try:</code> lets you attempt risky code, and <code>except:</code> catches the error instead of crashing the whole program. E.g. dividing by zero, or converting text that isn't a number.`,
+        questions: [
+          { q:'What is the purpose of a `try/except` block?', opts:['To catch an error and keep the program running instead of crashing','To repeat code multiple times','To define a function','To make code run faster'], correct:0 },
+          { q:'If code inside `try:` raises an error, what happens?', opts:['Python jumps to the matching `except:` block','The program always crashes anyway','Python ignores the rest of the file','It automatically fixes the error'], correct:0 },
+        ]},
+      { id:'pi3', title:'13. List Comprehensions', kind:'predict', tier:'Intermediate',
+        lesson: `A list comprehension builds a new list in one line: <code>[x*2 for x in [1,2,3]]</code> gives <code>[2,4,6]</code>. It's a shortcut for a <code>for</code> loop that builds a list.`,
+        challenges: [
+          { code: `nums = [1, 2, 3, 4]\nsquares = [n*n for n in nums]\nprint(squares)`, answer: '[1, 4, 9, 16]', hint:'Each number is squared: 1,4,9,16' },
+          { code: `words = ["cat", "dog", "owl"]\nlengths = [len(w) for w in words]\nprint(lengths)`, answer: '[3, 3, 3]', hint:'Each word is exactly 3 letters long' },
+        ]},
+      { id:'pi4', title:'14. Tuples & Sets', kind:'quiz', tier:'Intermediate',
+        lesson: `A tuple is like a list but unchangeable once created: <code>point = (2, 3)</code>. A set stores unique values with no order or duplicates: <code>{1, 2, 2, 3}</code> becomes <code>{1, 2, 3}</code>.`,
+        questions: [
+          { q:'What is the key difference between a tuple and a list?', opts:['A tuple cannot be changed after it\'s created','A tuple can only hold numbers','A list is always faster','There is no difference'], correct:0 },
+          { q:'What does `set([1, 1, 2, 3, 3])` produce?', opts:['{1, 2, 3} — duplicates removed','[1, 1, 2, 3, 3] — unchanged','An error','{1, 1, 2, 3, 3}'], correct:0 },
+        ]},
+      { id:'pi5', title:'15. Intro to OOP: Classes & Objects', kind:'quiz', tier:'Intermediate',
+        lesson: `A class is a blueprint for creating objects: <code>class Student:</code> with an <code>__init__</code> method to set up each new object's data. An object is one instance made from that class, e.g. <code>s1 = Student("Thabo")</code>.`,
+        questions: [
+          { q:'What is a class in Python?', opts:['A blueprint for creating objects','A type of loop','A built-in function','A way to import files'], correct:0 },
+          { q:'What does the `__init__` method do?', opts:['Sets up a new object\'s starting data when it\'s created','Deletes an object','Runs the whole program','Prints the class name'], correct:0 },
+        ]},
+      { id:'pt2', title:'✅ Practice Test: Intermediate', kind:'test', tier:'Intermediate checkpoint',
+        questions: [
+          { q:'What does `.upper()` do to a string?', opts:['Converts it to capital letters','Removes spaces','Reverses it','Splits it into a list'], correct:0 },
+          { q:'What is the purpose of `except:` in a try/except block?', opts:['To handle an error without crashing the program','To always run, error or not','To define a new variable','To end the program early'], correct:0 },
+          { q:'What does `[x for x in range(3)]` produce?', opts:['[0, 1, 2]','[1, 2, 3]','[3]','Error'], correct:0 },
+          { q:'Can you change a tuple after creating it?', opts:['No — tuples are immutable','Yes, freely','Only the first item','Only if it has one item'], correct:0 },
+          { q:'What does a set automatically remove?', opts:['Duplicate values','The first value','All numbers','Nothing'], correct:0 },
+          { q:'In OOP, what do we call one instance created from a class?', opts:['An object','A function','A loop','A module'], correct:0 },
+          { q:'What does `"Hello World".split(" ")` return?', opts:['["Hello", "World"]','"HelloWorld"','("Hello World")','Error'], correct:0 },
+          { q:'Why use f-strings instead of `+` to build messages?', opts:['They\'re cleaner and let you insert variables directly in the text','They run twice as fast always','They\'re the only way to combine text','+ doesn\'t work with strings'], correct:0 },
+          { q:'What keyword defines a class in Python?', opts:['class','def','object','struct'], correct:0 },
+          { q:'What will `len((1,2,3))` return?', opts:['3','2','1','Error — tuples have no length'], correct:0 },
+        ]},
+
+      /* ── ADVANCED TIER ── */
+      { id:'pa1', title:'16. Recursion', kind:'predict', tier:'Advanced',
+        lesson: `A recursive function calls itself to solve a smaller version of the same problem, until it reaches a "base case" that stops it. Classic example: factorial, where <code>factorial(n) = n * factorial(n-1)</code>, stopping at <code>factorial(1) = 1</code>.`,
+        challenges: [
+          { code: `def factorial(n):\n    if n == 1:\n        return 1\n    return n * factorial(n-1)\nprint(factorial(4))`, answer: '24', hint:'4×3×2×1 = 24' },
+          { code: `def countdown(n):\n    if n == 0:\n        print("Liftoff!")\n    else:\n        print(n)\n        countdown(n-1)\ncountdown(2)`, answer: '2 1 Liftoff!', hint:'It prints 2, then 1, then "Liftoff!" on separate lines' },
+        ]},
+      { id:'pa2', title:'17. Lambda & Higher-Order Functions', kind:'quiz', tier:'Advanced',
+        lesson: `A lambda is a small, unnamed function: <code>lambda x: x * 2</code>. Functions like <code>map()</code> and <code>filter()</code> take a function as an argument — that's what makes them "higher-order". E.g. <code>list(map(lambda x: x*2, [1,2,3]))</code> gives <code>[2,4,6]</code>.`,
+        questions: [
+          { q:'What is a lambda in Python?', opts:['A small, unnamed (anonymous) function','A type of loop','A built-in data type','A way to import modules'], correct:0 },
+          { q:'What does `map()` do?', opts:['Applies a function to every item in a list, producing a new list','Deletes items from a list','Sorts a list','Only works on strings'], correct:0 },
+        ]},
+      { id:'pa3', title:'18. Inheritance (OOP)', kind:'quiz', tier:'Advanced',
+        lesson: `A class can inherit from another: <code>class Learner(Student):</code> gets everything from <code>Student</code> plus anything new you add. This avoids repeating code between similar classes — the "child" class reuses the "parent" class's behaviour.`,
+        questions: [
+          { q:'What does inheritance let a class do?', opts:['Reuse the properties and methods of a parent class','Delete another class','Run twice as fast','Only exist temporarily'], correct:0 },
+          { q:'In `class Learner(Student):`, which is the parent class?', opts:['Student','Learner','Both are parents','Neither — this is invalid syntax'], correct:0 },
+        ]},
+      { id:'pa4', title:'19. Searching & Sorting Basics', kind:'quiz', tier:'Advanced',
+        lesson: `Linear search checks every item one by one until it finds a match — simple but slow on big lists. Binary search is much faster but only works on a SORTED list: it repeatedly checks the middle and eliminates half the remaining items each time.`,
+        questions: [
+          { q:'What is required for binary search to work correctly?', opts:['The list must already be sorted','The list must be exactly 10 items','The list must contain only numbers','Nothing — it works on any list'], correct:0 },
+          { q:'Why is binary search generally faster than linear search on large lists?', opts:['It eliminates half the remaining items with each check','It checks every item twice for accuracy','It only works on short lists','It doesn\'t actually search, it guesses'], correct:0 },
+        ]},
+      { id:'pt3', title:'✅ Practice Test: Advanced (Final)', kind:'test', tier:'Advanced checkpoint',
+        questions: [
+          { q:'What stops a recursive function from calling itself forever?', opts:['A base case that returns without recursing','Python automatically limits it to 10 calls','It never stops on its own','A for loop'], correct:0 },
+          { q:'What does `lambda x: x + 1` represent?', opts:['A small anonymous function that adds 1 to its input','A loop that adds 1 each time','A variable equal to x+1','A syntax error'], correct:0 },
+          { q:'What does `filter()` do?', opts:['Keeps only the items where a function returns True','Sorts a list in place','Removes duplicates automatically','Only works on dictionaries'], correct:0 },
+          { q:'What is the main benefit of class inheritance?', opts:['Reusing code from a parent class instead of duplicating it','Making programs run faster','Hiding all your variables','Removing the need for functions'], correct:0 },
+          { q:'On an unsorted list, can you safely use binary search?', opts:['No — it requires a sorted list first','Yes, it works on any list','Only on lists of numbers','Only if the list has fewer than 5 items'], correct:0 },
+          { q:'What does `factorial(1)` typically return in a recursive factorial function?', opts:['1 (the base case)','0','An error','It calls itself forever'], correct:0 },
+          { q:'What is a "child" class in inheritance?', opts:['A class that inherits from another (parent) class','A class with no methods','A function inside a class','A class that cannot be used'], correct:0 },
+          { q:'What does `map(function, list)` return?', opts:['A new sequence with the function applied to every item','The original list, unchanged','A single number','An error'], correct:0 },
+          { q:'Which search algorithm checks every item one at a time?', opts:['Linear search','Binary search','Quick search','Neither'], correct:0 },
+          { q:'What is a set\'s defining feature compared to a list?', opts:['It only stores unique values','It stores values in strict order','It can only hold numbers','It cannot be looped over'], correct:0 },
+          { q:'What symbol is used to define a lambda function?', opts:['lambda','def','func','->'], correct:0 },
+          { q:'True or false: a class method `__init__` runs automatically when an object is created.', opts:['True','False','Only for the first object','Only if called manually'], correct:0 },
+        ]},
+    ]
+  },
+  {
+    id: 'javascript', title: 'JavaScript: Beginner → Advanced', icon: '🟨', iconClass: 'gold',
+    desc: 'The language of the web — live code playground, closures, promises, classes, and more.',
+    modules: [
+      { id:'j1', title:'1. Your First Line of JS', kind:'playground',
+        lesson: `JavaScript runs in every web browser. <code>console.log(...)</code> prints a message you can see. Try changing the text below and hit Run.`,
+        starter: `console.log("Hello, MatricAce!");`,
+        expectedIncludes: 'Hello, MatricAce!' },
+      { id:'j2', title:'2. Variables', kind:'playground',
+        lesson: `Use <code>let</code> for a variable that can change, and <code>const</code> for one that can't. Try creating your own variable and printing it.`,
+        starter: `let name = "Sipho";\nlet grade = 11;\nconsole.log(name + " is in grade " + grade);`,
+        expectedIncludes: 'Sipho is in grade 11' },
+      { id:'j3', title:'3. Conditionals', kind:'playground',
+        lesson: `<code>if / else</code> works like Python but uses curly braces <code>{ }</code> instead of indentation to mark blocks.`,
+        starter: `let score = 72;\nif (score >= 50) {\n  console.log("Pass");\n} else {\n  console.log("Fail");\n}`,
+        expectedIncludes: 'Pass' },
+      { id:'j4', title:'4. Loops', kind:'playground',
+        lesson: `A <code>for</code> loop in JavaScript: <code>for (let i = 0; i &lt; 5; i++) { ... }</code> runs 5 times, with <code>i</code> going from 0 to 4.`,
+        starter: `for (let i = 1; i <= 5; i++) {\n  console.log("Round " + i);\n}`,
+        expectedIncludes: 'Round 5' },
+      { id:'j5', title:'5. Arrays', kind:'playground',
+        lesson: `An array holds a list of values: <code>let subjects = ["Maths","English","IT"];</code>. Loop through it with <code>.forEach()</code> or a <code>for</code> loop.`,
+        starter: `let subjects = ["Maths", "English", "IT"];\nsubjects.forEach(function(s) {\n  console.log(s);\n});`,
+        expectedIncludes: 'IT' },
+      { id:'j6', title:'6. Functions', kind:'playground',
+        lesson: `Define a reusable block with <code>function</code>: <code>function add(a, b) { return a + b; }</code>. Call it with <code>add(2, 3)</code>.`,
+        starter: `function average(a, b) {\n  return (a + b) / 2;\n}\nconsole.log(average(60, 80));`,
+        expectedIncludes: '70' },
+      { id:'j7', title:'7. Objects', kind:'playground',
+        lesson: `An object groups related data: <code>let student = { name: "Amahle", grade: 12 };</code>. Access a property with <code>student.name</code>.`,
+        starter: `let student = { name: "Amahle", grade: 12 };\nconsole.log(student.name + " - Grade " + student.grade);`,
+        expectedIncludes: 'Amahle' },
+      { id:'j8', title:'8. Mini Project: Pass/Fail Checker', kind:'playground',
+        lesson: `Combine everything: write a function that takes a mark and returns "Pass" or "Fail", then test it on a few marks.`,
+        starter: `function checkResult(mark) {\n  if (mark >= 50) {\n    return "Pass";\n  } else {\n    return "Fail";\n  }\n}\nconsole.log(checkResult(45));\nconsole.log(checkResult(78));`,
+        expectedIncludes: 'Fail' },
+      { id:'j9', title:'9. Debug It: Off-by-One', kind:'playground', taskLabel: '🐛 This code has a bug — fix it so it prints numbers 1 to 5.',
+        lesson: `Loops are the #1 source of "off-by-one" bugs — looping one time too many or too few. Read the loop condition carefully.`,
+        starter: `for (let i = 1; i < 5; i++) {\n  console.log(i);\n}\n// Bug: this only prints 1,2,3,4 — it should print 1,2,3,4,5`,
+        expectedIncludes: '5' },
+      { id:'j10', title:'10. Debug It: Wrong Comparison', kind:'playground', taskLabel: '🐛 This code has a bug — fix it so it correctly prints "Pass" for a mark of 50.',
+        lesson: `A very common bug: using <code>&gt;</code> when you meant <code>&gt;=</code>. A mark of exactly 50 should be a Pass, not a Fail.`,
+        starter: `let mark = 50;\nif (mark > 50) {\n  console.log("Pass");\n} else {\n  console.log("Fail");\n}\n// Bug: a mark of exactly 50 should also be a Pass`,
+        expectedIncludes: 'Pass' },
+      { id:'jt1', title:'✅ Practice Test: Beginner', kind:'test', tier:'Beginner checkpoint',
+        questions: [
+          { q:'Which keyword declares a variable that CANNOT be reassigned?', opts:['const','let','var','static'], correct:0 },
+          { q:'What does `console.log(2 + "2")` print?', opts:['"22" (a string)','4','Error','undefined'], correct:0 },
+          { q:'What does `===` check in JavaScript?', opts:['If two values are strictly equal (value AND type)','If two variables share memory','Nothing — it\'s invalid','If a variable exists'], correct:0 },
+          { q:'How many times does `for (let i=0; i<3; i++)` run?', opts:['3 times','2 times','4 times','Forever'], correct:0 },
+          { q:'What does `.forEach()` do on an array?', opts:['Runs a function once for every item in the array','Removes every item','Sorts the array','Only works on strings'], correct:0 },
+          { q:'How do you access the `name` property of `let obj = {name:"Zoe"}`?', opts:['obj.name','obj->name','obj["name"] only','obj:name'], correct:0 },
+          { q:'What does `function add(a,b) { return a+b; }` do when called as `add(2,3)`?', opts:['Returns 5','Prints 5','Returns "23"','Raises an error'], correct:0 },
+          { q:'What curly braces `{ }` are used for in JS `if` statements?', opts:['To mark the start and end of a code block','They are optional and never needed','To create a new variable','To comment out code'], correct:0 },
+          { q:'What does `let x;` (with no value) hold?', opts:['undefined','0','null','An error occurs'], correct:0 },
+          { q:'Which symbol starts a single-line comment in JavaScript?', opts:['//','#','<!--','**'], correct:0 },
+        ]},
+
+      /* ── INTERMEDIATE TIER ── */
+      { id:'ji1', title:'11. Array Methods: map, filter, reduce', kind:'playground', tier:'Intermediate',
+        lesson: `<code>.map()</code> transforms every item into something new. <code>.filter()</code> keeps only items that pass a test. <code>.reduce()</code> combines everything into one value. These three are the backbone of modern JS.`,
+        starter: `let marks = [45, 82, 60, 38, 91];\nlet passed = marks.filter(m => m >= 50);\nconsole.log(passed);`,
+        expectedIncludes: '82' },
+      { id:'ji2', title:'12. Template Literals', kind:'playground', tier:'Intermediate',
+        lesson: 'Backticks let you build strings with embedded expressions: <code>`Hello ${name}`</code> — no more messy <code>+</code> concatenation, and you can even do maths inside <code>${ }</code>.',
+        starter: `let name = "Naledi";\nlet mark = 78;\nconsole.log(\`\${name} scored \${mark}%\`);`,
+        expectedIncludes: 'Naledi scored 78' },
+      { id:'ji3', title:'13. Destructuring', kind:'quiz', tier:'Intermediate',
+        lesson: `Destructuring pulls values straight out of an object or array: <code>const {name, grade} = student;</code> creates two variables in one line, instead of writing <code>student.name</code> and <code>student.grade</code> separately.`,
+        questions: [
+          { q:'What does `const {name} = student;` do?', opts:['Creates a variable `name` set to `student.name`','Deletes the name property','Creates a whole new object','Raises an error always'], correct:0 },
+          { q:'What is the main benefit of destructuring?', opts:['Shorter, cleaner code for pulling out values','It makes code run faster','It\'s required for all objects','It deletes unused properties'], correct:0 },
+        ]},
+      { id:'ji4', title:'14. Spread & Rest Operators', kind:'quiz', tier:'Intermediate',
+        lesson: `The <code>...</code> spread operator expands an array or object: <code>[...arr1, ...arr2]</code> merges two arrays. The same syntax as "rest" collects extra arguments into one array inside a function.`,
+        questions: [
+          { q:'What does `[...[1,2], ...[3,4]]` produce?', opts:['[1, 2, 3, 4]','[[1,2],[3,4]]','Error','[1,2] then [3,4] separately'], correct:0 },
+          { q:'What is the `...` symbol commonly called in JavaScript?', opts:['The spread (or rest) operator','The ellipsis loop','A comment marker','A string joiner'], correct:0 },
+        ]},
+      { id:'ji5', title:'15. Error Handling: try/catch', kind:'playground', tier:'Intermediate',
+        lesson: `Wrap risky code in <code>try { }</code> and handle problems in <code>catch (error) { }</code> instead of letting the whole script crash.`,
+        starter: `try {\n  let result = JSON.parse("{ this is not valid JSON");\n  console.log(result);\n} catch (error) {\n  console.log("Caught an error: " + error.message);\n}`,
+        expectedIncludes: 'Caught an error' },
+      { id:'jt2', title:'✅ Practice Test: Intermediate', kind:'test', tier:'Intermediate checkpoint',
+        questions: [
+          { q:'What does `.map()` return?', opts:['A new array with the function applied to each item','The same array, unchanged','A single number','undefined'], correct:0 },
+          { q:'What does `.filter(x => x > 10)` do to an array?', opts:['Keeps only items greater than 10','Removes items greater than 10','Sorts the array','Doubles every item'], correct:0 },
+          { q:'What are backticks ( ` ` ) used for in JavaScript?', opts:['Template literals — strings with embedded expressions','Comments','Loops','Nothing, they\'re invalid'], correct:0 },
+          { q:'What does `const {a, b} = obj;` do?', opts:['Pulls properties a and b out of obj into variables','Creates a new object called obj','Deletes a and b from obj','Raises a syntax error'], correct:0 },
+          { q:'What does `[...arr]` do to an array?', opts:['Creates a copy of its items (spreads them out)','Deletes the array','Reverses it','Sorts it'], correct:0 },
+          { q:'What happens to code inside `catch (error) {}`?', opts:['It runs only if the try block throws an error','It always runs, error or not','It runs before the try block','It never runs'], correct:0 },
+          { q:'What does `.reduce()` typically do?', opts:['Combines all array items into a single value','Removes duplicate items','Reverses an array','Only works on strings'], correct:0 },
+          { q:'Which operator collects extra function arguments into an array?', opts:['The rest operator (...)','The spread only operator','The map operator','The catch operator'], correct:0 },
+          { q:'What does `JSON.parse()` do?', opts:['Converts a JSON string into a JavaScript object','Converts an object into a string','Deletes JSON data','Only works on numbers'], correct:0 },
+          { q:'Why prefer template literals over string concatenation with +?', opts:['They\'re easier to read and let you embed expressions directly','+ doesn\'t work with strings','Template literals run faster in all cases','There is no real reason'], correct:0 },
+        ]},
+
+      /* ── ADVANCED TIER ── */
+      { id:'ja1', title:'16. Closures', kind:'quiz', tier:'Advanced',
+        lesson: `A closure is a function that "remembers" variables from where it was created, even after that outer function has finished running. This is how you build private counters, caches, and many patterns in real JS apps.`,
+        questions: [
+          { q:'What is a closure?', opts:['A function that remembers variables from its outer scope','A function with no arguments','A type of loop','An error-handling block'], correct:0 },
+          { q:'Why are closures useful?', opts:['They let you create private, persistent state without global variables','They make code run faster','They remove the need for functions','They only work with arrays'], correct:0 },
+        ]},
+      { id:'ja2', title:'17. Promises & Async Basics', kind:'quiz', tier:'Advanced',
+        lesson: `A Promise represents a value that will be available later — e.g. after a network request. <code>.then()</code> runs once it resolves. <code>async/await</code> is a cleaner way to write the same thing, making async code read like normal step-by-step code.`,
+        questions: [
+          { q:'What does a Promise represent?', opts:['A value that will be available at some point in the future','A guaranteed instant result','A type of loop','An error message'], correct:0 },
+          { q:'What does `await` do inside an `async` function?', opts:['Pauses that function until the Promise resolves','Stops the entire program','Deletes the Promise','Runs the code twice'], correct:0 },
+        ]},
+      { id:'ja3', title:'18. ES6 Classes', kind:'playground', tier:'Advanced',
+        lesson: `JavaScript classes are a cleaner syntax for creating objects with shared behaviour: <code>class Student { constructor(name) { this.name = name; } }</code>. Create one with <code>new Student("Amara")</code>.`,
+        starter: `class Student {\n  constructor(name, grade) {\n    this.name = name;\n    this.grade = grade;\n  }\n  greet() {\n    return "Hi, I'm " + this.name + " in grade " + this.grade;\n  }\n}\nlet s1 = new Student("Amara", 11);\nconsole.log(s1.greet());`,
+        expectedIncludes: 'Amara' },
+      { id:'ja4', title:'19. JSON & Data Handling', kind:'playground', tier:'Advanced',
+        lesson: `JSON (JavaScript Object Notation) is the standard way apps exchange data. <code>JSON.stringify()</code> turns an object into text; <code>JSON.parse()</code> turns text back into an object — used everywhere from APIs to local storage.`,
+        starter: `let student = { name: "Kabelo", subjects: ["Maths", "IT"] };\nlet asText = JSON.stringify(student);\nconsole.log(asText);\nlet backToObject = JSON.parse(asText);\nconsole.log(backToObject.subjects[1]);`,
+        expectedIncludes: 'IT' },
+      { id:'jt3', title:'✅ Practice Test: Advanced (Final)', kind:'test', tier:'Advanced checkpoint',
+        questions: [
+          { q:'What makes a closure possible?', opts:['A function remembering the scope it was created in','Global variables only','The catch keyword','Array methods'], correct:0 },
+          { q:'What does `.then()` run after?', opts:['A Promise resolves successfully','The page reloads','A for loop finishes','A variable is declared'], correct:0 },
+          { q:'What keyword pauses an async function until a Promise settles?', opts:['await','pause','stop','hold'], correct:0 },
+          { q:'How do you create a new object from an ES6 class called `Car`?', opts:['new Car()','Car.create()','make Car()','Car.new()'], correct:0 },
+          { q:'What does `this` typically refer to inside a class method?', opts:['The specific object instance the method was called on','The global window object always','Nothing — it\'s always undefined','The class name as a string'], correct:0 },
+          { q:'What does `JSON.stringify(obj)` produce?', opts:['A text (string) version of the object','A copy of the object','A number','An error, always'], correct:0 },
+          { q:'Why is JSON commonly used between a website and a server?', opts:['It\'s a simple, universal text format for exchanging data','It can only be read by JavaScript','It runs code automatically','It replaces HTML entirely'], correct:0 },
+          { q:'What is the main advantage of `async/await` over plain `.then()` chains?', opts:['Async code reads more like normal step-by-step code','It runs faster at the CPU level','It removes the need for Promises entirely','It only works with arrays'], correct:0 },
+          { q:'What does a closure let you build that\'s hard without it?', opts:['Private, persistent state (like a counter) without a global variable','Faster loops','Simpler HTML','New data types'], correct:0 },
+          { q:'What does `JSON.parse("{}")` return?', opts:['An empty object `{}`','undefined','An error, always','The text "{}"'], correct:0 },
+          { q:'Which of these best describes a Promise that has "resolved"?', opts:['Its result is now available and `.then()` can use it','It has been deleted','It is still pending forever','It caused an error'], correct:0 },
+          { q:'What does the `constructor` method in a class do?', opts:['Runs automatically to set up a new object\'s properties','Deletes the object','Runs only once per program, ever','Prints the class definition'], correct:0 },
+        ]},
+    ]
+  },
+  {
+    id: 'webdev', title: 'Web Dev: Beginner → Advanced', icon: '🌐', iconClass: 'teal',
+    desc: 'Build web pages — from your first heading to flexbox, grid, and animation, all with a live preview.',
+    modules: [
+      { id:'w1', title:'1. Your First HTML Page', kind:'webpreview',
+        lesson: `HTML describes the structure of a web page using tags like <code>&lt;h1&gt;</code> for a heading and <code>&lt;p&gt;</code> for a paragraph. Every tag that opens must close, e.g. <code>&lt;h1&gt;Hello&lt;/h1&gt;</code>. Edit the code and hit Preview to see it render live.`,
+        starter: `<h1>Hello, MatricAce!</h1>\n<p>This is my first web page.</p>`,
+        expectedIncludes: '<h1>' },
+      { id:'w2', title:'2. Text & Structure', kind:'webpreview',
+        lesson: `Headings come in sizes <code>&lt;h1&gt;</code> (biggest) down to <code>&lt;h6&gt;</code> (smallest). Use <code>&lt;p&gt;</code> for paragraphs and <code>&lt;br&gt;</code> for a line break within one.`,
+        starter: `<h1>My Study Plan</h1>\n<h2>This Week</h2>\n<p>Focus subjects: Maths and Physical Sciences.</p>`,
+        expectedIncludes: '<h2>' },
+      { id:'w3', title:'3. Links & Images', kind:'webpreview',
+        lesson: `A link: <code>&lt;a href="https://example.com"&gt;Click here&lt;/a&gt;</code>. An image: <code>&lt;img src="photo.jpg" alt="description"&gt;</code> — always include <code>alt</code> text for accessibility.`,
+        starter: `<h1>Useful Links</h1>\n<a href="https://www.education.gov.za">Department of Basic Education</a>`,
+        expectedIncludes: '<a href' },
+      { id:'w4', title:'4. Intro to CSS', kind:'webpreview',
+        lesson: `CSS controls how HTML looks. Add a <code>&lt;style&gt;</code> block in the page and target a tag: <code>h1 { color: blue; }</code>. Try changing the colour below.`,
+        starter: `<style>\n  h1 { color: #1D5FBF; font-family: sans-serif; }\n</style>\n<h1>Styled Heading</h1>`,
+        expectedIncludes: 'color' },
+      { id:'w5', title:'5. The Box Model', kind:'webpreview',
+        lesson: `Every element is a box with <code>padding</code> (space inside the border), <code>border</code>, and <code>margin</code> (space outside the border). Try adjusting the numbers below and watch the box change.`,
+        starter: `<style>\n  .card {\n    background: #EEF3FA;\n    padding: 16px;\n    border: 2px solid #1D5FBF;\n    margin: 10px;\n  }\n</style>\n<div class="card">I'm a box with padding and a border.</div>`,
+        expectedIncludes: 'padding' },
+      { id:'w6', title:'6. Mini Project: Profile Card', kind:'webpreview',
+        lesson: `Combine HTML structure with CSS styling to build a simple profile card — a heading, a short bio, and some colour. This is exactly how real web pages are built, just simpler.`,
+        starter: `<style>\n  .profile {\n    background: white;\n    border-radius: 12px;\n    padding: 18px;\n    max-width: 260px;\n    font-family: sans-serif;\n    box-shadow: 0 2px 8px rgba(0,0,0,.1);\n  }\n  .profile h1 { font-size: 1.1rem; color: #1D5FBF; margin-bottom: 6px; }\n</style>\n<div class="profile">\n  <h1>Your Name</h1>\n  <p>Grade 11 · Aspiring Engineer</p>\n</div>`,
+        expectedIncludes: 'border-radius' },
+      { id:'wt1', title:'✅ Practice Test: Beginner', kind:'test', tier:'Beginner checkpoint',
+        questions: [
+          { q:'Which tag creates the biggest heading?', opts:['<h1>','<h6>','<p>','<big>'], correct:0 },
+          { q:'What must every opening HTML tag have?', opts:['A matching closing tag','A colour','A class name','An id'], correct:0 },
+          { q:'What attribute in `<a>` sets the destination link?', opts:['href','src','link','url'], correct:0 },
+          { q:'Why should `<img>` tags include `alt` text?', opts:['For accessibility — describes the image if it can\'t load or be seen','It\'s required for the image to display at all','It changes the image size','It adds a border'], correct:0 },
+          { q:'Where do you write CSS rules directly inside an HTML page?', opts:['Inside a <style> tag','Inside a <script> tag','Inside an <a> tag','CSS cannot go inside HTML'], correct:0 },
+          { q:'What does the CSS `padding` property control?', opts:['Space inside an element, between content and its border','Space outside an element','Text colour','Font size'], correct:0 },
+          { q:'What does `margin` control?', opts:['Space outside an element\'s border','Space inside an element','The text itself','The element\'s colour'], correct:0 },
+          { q:'What CSS property changes text colour?', opts:['color','text-color','font-color','fg-color'], correct:0 },
+          { q:'What tag is used for a paragraph of text?', opts:['<p>','<text>','<para>','<div text>'], correct:0 },
+          { q:'What does HTML stand for?', opts:['HyperText Markup Language','High Text Modern Language','Home Tool Markup Language','HyperTransfer Markup Log'], correct:0 },
+        ]},
+
+      /* ── INTERMEDIATE TIER ── */
+      { id:'wi1', title:'7. Flexbox Basics', kind:'webpreview', tier:'Intermediate',
+        lesson: `<code>display: flex</code> turns a container into a flexible row (or column) — its children line up automatically. <code>justify-content</code> controls spacing along the row, <code>align-items</code> controls vertical alignment.`,
+        starter: `<style>\n  .row {\n    display: flex;\n    justify-content: space-between;\n    background: #EEF3FA;\n    padding: 12px;\n  }\n  .box { background: #1D5FBF; color: white; padding: 10px 16px; border-radius: 8px; }\n</style>\n<div class="row">\n  <div class="box">One</div>\n  <div class="box">Two</div>\n  <div class="box">Three</div>\n</div>`,
+        expectedIncludes: 'display: flex' },
+      { id:'wi2', title:'8. CSS Grid Basics', kind:'webpreview', tier:'Intermediate',
+        lesson: `<code>display: grid</code> with <code>grid-template-columns</code> lays out children into rows and columns precisely — great for card layouts and dashboards.`,
+        starter: `<style>\n  .grid {\n    display: grid;\n    grid-template-columns: 1fr 1fr;\n    gap: 10px;\n  }\n  .cell { background: #EEF3FA; padding: 14px; border-radius: 8px; text-align: center; }\n</style>\n<div class="grid">\n  <div class="cell">Maths</div>\n  <div class="cell">Physics</div>\n  <div class="cell">English</div>\n  <div class="cell">IT</div>\n</div>`,
+        expectedIncludes: 'display: grid' },
+      { id:'wi3', title:'9. Forms & Inputs', kind:'webpreview', tier:'Intermediate',
+        lesson: `Forms collect user input: <code>&lt;input type="text"&gt;</code> for text, <code>&lt;input type="email"&gt;</code> for emails, <code>&lt;button&gt;</code> to submit. Always pair inputs with a <code>&lt;label&gt;</code> for accessibility.`,
+        starter: `<form>\n  <label>Your Name:</label><br>\n  <input type="text" placeholder="Enter your name"><br><br>\n  <label>Email:</label><br>\n  <input type="email" placeholder="you@example.com"><br><br>\n  <button type="submit">Submit</button>\n</form>`,
+        expectedIncludes: '<form>' },
+      { id:'wi4', title:'10. Responsive Units', kind:'webpreview', tier:'Intermediate',
+        lesson: `<code>px</code> is a fixed size. <code>%</code> is relative to the parent. <code>rem</code> is relative to the page's base font size — the standard choice for responsive text that scales well across devices.`,
+        starter: `<style>\n  .box1 { width: 50%; background: #EEF3FA; padding: 10px; margin-bottom: 8px; }\n  .box2 { font-size: 1.5rem; color: #1D5FBF; }\n</style>\n<div class="box1">I'm 50% of my parent's width</div>\n<div class="box2">I'm sized in rem units</div>`,
+        expectedIncludes: 'rem' },
+      { id:'wi5', title:'11. Typography & Fonts', kind:'webpreview', tier:'Intermediate',
+        lesson: `Good typography makes a page easy to read: <code>font-weight</code>, <code>line-height</code>, and <code>letter-spacing</code> all matter. Web-safe fonts (like <code>sans-serif</code>) always work even without internet.`,
+        starter: `<style>\n  h1 { font-weight: 800; letter-spacing: -0.5px; font-family: sans-serif; }\n  p { line-height: 1.6; color: #333; }\n</style>\n<h1>Readable Design</h1>\n<p>Good line-height makes paragraphs much easier to read on any screen.</p>`,
+        expectedIncludes: 'line-height' },
+      { id:'wt2', title:'✅ Practice Test: Intermediate', kind:'test', tier:'Intermediate checkpoint',
+        questions: [
+          { q:'What does `display: flex` do to a container\'s children?', opts:['Lines them up flexibly in a row (or column)','Hides them','Makes them all the same colour','Deletes their margins only'], correct:0 },
+          { q:'What does `justify-content: space-between` do in a flex row?', opts:['Spreads items with space between them','Centers all items on top of each other','Hides the first item','Reverses the row order'], correct:0 },
+          { q:'What does `grid-template-columns: 1fr 1fr` create?', opts:['Two equal-width columns','One column, twice as tall','Three rows','Nothing — invalid syntax'], correct:0 },
+          { q:'What HTML tag wraps a set of user inputs meant to be submitted together?', opts:['<form>','<input>','<submit>','<group>'], correct:0 },
+          { q:'Why pair a `<label>` with an `<input>`?', opts:['For accessibility and clarity about what to enter','It\'s purely decorative','It\'s required for the input to work at all','It changes the input\'s colour'], correct:0 },
+          { q:'What is `rem` sized relative to?', opts:['The page\'s base/root font size','The parent element only','The screen width in pixels','Nothing — it\'s a fixed unit'], correct:0 },
+          { q:'What does `line-height` control?', opts:['The vertical spacing between lines of text','The font\'s colour','The width of a paragraph','The font\'s weight'], correct:0 },
+          { q:'Which unit is best for a responsive layout that adapts to parent size?', opts:['%','px only','pt','in'], correct:0 },
+          { q:'What input type is best for collecting an email address?', opts:['type="email"','type="text" only','type="mail"','type="address"'], correct:0 },
+          { q:'What does CSS Grid make especially easy to build?', opts:['Precise row-and-column layouts like dashboards or card grids','Only single-line text','Animations only','Nothing that flexbox can\'t already do identically'], correct:0 },
+        ]},
+
+      /* ── ADVANCED TIER ── */
+      { id:'wa1', title:'12. Transitions & Hover Effects', kind:'webpreview', tier:'Advanced',
+        lesson: `<code>transition</code> makes a property change smoothly instead of instantly. Combine with <code>:hover</code> to animate a button or card when the mouse moves over it.`,
+        starter: `<style>\n  .btn {\n    background: #1D5FBF;\n    color: white;\n    padding: 12px 20px;\n    border-radius: 10px;\n    display: inline-block;\n    transition: all 0.25s ease;\n  }\n  .btn:hover {\n    background: #0F3D73;\n    transform: translateY(-3px);\n  }\n</style>\n<div class="btn">Hover over me</div>`,
+        expectedIncludes: 'transition' },
+      { id:'wa2', title:'13. Positioning', kind:'webpreview', tier:'Advanced',
+        lesson: `<code>position: relative</code> nudges an element from its normal spot. <code>position: absolute</code> places it relative to the nearest positioned ancestor. <code>position: fixed</code> locks it to the viewport, e.g. a sticky header.`,
+        starter: `<style>\n  .parent { position: relative; background: #EEF3FA; height: 120px; }\n  .badge { position: absolute; top: 8px; right: 8px; background: #B45309; color: white; padding: 4px 10px; border-radius: 20px; font-size: .7rem; }\n</style>\n<div class="parent">\n  <div class="badge">NEW</div>\n  Main content area\n</div>`,
+        expectedIncludes: 'position: absolute' },
+      { id:'wa3', title:'14. Pseudo-classes & Pseudo-elements', kind:'webpreview', tier:'Advanced',
+        lesson: `<code>:hover</code>, <code>:first-child</code>, and <code>:nth-child()</code> target elements by state or position. <code>::before</code> and <code>::after</code> insert extra content purely with CSS, no extra HTML needed.`,
+        starter: `<style>\n  li:nth-child(odd) { background: #EEF3FA; }\n  li::before { content: "📌 "; }\n  li { padding: 6px 10px; list-style: none; }\n</style>\n<ul>\n  <li>Maths homework</li>\n  <li>Physics practical</li>\n  <li>English essay</li>\n</ul>`,
+        expectedIncludes: 'nth-child' },
+      { id:'wa4', title:'15. Mini Project: Landing Page Hero', kind:'webpreview', tier:'Advanced',
+        lesson: `Bring it all together — flexbox layout, typography, colour, and a hover effect — to build a simple hero section, the kind you'd see at the top of a real website.`,
+        starter: `<style>\n  .hero {\n    display: flex;\n    flex-direction: column;\n    align-items: center;\n    text-align: center;\n    background: linear-gradient(135deg,#1D5FBF,#4C8DE0);\n    color: white;\n    padding: 40px 20px;\n    border-radius: 14px;\n    font-family: sans-serif;\n  }\n  .hero h1 { font-size: 1.6rem; margin-bottom: 8px; }\n  .hero p { opacity: .85; margin-bottom: 16px; }\n  .cta {\n    background: white; color: #1D5FBF; padding: 10px 22px;\n    border-radius: 8px; font-weight: 700; transition: transform .2s;\n  }\n  .cta:hover { transform: scale(1.05); }\n</style>\n<div class="hero">\n  <h1>Ace Your Matric Year</h1>\n  <p>Study smarter, not harder.</p>\n  <div class="cta">Get Started</div>\n</div>`,
+        expectedIncludes: 'linear-gradient' },
+      { id:'wt3', title:'✅ Practice Test: Advanced (Final)', kind:'test', tier:'Advanced checkpoint',
+        questions: [
+          { q:'What does the CSS `transition` property do?', opts:['Makes a property change smoothly over time instead of instantly','Deletes an element after a delay','Adds a border','Changes the page language'], correct:0 },
+          { q:'What does `:hover` target?', opts:['An element while the mouse is pointing at it','Every element on the page permanently','Only links, never other elements','Elements on mobile devices only'], correct:0 },
+          { q:'What is `position: fixed` most commonly used for?', opts:['A sticky header or button that stays in place while scrolling','Centering text','Changing font size','Adding padding'], correct:0 },
+          { q:'What does `position: absolute` position an element relative to?', opts:['Its nearest positioned ancestor','Always the entire page','The mouse cursor','Nothing — it\'s ignored'], correct:0 },
+          { q:'What does `::before` let you do?', opts:['Insert extra content before an element, using only CSS','Delete the element','Run JavaScript','Change the HTML file name'], correct:0 },
+          { q:'What does `li:nth-child(odd)` select?', opts:['Every odd-numbered <li> in its parent','Only the first <li>','Every <li> on the whole page','Nothing — invalid selector'], correct:0 },
+          { q:'What CSS property creates a smooth colour gradient background?', opts:['linear-gradient()','gradient-color()','background-fade()','color-blend()'], correct:0 },
+          { q:'Why combine `transition` with `:hover`?', opts:['To animate a property smoothly when the user interacts with it','They cannot be used together','It only works on images','It disables the hover effect'], correct:0 },
+          { q:'What is a common real-world use of `position: relative` on a parent element?', opts:['So an absolutely-positioned child inside it lines up correctly','To make text bold','To change the page\'s language','To delete child elements'], correct:0 },
+          { q:'What do pseudo-elements like `::before`/`::after` avoid needing?', opts:['Extra HTML elements just for decoration','Any CSS at all','A <style> tag','JavaScript for basic layout'], correct:0 },
+        ]},
+    ]
+  },
+  {
+    id: 'sql', title: 'SQL Basics', icon: '🗄️', iconClass: 'purple',
+    desc: 'Learn to query databases — the skill behind almost every app and website.',
+    modules: [
+      { id:'s1', title:'1. What Is a Database?', kind:'quiz',
+        lesson: `A database stores structured data — think rows and columns, like a spreadsheet, but built to be searched and updated fast, even with millions of rows. SQL (Structured Query Language) is how you talk to it.`,
+        questions: [
+          { q:'What is a database mainly used for?', opts:['Storing structured data that can be searched and updated','Only storing images','Running JavaScript code','Designing web pages'], correct:0 },
+          { q:'What does SQL stand for?', opts:['Structured Query Language','System Query Logic','Simple Question Language','Structured Question Log'], correct:0 },
+        ]},
+      { id:'s2', title:'2. SELECT & FROM', kind:'quiz',
+        lesson: `Every query starts with what you want and where to get it: <code>SELECT columns FROM table</code>. Picture this table called <b>students</b>:
+<div class="code-block">id | name    | grade | mark
+1  | Thabo   | 11    | 78
+2  | Naledi  | 12    | 91
+3  | Kabelo  | 11    | 54
+4  | Zanele  | 12    | 88</div>
+<code>SELECT * FROM students</code> means "give me every column, for every row."`,
+        questions: [
+          { q:'What does `SELECT * FROM students` return?', opts:['Every column, for every row in students','Only the first row','Only the name column','Nothing — * is invalid'], correct:0 },
+          { q:'What does `SELECT name FROM students` return?', opts:['Just the name column, for every row','Every column','Only rows named "name"','An error'], correct:0 },
+        ]},
+      { id:'s3', title:'3. The WHERE Clause', kind:'quiz',
+        lesson: `<code>WHERE</code> filters which rows come back. Using the same <b>students</b> table: <code>SELECT * FROM students WHERE grade = 12</code> only returns rows where grade equals 12.`,
+        questions: [
+          { q:'What does `SELECT * FROM students WHERE grade = 12` return?', opts:['Only rows where grade is 12 (Naledi and Zanele)','Every row in the table','Only the grade column','An error'], correct:0 },
+          { q:'What does `WHERE mark >= 80` filter for?', opts:['Rows where mark is 80 or higher','Rows where mark is exactly 80','Rows where mark is below 80','All rows, always'], correct:0 },
+        ]},
+      { id:'s4', title:'4. ORDER BY & LIMIT', kind:'quiz',
+        lesson: `<code>ORDER BY column DESC</code> sorts results highest-to-lowest (<code>ASC</code> for lowest-to-highest). <code>LIMIT 2</code> caps how many rows come back — handy for "top 5" style queries.`,
+        questions: [
+          { q:'What does `ORDER BY mark DESC` do?', opts:['Sorts rows from highest mark to lowest','Sorts rows from lowest mark to highest','Deletes the mark column','Groups rows by mark'], correct:0 },
+          { q:'What does `LIMIT 2` do at the end of a query?', opts:['Returns only the first 2 rows of the result','Deletes 2 rows','Only searches 2 columns','Doubles the results'], correct:0 },
+        ]},
+      { id:'s5', title:'5. Predict the Query Result', kind:'predict',
+        lesson: `Using the same <b>students</b> table:
+<div class="code-block">id | name    | grade | mark
+1  | Thabo   | 11    | 78
+2  | Naledi  | 12    | 91
+3  | Kabelo  | 11    | 54
+4  | Zanele  | 12    | 88</div>
+Predict what each query below returns.`,
+        challenges: [
+          { code: `SELECT name FROM students WHERE grade = 11;`, answer: 'Thabo, Kabelo', hint:'Grade 11 rows are Thabo and Kabelo' },
+          { code: `SELECT name FROM students ORDER BY mark DESC LIMIT 1;`, answer: 'Naledi', hint:'The highest mark (91) belongs to Naledi' },
+        ]},
+      { id:'s6', title:'6. INSERT, UPDATE, DELETE', kind:'quiz',
+        lesson: `<code>INSERT INTO students VALUES (...)</code> adds a new row. <code>UPDATE students SET mark = 80 WHERE id = 3</code> changes existing values. <code>DELETE FROM students WHERE id = 3</code> removes a row entirely. These three change data — SELECT only reads it.`,
+        questions: [
+          { q:'What does `INSERT INTO` do?', opts:['Adds a new row into a table','Deletes a row','Changes an existing row','Reads data without changing it'], correct:0 },
+          { q:'What does `DELETE FROM students WHERE id = 3` do?', opts:['Removes the row where id is 3','Removes the whole table','Removes column id','Removes every row'], correct:0 },
+        ]},
+      { id:'s7', title:'7. JOIN Basics', kind:'quiz',
+        lesson: `Real databases split data across multiple tables. <code>JOIN</code> combines rows from two tables using a matching column — e.g. <code>students JOIN schools ON students.school_id = schools.id</code> links each student to their school's details.`,
+        questions: [
+          { q:'What is the purpose of a JOIN?', opts:['Combine related rows from two tables using a matching column','Delete rows from a table','Sort a table alphabetically','Rename a table'], correct:0 },
+          { q:'In `... ON students.school_id = schools.id`, what has to match for rows to be joined?', opts:['The school_id value in students and the id value in schools','The name columns in both tables','Nothing needs to match','The number of rows in each table'], correct:0 },
+        ]},
+      { id:'s8', title:'8. Mini Project: Query the Table', kind:'predict',
+        lesson: `One more look at <b>students</b>:
+<div class="code-block">id | name    | grade | mark
+1  | Thabo   | 11    | 78
+2  | Naledi  | 12    | 91
+3  | Kabelo  | 11    | 54
+4  | Zanele  | 12    | 88</div>
+<code>COUNT(*)</code> counts matching rows. <code>AVG(column)</code> averages a numeric column.`,
+        challenges: [
+          { code: `SELECT COUNT(*) FROM students WHERE grade = 12;`, answer: '2', hint:'Naledi and Zanele are both grade 12' },
+          { code: `SELECT AVG(mark) FROM students;`, answer: '77.75', hint:'(78+91+54+88) / 4 = 77.75' },
+        ]},
+      { id:'sqt1', title:'✅ Practice Test: SQL Basics', kind:'test', tier:'Beginner checkpoint',
+        questions: [
+          { q:'What does SQL let you do?', opts:['Query and manage structured data in a database','Style web pages','Run a web server','Compress files'], correct:0 },
+          { q:'What does `SELECT * FROM table` mean?', opts:['Return every column for every row','Return only the first column','Delete the table','Return one row only'], correct:0 },
+          { q:'What clause filters rows based on a condition?', opts:['WHERE','FILTER','IF','ONLY'], correct:0 },
+          { q:'What does `ORDER BY mark ASC` do?', opts:['Sorts rows from lowest mark to highest','Sorts rows from highest to lowest','Deletes unsorted rows','Groups rows by mark'], correct:0 },
+          { q:'What does `LIMIT 5` do?', opts:['Returns at most 5 rows','Deletes 5 rows','Only allows 5 columns','Searches 5 tables'], correct:0 },
+          { q:'Which statement adds a brand new row to a table?', opts:['INSERT INTO','ADD ROW','NEW INSERT','CREATE ROW'], correct:0 },
+          { q:'What does `UPDATE ... SET ... WHERE ...` do?', opts:['Changes existing values in the row(s) matching the condition','Deletes rows matching a condition','Creates a new table','Only reads data'], correct:0 },
+          { q:'What is the main use of a JOIN?', opts:['Combining related rows across two or more tables','Deleting a table','Renaming a column','Sorting a single table'], correct:0 },
+          { q:'What does `COUNT(*)` return?', opts:['The number of matching rows','The sum of all numbers in the table','The name of the table','Nothing — invalid syntax'], correct:0 },
+          { q:'What does `AVG(column)` calculate?', opts:['The average value of that numeric column','The total sum of the column','The highest value only','The number of rows'], correct:0 },
+        ]},
+    ]
+  },
+  {
+    id: 'cli', title: 'Command Line & Linux Basics', icon: '⌨️', iconClass: 'teal',
+    desc: 'The text-based skills behind real development — navigating, managing files, and more.',
+    modules: [
+      { id:'c1', title:'1. What Is the Command Line?', kind:'quiz',
+        lesson: `The command line (or "terminal") lets you control your computer by typing commands instead of clicking icons. It runs inside a <b>shell</b> — a program that reads what you type and executes it. Almost all real software development happens partly in a terminal.`,
+        questions: [
+          { q:'What is the command line?', opts:['A text-based way to interact with your computer by typing commands','A type of web browser','A programming language','A graphics editor'], correct:0 },
+          { q:'What does a shell do?', opts:['Reads and executes the commands you type','Draws the desktop background','Only runs on Windows','Compiles Python code'], correct:0 },
+        ]},
+      { id:'c2', title:'2. Navigating: pwd, ls, cd', kind:'quiz',
+        lesson: `<code>pwd</code> ("print working directory") shows where you are. <code>ls</code> lists what's in the current folder. <code>cd foldername</code> moves into a folder, and <code>cd ..</code> moves back up one level.`,
+        questions: [
+          { q:'What does `pwd` print?', opts:['The current folder (directory) you\'re in','A list of files','Your username','The time'], correct:0 },
+          { q:'What does `ls` do?', opts:['Lists the files and folders in the current directory','Deletes the current directory','Creates a new file','Runs a program'], correct:0 },
+          { q:'What does `cd ..` do?', opts:['Moves up one directory level','Moves into a folder called ".."','Deletes the current folder','Lists hidden files'], correct:0 },
+        ]},
+      { id:'c3', title:'3. Files & Folders: mkdir, touch, rm', kind:'quiz',
+        lesson: `<code>mkdir name</code> creates a new folder. <code>touch file.txt</code> creates a new empty file. <code>rm file.txt</code> deletes a file — there's no recycle bin on the command line, so be careful!`,
+        questions: [
+          { q:'What does `mkdir notes` do?', opts:['Creates a new folder called notes','Deletes a folder called notes','Lists the contents of notes','Renames a file to notes'], correct:0 },
+          { q:'What does `touch file.txt` do?', opts:['Creates a new empty file called file.txt','Opens file.txt for editing','Deletes file.txt','Copies file.txt'], correct:0 },
+          { q:'What does `rm file.txt` do?', opts:['Deletes file.txt permanently','Renames file.txt','Creates file.txt','Moves file.txt to a recycle bin'], correct:0 },
+        ]},
+      { id:'c4', title:'4. Viewing Files: cat, head, tail', kind:'quiz',
+        lesson: `<code>cat file.txt</code> prints a whole file's contents to the screen. <code>head -n 5 file.txt</code> shows just the first 5 lines. <code>tail -n 5 file.txt</code> shows the last 5 — great for checking the end of a long log file.`,
+        questions: [
+          { q:'What does `cat notes.txt` do?', opts:['Prints the entire contents of notes.txt to the screen','Deletes notes.txt','Creates notes.txt','Renames notes.txt'], correct:0 },
+          { q:'What does `head -n 5 file.txt` show?', opts:['The first 5 lines of the file','The last 5 lines of the file','5 random lines','The file size'], correct:0 },
+        ]},
+      { id:'c5', title:'5. Predict the Output: Command Sequences', kind:'predict',
+        lesson: `Read each sequence of commands carefully, starting from an empty folder, and predict what the final <code>ls</code> or <code>cat</code> shows.`,
+        challenges: [
+          { code: `mkdir school\ncd school\ntouch notes.txt\nls`, answer: 'notes.txt', hint:'After creating the file inside school/, ls lists it' },
+          { code: `mkdir project\ncd project\necho "Hello" > greeting.txt\ncat greeting.txt`, answer: 'Hello', hint:'echo writes "Hello" into greeting.txt, then cat prints it' },
+        ]},
+      { id:'c6', title:'6. Permissions & sudo', kind:'quiz',
+        lesson: `Files have permissions controlling who can read, write, or execute them. <code>sudo</code> ("superuser do") temporarily runs a command with administrator privileges — powerful, so use it carefully. <code>chmod +x script.sh</code> makes a file executable.`,
+        questions: [
+          { q:'What does `sudo` let you do?', opts:['Run a command with administrator (superuser) privileges','Delete your whole hard drive automatically','Only view files, never edit them','Nothing — it\'s just a joke command'], correct:0 },
+          { q:'What does `chmod +x script.sh` do?', opts:['Makes script.sh executable (runnable)','Deletes script.sh','Renames script.sh','Copies script.sh'], correct:0 },
+        ]},
+      { id:'c7', title:'7. Piping & Redirects', kind:'quiz',
+        lesson: `<code>|</code> (pipe) sends one command's output straight into another as input — e.g. <code>ls | grep notes</code>. <code>&gt;</code> writes output into a file (overwriting it), while <code>&gt;&gt;</code> appends to the end instead.`,
+        questions: [
+          { q:'What does the pipe symbol `|` do between two commands?', opts:['Sends the output of the first command as input to the second','Runs both commands at the same time, unrelated','Comments out the second command','Deletes the first command\'s output'], correct:0 },
+          { q:'What does `ls > list.txt` do?', opts:['Writes the output of ls into list.txt, overwriting it','Prints list.txt to the screen','Deletes list.txt','Runs list.txt as a program'], correct:0 },
+          { q:'How is `>>` different from `>`?', opts:['It appends to the file instead of overwriting it','It deletes the file first','It only works with images','There is no difference'], correct:0 },
+        ]},
+      { id:'c8', title:'8. Mini Project: Simulated Terminal Session', kind:'predict',
+        lesson: `Trace through this whole sequence carefully, one line at a time. <code>&gt;</code> creates/overwrites the file, <code>&gt;&gt;</code> appends a new line to it — so the file ends up with two lines.`,
+        challenges: [
+          { code: `mkdir diary\ncd diary\necho "Day 1: started coding" > log.txt\necho "Day 2: learned SQL" >> log.txt\ncat log.txt`, answer: 'Day 2: learned SQL', hint:'The first echo (>) creates log.txt with line 1; the second (>>) appends line 2 — cat prints both lines, and the LAST one is "Day 2: learned SQL"' },
+        ]},
+      { id:'clit1', title:'✅ Practice Test: Command Line Basics', kind:'test', tier:'Beginner checkpoint',
+        questions: [
+          { q:'What does the command line let you do?', opts:['Control your computer by typing commands instead of clicking','Only browse the internet','Only edit photos','Nothing useful for developers'], correct:0 },
+          { q:'What does `pwd` stand for and do?', opts:['"Print working directory" — shows your current location','"Password" — sets a password','"Print web data" — shows internet info','"Power down" — shuts down the computer'], correct:0 },
+          { q:'Which command lists files in the current folder?', opts:['ls','list','dir-show','see'], correct:0 },
+          { q:'What does `cd ..` do?', opts:['Moves up one directory level','Moves into a folder named ..','Deletes the current directory','Copies the current directory'], correct:0 },
+          { q:'What does `mkdir` create?', opts:['A new folder (directory)','A new file','A new user','A new program'], correct:0 },
+          { q:'What does `cat` do to a file?', opts:['Prints its entire contents to the screen','Deletes it','Compresses it','Renames it'], correct:0 },
+          { q:'What is `sudo` used for?', opts:['Running a command with administrator privileges','Sorting files alphabetically','Searching the internet','Undoing the last command'], correct:0 },
+          { q:'What does the pipe `|` do?', opts:['Feeds one command\'s output into another command as input','Deletes both commands','Only works on Windows','Comments out a line'], correct:0 },
+          { q:'What does `>>` do that `>` doesn\'t?', opts:['Appends to a file instead of overwriting it','Deletes the file','Only works with images','Nothing — they\'re identical'], correct:0 },
+          { q:'Why is `rm` considered risky to use carelessly?', opts:['It deletes files permanently, with no recycle bin','It only works one day a week','It requires internet access','It makes files read-only'], correct:0 },
+        ]},
+    ]
+  },
+  {
+    id: 'git', title: 'Git & GitHub', icon: '🔧', iconClass: 'gold',
+    desc: 'Track changes to your code and collaborate like a real developer.',
+    modules: [
+      { id:'g1', title:'1. What Is Version Control?', kind:'quiz',
+        lesson: `Version control saves a history of every change to your code, so you can undo mistakes, see who changed what, and work with others without overwriting each other's work. Git is the version control tool almost every developer uses.`,
+        questions: [
+          { q:'What problem does version control solve?', opts:['It tracks every change to your code so you can undo mistakes and collaborate safely','It makes your code run faster','It automatically finds bugs','It replaces the need for testing'], correct:0, explanation:'Version control is fundamentally a history and safety net for your code — nothing more, nothing less.' },
+          { q:'What is Git?', opts:['A version control tool used to track changes in code','A programming language','A code editor','A web hosting service'], correct:0, explanation:'Git itself is just the tool that tracks history locally — GitHub (later in this track) is a separate website built around it.' },
+        ]},
+      { id:'g2', title:'2. Git Basics: init, add, commit', kind:'quiz',
+        lesson: `<code>git init</code> starts tracking a folder. <code>git add file.txt</code> stages a file (marks it ready to save). <code>git commit -m "message"</code> saves a snapshot of all staged changes, with a message describing what changed.`,
+        questions: [
+          { q:'What does `git init` do?', opts:['Starts tracking the current folder with Git','Deletes all Git history','Uploads code to GitHub','Creates a new file'], correct:0, explanation:'`init` only sets up local tracking — it does nothing to the internet or GitHub.' },
+          { q:'What does `git add file.txt` do?', opts:['Stages file.txt, marking it ready to be committed','Immediately saves file.txt\'s history forever','Deletes file.txt','Uploads file.txt to the internet'], correct:0, explanation:'"Staging" is a middle step — added files aren\'t permanently saved until you commit them.' },
+          { q:'What does `git commit -m "message"` do?', opts:['Saves a snapshot of staged changes, with a description','Deletes staged changes','Uploads code to GitHub','Only works once per project'], correct:0, explanation:'A commit is a permanent local snapshot — pushing to GitHub is a separate, later step.' },
+        ]},
+      { id:'g3', title:'3. Checking Status & History', kind:'quiz',
+        lesson: `<code>git status</code> shows what's changed since your last commit — which files are staged, unstaged, or untracked. <code>git log</code> shows the history of commits, newest first.`,
+        questions: [
+          { q:'What does `git status` show?', opts:['Which files have changed and whether they\'re staged','The full commit history','Your GitHub username','The internet connection status'], correct:0, explanation:'`status` is a snapshot of right now — for history over time, you need `git log` instead.' },
+          { q:'What does `git log` show?', opts:['The history of commits, newest first','Only the very first commit ever made','Files that have errors','Your username and password'], correct:0, explanation:'Each entry in the log is one saved snapshot (commit), in reverse chronological order.' },
+        ]},
+      { id:'g4', title:'4. Branches: What & Why', kind:'quiz',
+        lesson: `A branch is an independent line of work — you can try new features or fixes without touching the working "main" branch. This lets you experiment freely and only merge changes back in once they work.`,
+        questions: [
+          { q:'What is a Git branch?', opts:['An independent line of development you can work on without affecting main','A type of file','A backup of your entire computer','A GitHub-only feature that Git itself doesn\'t have'], correct:0, explanation:'Branches are a core Git feature — GitHub just gives them a nice visual interface, it didn\'t invent them.' },
+          { q:'Why create a new branch before adding a feature?', opts:['So you can experiment without breaking the working main branch','Because Git requires a new branch for every single commit','It makes your code run faster','It\'s required to save any changes at all'], correct:0, explanation:'This is the main real-world reason developers branch: isolate risky/unfinished work from what\'s already working.' },
+        ]},
+      { id:'g5', title:'5. Creating & Switching Branches', kind:'quiz',
+        lesson: `<code>git branch feature-x</code> creates a new branch. <code>git checkout feature-x</code> (or the newer <code>git switch feature-x</code>) moves you onto it. <code>git checkout -b feature-x</code> does both in one step — creates and switches.`,
+        questions: [
+          { q:'What does `git checkout -b feature-x` do?', opts:['Creates a new branch called feature-x AND switches to it','Only creates the branch, without switching','Deletes the feature-x branch','Merges feature-x into main'], correct:0, explanation:'The `-b` flag is the shortcut for "create and switch" in one command — otherwise it\'s two separate steps.' },
+          { q:'What does `git branch` (with no arguments) show?', opts:['A list of all branches in the project','The current commit message','Your GitHub repositories','Nothing — it requires an argument'], correct:0, explanation:'It\'s a listing command by default; it only creates a branch when you give it a name as an argument.' },
+        ]},
+      { id:'g6', title:'6. Merging Branches', kind:'quiz',
+        lesson: `Once work on a branch is done, <code>git merge feature-x</code> (run while on main) brings those changes into main. If the same lines were changed in both branches, Git flags a "merge conflict" for you to resolve by hand.`,
+        questions: [
+          { q:'What does merging a branch do?', opts:['Combines its changes into the branch you\'re currently on','Deletes the branch immediately with no changes kept','Uploads the branch to GitHub','Renames the branch'], correct:0, explanation:'Merge is additive — it brings changes IN, it doesn\'t remove or upload anything by itself.' },
+          { q:'What causes a merge conflict?', opts:['The same lines of a file were changed differently in both branches','Two branches have different names','You forgot to run git init','Your internet disconnected'], correct:0, explanation:'Git can\'t guess which version you want when both branches touched the exact same lines — so it asks you.' },
+        ]},
+      { id:'g7', title:'7. Remote Repos: clone, push, pull', kind:'quiz',
+        lesson: `A "remote" is a copy of your repository hosted online (like on GitHub). <code>git clone url</code> downloads a full copy. <code>git push</code> uploads your local commits to the remote. <code>git pull</code> downloads and merges any new commits from the remote.`,
+        questions: [
+          { q:'What does `git clone url` do?', opts:['Downloads a full copy of a remote repository to your computer','Uploads your code to a new remote','Deletes a remote repository','Only works with GitHub, no other host'], correct:0, explanation:'Clone is a one-time download that sets up the remote connection for you automatically.' },
+          { q:'What does `git push` do?', opts:['Uploads your local commits to the remote repository','Downloads new commits from the remote','Deletes your local commits','Creates a new branch automatically'], correct:0, explanation:'Push only sends what you\'ve already committed locally — uncommitted changes are never pushed.' },
+          { q:'What does `git pull` do?', opts:['Downloads and merges new commits from the remote into your local branch','Uploads your changes to the remote','Deletes the remote repository','Creates a backup of your files'], correct:0, explanation:'Pull is really "fetch + merge" in one command — it brings the remote\'s new work into what you have locally.' },
+        ]},
+      { id:'g8', title:'8. GitHub Basics: Repos & Pull Requests', kind:'quiz',
+        lesson: `GitHub hosts your Git repositories online and adds collaboration tools on top. A "Pull Request" (PR) proposes merging your branch into another (often main) — teammates can review and comment before it's merged, which is how most real teams work.`,
+        questions: [
+          { q:'What is a GitHub repository?', opts:['An online-hosted copy of your project\'s Git history','A programming language','A type of branch only','A local-only backup with no internet involved'], correct:0, explanation:'A "repo" is just the project plus its whole Git history, hosted somewhere online instead of only on your computer.' },
+          { q:'What is a Pull Request (PR) used for?', opts:['Proposing that your branch\'s changes be reviewed and merged into another branch','Deleting a branch permanently','Downloading someone else\'s code without asking','Only closing bugs, nothing else'], correct:0, explanation:'A PR is a request for review — the code isn\'t merged until someone (often a teammate) approves it.' },
+        ]},
+      { id:'g9', title:'9. Predict the Output: Git Command Sequences', kind:'predict',
+        lesson: `Trace through each sequence of Git commands and predict what happens.`,
+        challenges: [
+          { code: `git init\ngit add notes.txt\ngit commit -m "Add notes"\ngit status`, answer: 'nothing to commit, working tree clean', hint:'After committing everything staged, there are no more pending changes to report' },
+          { code: `git checkout -b feature\n# make changes, commit them\ngit checkout main\ngit merge feature`, answer: 'feature\'s changes are now in main', hint:'Merging feature while on main brings its commits into main' },
+        ]},
+      { id:'g10', title:'10. Mini Project: Your First Workflow', kind:'predict',
+        lesson: `A realistic first Git workflow, from nothing to a saved commit. Predict what the final `+ '`git log`' + ` would report about how many commits exist.`,
+        challenges: [
+          { code: `git init\ngit add index.html\ngit commit -m "First page"\ngit add style.css\ngit commit -m "Add styling"`, answer: '2', hint:'Two separate `git commit` commands were run, so there are 2 commits in the log' },
+        ]},
+      { id:'gt1', title:'✅ Practice Test: Git & GitHub', kind:'test', tier:'Beginner checkpoint',
+        questions: [
+          { q:'What is the main purpose of version control?', opts:['Tracking changes to code over time so you can undo mistakes and collaborate','Making code run faster','Automatically writing tests','Hosting a website'], correct:0, explanation:'Everything else in Git builds on this one core purpose — history and safety.' },
+          { q:'What does `git commit` do?', opts:['Saves a snapshot of staged changes','Uploads code to the internet','Deletes old commits','Creates a new branch'], correct:0, explanation:'A commit is always local first — it has nothing to do with the internet until you push.' },
+          { q:'What must happen to a file before you can commit it?', opts:['It must be staged with `git add`','It must be deleted first','It must be pushed to GitHub first','Nothing — commits include all files automatically'], correct:0, explanation:'Git only commits what\'s staged — this lets you commit some changes and leave others for later.' },
+          { q:'What does `git status` tell you?', opts:['What has changed since your last commit','Your GitHub password','The size of your project','Nothing — it is not a real command'], correct:0, explanation:'It\'s a live snapshot of your working directory compared to the last commit.' },
+          { q:'Why use a separate branch for a new feature?', opts:['To experiment without risking the stable main branch','Because Git deletes your work otherwise','It\'s required before your first commit','It makes the code run faster'], correct:0, explanation:'Isolation is the whole point — main stays safe and working while you experiment elsewhere.' },
+          { q:'What does merging two branches do?', opts:['Combines their changes together','Deletes one of the branches automatically','Uploads both branches to GitHub','Renames both branches'], correct:0, explanation:'Merge only combines history — it doesn\'t delete or rename anything by itself.' },
+          { q:'What causes a merge conflict?', opts:['The same lines were changed differently in both branches being merged','Using git for the first time','Not having a GitHub account','Naming a branch "main"'], correct:0, explanation:'Git can merge non-overlapping changes automatically — conflicts only happen on the exact same lines.' },
+          { q:'What does `git push` require to have happened first?', opts:['At least one local commit to push','A merge conflict','A deleted branch','An open Pull Request'], correct:0, explanation:'Push only sends commits that already exist locally — there\'s nothing to send otherwise.' },
+          { q:'What is a Pull Request mainly used for?', opts:['Requesting review before merging one branch into another','Permanently deleting a repository','Downloading a repository for the first time','Changing your GitHub password'], correct:0, explanation:'It\'s a review gate — teams use PRs specifically to check code before it joins the main branch.' },
+          { q:'What is a GitHub "repository"?', opts:['An online-hosted copy of a project\'s Git history','A single file','A type of programming language','A Git command'], correct:0, explanation:'"Repo" is short for repository — GitHub just hosts it online and adds collaboration tools on top.' },
+        ]},
+    ]
+  },
+];
+
+/* ══════════════════════════════════════════════════════════════════
+   PROGRESS / XP / STREAK — localStorage, keyed per student
+   ══════════════════════════════════════════════════════════════════ */
+function progKey(){ return 'coding_progress_' + UID; }
+function statsKey(){ return 'coding_stats_' + UID; }
+
+function getProgress(){
+  try { return JSON.parse(localStorage.getItem(progKey()) || '{}'); } catch(e){ return {}; }
+}
+function saveProgress(p){ try { localStorage.setItem(progKey(), JSON.stringify(p)); } catch(e){} }
+
+function getStats(){
+  try { return JSON.parse(localStorage.getItem(statsKey()) || 'null') || { xp:0, streak:0, lastDay:null }; }
+  catch(e){ return { xp:0, streak:0, lastDay:null }; }
+}
+function saveStats(s){ try { localStorage.setItem(statsKey(), JSON.stringify(s)); } catch(e){} }
+
+function bumpStreak(){
+  const s = getStats();
+  const today = new Date().toDateString();
+  if (s.lastDay === today) return s; // already counted today
+  const yesterday = new Date(Date.now() - 86400000).toDateString();
+  s.streak = (s.lastDay === yesterday) ? (s.streak + 1) : 1;
+  s.lastDay = today;
+  saveStats(s);
+  return s;
+}
+function addXP(amount){
+  const s = getStats();
+  s.xp = (s.xp || 0) + amount;
+  saveStats(s);
+  if (typeof queueLbSync === 'function') queueLbSync();
+  return s;
+}
+
+function markModuleComplete(trackId, moduleId, xpAmount){
+  const p = getProgress();
+  if (!p[trackId]) p[trackId] = [];
+  if (p[trackId].indexOf(moduleId) === -1) p[trackId].push(moduleId);
+  saveProgress(p);
+  addXP(typeof xpAmount === 'number' ? xpAmount : 15);
+  bumpStreak();
+}
+
+function renderStatsStrip(){
+  const p = getProgress();
+  let totalDone = 0;
+  Object.keys(p).forEach(k => totalDone += p[k].length);
+  const s = getStats();
+  document.getElementById('stat-modules').textContent = totalDone;
+  document.getElementById('stat-xp').textContent = s.xp || 0;
+  document.getElementById('stat-streak').textContent = s.streak || 0;
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   NAVIGATION STATE
+   ══════════════════════════════════════════════════════════════════ */
+let CUR = { view:'tracks', trackId:null, moduleIdx:null, qIdx:0, correct:0 };
+
+function showView(name){
+  document.getElementById('view-tracks').style.display = name==='tracks' ? 'block' : 'none';
+  document.getElementById('view-path').style.display = name==='path' ? 'block' : 'none';
+  document.getElementById('view-lesson').style.display = name==='lesson' ? 'block' : 'none';
+  document.getElementById('view-weakreview').style.display = name==='weakreview' ? 'block' : 'none';
+  document.getElementById('view-achievements').style.display = name==='achievements' ? 'block' : 'none';
+  document.getElementById('view-leaderboard').style.display = name==='leaderboard' ? 'block' : 'none';
+  if (name !== 'lesson') clearExamTimer();
+  CUR.view = name;
+}
+
+function goBackInApp(){
+  if (CUR.view === 'lesson') { showView('path'); renderPath(); }
+  else if (CUR.view === 'path') { showView('tracks'); renderTracks(); }
+  else if (CUR.view === 'weakreview' || CUR.view === 'achievements' || CUR.view === 'leaderboard') { showView('tracks'); renderTracks(); }
+  else { goBack(); }
+}
+
+function renderTracks(){
+  renderStatsStrip();
+  renderDailyChallenge();
+  renderQuickActionCounts();
+  const p = getProgress();
+  const list = document.getElementById('tracks-list');
+  list.innerHTML = '';
+  TRACKS.forEach(track => {
+    const locked = !track.modules;
+    const done = (p[track.id] || []).length;
+    const total = track.modules ? track.modules.length : 0;
+    const pct = total ? Math.round(done/total*100) : 0;
+    const div = document.createElement('div');
+    div.className = 'track-card' + (locked ? ' locked' : '');
+    div.innerHTML = `
+      <div class="track-icon ${track.iconClass}">${track.icon}</div>
+      <div class="track-body">
+        <div class="track-name">${track.title}</div>
+        <div class="track-desc">${locked ? track.desc : (done + '/' + total + ' modules complete')}</div>
+        ${locked ? '' : `<div class="track-progress-bar"><div class="track-progress-fill" style="width:${pct}%"></div></div>`}
+      </div>
+      ${locked ? '<div class="track-soon">SOON</div>' : '<div class="chev">›</div>'}
+    `;
+    if (!locked) div.onclick = () => { CUR.trackId = track.id; showView('path'); renderPath(); };
+    list.appendChild(div);
+  });
+}
+
+function currentTrack(){ return TRACKS.find(t => t.id === CUR.trackId); }
+
+function renderPath(){
+  const track = currentTrack();
+  if (!track) { showView('tracks'); renderTracks(); return; }
+  document.getElementById('path-title').textContent = track.icon + ' ' + track.title;
+  document.getElementById('path-desc').textContent = 'Tap a module to start. Complete them in order for the best experience.';
+  document.getElementById('headerSub').textContent = ' · ' + track.title;
+
+  const p = getProgress();
+  const doneList = p[track.id] || [];
+  const container = document.getElementById('path-nodes');
+  container.innerHTML = '';
+  let lastTier = null;
+  track.modules.forEach((mod, i) => {
+    const done = doneList.indexOf(mod.id) !== -1;
+    const isNext = !done && (i === 0 || doneList.indexOf(track.modules[i-1].id) !== -1);
+    const tierLabel = mod.tier && !mod.tier.includes('checkpoint') ? mod.tier : null;
+    if (tierLabel && tierLabel !== lastTier) {
+      lastTier = tierLabel;
+      const header = document.createElement('div');
+      header.className = 'tier-header';
+      header.textContent = '📚 ' + tierLabel + ' TIER';
+      container.appendChild(header);
+    }
+    const node = document.createElement('div');
+    node.className = 'node' + (done ? ' done' : '') + (isNext ? ' current' : '') + (mod.kind === 'test' ? ' test' : '');
+    node.innerHTML = `
+      <div class="node-dot">${done ? '✓' : (mod.kind === 'test' ? '★' : (i+1))}</div>
+      <div class="node-body">
+        <div class="node-title">${mod.title}</div>
+        <div class="node-sub">${mod.kind === 'test' ? 'Practice test — mixed questions' : mod.kind === 'playground' ? 'Live code practice' : mod.kind === 'webpreview' ? 'Live preview — HTML/CSS' : mod.kind === 'predict' ? 'Predict the output' : 'Lesson + quiz'}</div>
+      </div>
+    `;
+    node.onclick = () => openModule(i);
+    container.appendChild(node);
+  });
+}
+
+function openModule(idx){
+  CUR.moduleIdx = idx;
+  CUR.qIdx = 0;
+  CUR.correct = 0;
+  CUR.exam = { on:false };
+  showView('lesson');
+  const mod = currentTrack().modules[idx];
+  if (mod.kind === 'test') return renderModeChooser(mod);
+  renderLesson();
+}
+
+/* ---- Practice test: choose untimed practice or timed Exam Mode ---- */
+function renderModeChooser(mod){
+  const n = mod.questions.length;
+  const mins = Math.ceil(n * 45 / 60);
+  document.getElementById('lesson-runner').innerHTML = `
+    <div class="q-title" style="margin-bottom:4px">${mod.title.replace('✅ ','')}</div>
+    <div style="font-size:.74rem;color:var(--text3);margin-bottom:14px">${n} questions · 70% to pass</div>
+    <button class="mode-choice-btn" onclick="startTest(false)">
+      <div class="mode-choice-title">📝 Practice mode</div>
+      <div class="mode-choice-desc">No timer. Take your time and learn from each answer.</div>
+    </button>
+    <button class="mode-choice-btn" onclick="startTest(true)">
+      <div class="mode-choice-title">⏱️ Exam mode</div>
+      <div class="mode-choice-desc">${mins} minutes total, like a real exam. Unanswered questions count as wrong when time runs out.</div>
+    </button>`;
+}
+function startTest(exam){
+  const mod = currentTrack().modules[CUR.moduleIdx];
+  CUR.qIdx = 0; CUR.correct = 0;
+  clearExamTimer();
+  if (exam) {
+    const total = mod.questions.length * 45;
+    CUR.exam = { on:true, left:total, total:total };
+    EXAM_TIMER = setInterval(examTick, 1000);
+  } else {
+    CUR.exam = { on:false };
+  }
+  renderLesson();
+}
+function fmtTime(s){ s = Math.max(0, s); return Math.floor(s/60) + ':' + String(s%60).padStart(2,'0'); }
+function examTick(){
+  if (!CUR.exam || !CUR.exam.on) return clearExamTimer();
+  CUR.exam.left--;
+  const el = document.getElementById('exam-timer');
+  if (el) { el.textContent = '⏱️ ' + fmtTime(CUR.exam.left); el.classList.toggle('low', CUR.exam.left <= 30); }
+  if (CUR.exam.left <= 0) {
+    clearExamTimer();
+    const track = currentTrack();
+    const mod = track.modules[CUR.moduleIdx];
+    finishTest(track, mod, document.getElementById('lesson-runner'), CUR.correct, mod.questions.length, true);
+  }
+}
+function clearExamTimer(){ if (EXAM_TIMER) { clearInterval(EXAM_TIMER); EXAM_TIMER = null; } }
+
+function renderLesson(){
+  const track = currentTrack();
+  const mod = track.modules[CUR.moduleIdx];
+  const runner = document.getElementById('lesson-runner');
+  document.getElementById('headerSub').textContent = ' · ' + mod.title;
+
+  if (mod.kind === 'quiz') return renderQuiz(track, mod, runner);
+  if (mod.kind === 'test') return renderQuiz(track, mod, runner);
+  if (mod.kind === 'predict') return renderPredict(track, mod, runner);
+  if (mod.kind === 'playground') return renderPlayground(track, mod, runner);
+  if (mod.kind === 'webpreview') return renderWebPreview(track, mod, runner);
+}
+
+/* ---- Quiz & practice-test modules (MCQ — tests get a scored pass/fail screen) ---- */
+function renderQuiz(track, mod, runner){
+  if (CUR.qIdx >= mod.questions.length) {
+    if (mod.kind === 'test') return renderTestComplete(track, mod, runner, CUR.correct, mod.questions.length);
+    return renderComplete(track, mod, runner, CUR.correct, mod.questions.length);
+  }
+  const q = mod.questions[CUR.qIdx];
+  let html = '';
+  if (mod.kind === 'test' && CUR.exam && CUR.exam.on) html += `<div class="exam-timer${CUR.exam.left <= 30 ? ' low' : ''}" id="exam-timer">⏱️ ${fmtTime(CUR.exam.left)}</div>`;
+  html += `<div class="qprog">${mod.kind === 'test' ? 'TEST QUESTION' : 'QUESTION'} ${CUR.qIdx+1} OF ${mod.questions.length}</div>`;
+  if (CUR.qIdx === 0 && mod.lesson) html += `<div class="lesson-box">${mod.lesson}</div>`;
+  html += `<div class="q-title">${q.q}</div>`;
+  q.opts.forEach((opt, oi) => {
+    html += `<button class="opt-btn" onclick="answerQuiz(${oi})" id="opt-${oi}">${opt}</button>`;
+  });
+  html += `<div class="feedback" id="quiz-feedback"></div>`;
+  runner.innerHTML = html;
+}
+function answerQuiz(oi){
+  const track = currentTrack();
+  const mod = track.modules[CUR.moduleIdx];
+  const q = mod.questions[CUR.qIdx];
+  const correct = oi === q.correct;
+  if (correct) { CUR.correct++; removeWeakSpot(weakKeyFor(track.id, mod.id, q)); }
+  else addWeakSpot(track.id, mod.id, q);
+  q.opts.forEach((_, i) => {
+    const btn = document.getElementById('opt-'+i);
+    btn.disabled = true;
+    if (i === q.correct) btn.classList.add('correct');
+    else if (i === oi) btn.classList.add('wrong');
+  });
+  const fb = document.getElementById('quiz-feedback');
+  fb.innerHTML = (correct ? '<div class="feedback ok">✓ Correct!</div>' : '<div class="feedback bad">✗ Not quite — correct answer highlighted above</div>')
+    + (q.explanation ? '<div class="explain-box">💡 ' + q.explanation + '</div>' : '')
+    + '<button class="continue-btn" style="margin-top:10px" onclick="nextQuizQ()">Continue</button>';
+}
+function nextQuizQ(){ CUR.qIdx++; renderLesson(); }
+
+/* ---- Predict-the-output modules (Python, no live execution) ---- */
+function renderPredict(track, mod, runner){
+  if (CUR.qIdx >= mod.challenges.length) return renderComplete(track, mod, runner, CUR.correct, mod.challenges.length);
+  const c = mod.challenges[CUR.qIdx];
+  let html = `<div class="qprog">CHALLENGE ${CUR.qIdx+1} OF ${mod.challenges.length}</div>`;
+  if (CUR.qIdx === 0) html += `<div class="lesson-box">${mod.lesson}</div>`;
+  html += `<div class="q-title">What will this print?</div>`;
+  html += `<div class="code-block">${c.code.replace(/</g,'&lt;')}</div>`;
+  html += `<input type="text" class="predict-input" id="predict-input" placeholder="Type what you think it prints...">`;
+  html += `<button class="continue-btn" onclick="checkPredict()">Check answer</button>`;
+  html += `<div class="feedback" id="predict-feedback"></div>`;
+  runner.innerHTML = html;
+  document.getElementById('predict-input').focus();
+}
+function checkPredict(){
+  const track = currentTrack();
+  const mod = track.modules[CUR.moduleIdx];
+  const c = mod.challenges[CUR.qIdx];
+  const val = (document.getElementById('predict-input').value || '').trim();
+  const correct = val.toLowerCase() === c.answer.toLowerCase();
+  if (correct) CUR.correct++;
+  document.getElementById('predict-input').disabled = true;
+  const fb = document.getElementById('predict-feedback');
+  fb.innerHTML = (correct
+      ? '<div class="feedback ok">✓ Correct! It prints: ' + c.answer + '</div>'
+      : '<div class="feedback bad">✗ Not quite — it actually prints: <b>' + c.answer + '</b><br><span style="font-weight:400;color:var(--text3)">' + c.hint + '</span></div>')
+    + '<button class="continue-btn" onclick="nextPredict()">Continue</button>';
+  runner.querySelector('.continue-btn.pending')?.remove();
+}
+function nextPredict(){ CUR.qIdx++; renderLesson(); }
+
+/* ---- Live JS playground modules — real execution, sandboxed to console.log ---- */
+function renderPlayground(track, mod, runner){
+  let html = `<div class="lesson-box">${mod.lesson}</div>`;
+  if (mod.taskLabel) html += `<div class="q-title" style="margin-bottom:10px">${mod.taskLabel}</div>`;
+  html += `<div class="pg-wrap">
+    <textarea class="pg-editor" id="pg-editor" spellcheck="false">${mod.starter}</textarea>
+    <div class="pg-run-row">
+      <button class="pg-run-btn" onclick="runPlayground()">▶ Run code</button>
+      <button class="pg-reset-btn" onclick="resetPlayground()">Reset</button>
+    </div>
+    <div class="pg-hint">Output (from console.log) appears below:</div>
+    <div class="pg-console" id="pg-console">Click "Run code" to see the output.</div>
+  </div>`;
+  html += `<button class="continue-btn" id="pg-continue-btn" style="display:none" onclick="completePlayground()">Continue</button>`;
+  runner.innerHTML = html;
+}
+function runPlayground(){
+  const code = document.getElementById('pg-editor').value;
+  const out = [];
+  const fakeConsole = { log: (...args) => out.push(args.map(a => typeof a === 'object' ? JSON.stringify(a) : String(a)).join(' ')) };
+  const consoleEl = document.getElementById('pg-console');
+  try {
+    // Sandboxed to a fake console — student's own code, runs in their own browser tab.
+    const fn = new Function('console', code);
+    fn(fakeConsole);
+    consoleEl.className = 'pg-console';
+    consoleEl.textContent = out.length ? out.join('\n') : '(no output — try a console.log(...) line)';
+    const track = currentTrack();
+    const mod = track.modules[CUR.moduleIdx];
+    if (mod.expectedIncludes && out.join('\n').includes(mod.expectedIncludes)) {
+      document.getElementById('pg-continue-btn').style.display = 'block';
+    }
+  } catch(e) {
+    consoleEl.className = 'pg-console err';
+    consoleEl.textContent = '⚠ ' + e.message;
+  }
+}
+function resetPlayground(){
+  const track = currentTrack();
+  const mod = track.modules[CUR.moduleIdx];
+  document.getElementById('pg-editor').value = mod.starter;
+  document.getElementById('pg-console').textContent = 'Click "Run code" to see the output.';
+  document.getElementById('pg-console').className = 'pg-console';
+  document.getElementById('pg-continue-btn').style.display = 'none';
+}
+function completePlayground(){
+  const track = currentTrack();
+  const mod = track.modules[CUR.moduleIdx];
+  markModuleComplete(track.id, mod.id);
+  const runner = document.getElementById('lesson-runner');
+  renderCompleteScreen(runner, null);
+}
+
+/* ---- Live HTML/CSS preview modules (webdev track) ---- */
+function renderWebPreview(track, mod, runner){
+  let html = `<div class="lesson-box">${mod.lesson}</div>`;
+  html += `<div class="pg-wrap">
+    <textarea class="pg-editor" id="pg-editor" spellcheck="false" style="min-height:150px">${mod.starter}</textarea>
+    <div class="pg-run-row">
+      <button class="pg-run-btn" onclick="runWebPreview()">▶ Preview</button>
+      <button class="pg-reset-btn" onclick="resetWebPreview()">Reset</button>
+    </div>
+    <div class="pg-hint">Live preview:</div>
+    <iframe id="pg-iframe" style="width:100%;min-height:180px;border:1.5px solid var(--border2);border-radius:10px;background:#fff"></iframe>
+  </div>`;
+  html += `<button class="continue-btn" id="pg-continue-btn" style="display:none" onclick="completeWebPreview()">Continue</button>`;
+  runner.innerHTML = html;
+  runWebPreview();
+}
+function runWebPreview(){
+  const code = document.getElementById('pg-editor').value;
+  document.getElementById('pg-iframe').srcdoc = code;
+  const track = currentTrack();
+  const mod = track.modules[CUR.moduleIdx];
+  if (mod.expectedIncludes && code.toLowerCase().includes(mod.expectedIncludes.toLowerCase())) {
+    document.getElementById('pg-continue-btn').style.display = 'block';
+  }
+}
+function resetWebPreview(){
+  const track = currentTrack();
+  const mod = track.modules[CUR.moduleIdx];
+  document.getElementById('pg-editor').value = mod.starter;
+  document.getElementById('pg-continue-btn').style.display = 'none';
+  runWebPreview();
+}
+function completeWebPreview(){
+  const track = currentTrack();
+  const mod = track.modules[CUR.moduleIdx];
+  markModuleComplete(track.id, mod.id);
+  renderCompleteScreen(document.getElementById('lesson-runner'), null);
+}
+
+/* ---- Completion screen (shared) ---- */
+function renderComplete(track, mod, runner, correct, total){
+  markModuleComplete(track.id, mod.id, 15);
+  const pct = total ? Math.round(correct/total*100) : 100;
+  renderCompleteScreen(runner, correct + '/' + total + ' right (' + pct + '%)');
+}
+function renderCompleteScreen(runner, scoreLine){
+  runner.innerHTML = `
+    <div class="complete-screen">
+      <div class="complete-emoji">🎉</div>
+      <div class="complete-title">Module complete!</div>
+      <div class="complete-sub">${scoreLine ? scoreLine + ' · +15 XP' : '+15 XP earned'}</div>
+      <button class="continue-btn" onclick="showView('path');renderPath();renderStatsStrip();">Back to modules</button>
+    </div>
+  `;
+}
+
+/* ---- Practice test completion — scored, pass/fail, retakeable ---- */
+function renderTestComplete(track, mod, runner, correct, total){
+  finishTest(track, mod, runner, correct, total, false);
+}
+function finishTest(track, mod, runner, correct, total, timedOut){
+  const wasExam = !!(CUR.exam && CUR.exam.on);
+  const timeUsed = wasExam ? (CUR.exam.total - Math.max(0, CUR.exam.left)) : 0;
+  clearExamTimer();
+  const pct = total ? Math.round(correct/total*100) : 100;
+  const passed = pct >= 70;
+  const xp = passed ? (wasExam ? 40 : 30) : 10;
+  markModuleComplete(track.id, mod.id, xp);
+  const st = getStats();
+  if (wasExam && passed) st.examPasses = (st.examPasses || 0) + 1;
+  saveStats(st);
+  if (pct === 100) markPerfectTest(mod.id);
+  runner.innerHTML = `
+    <div class="complete-screen">
+      <div class="complete-emoji">${passed ? '🏆' : '📘'}</div>
+      <div class="complete-title">${timedOut ? "Time's up! " : ''}${passed ? 'Test passed!' : 'Keep practising'}</div>
+      <div class="complete-sub" style="font-size:1.3rem;font-weight:800;color:${passed ? 'var(--green)' : 'var(--accent)'};margin-bottom:4px">${pct}%</div>
+      <div class="complete-sub">${correct}/${total} correct · +${xp} XP ${passed ? '' : '· 70% needed to pass'}${wasExam && !timedOut ? ' · finished in ' + fmtTime(timeUsed) : ''}</div>
+      <div style="display:flex;gap:8px;margin-top:6px">
+        <button class="continue-btn" onclick="openModule(${CUR.moduleIdx})" style="background:${passed ? 'var(--bg3)' : 'linear-gradient(135deg,var(--primary),var(--primary-light))'};color:${passed ? 'var(--text2)' : '#fff'}">Retake test</button>
+        <button class="continue-btn" onclick="showView('path');renderPath();renderStatsStrip();">Back to modules</button>
+      </div>
+      ${getWeakSpots().length ? '<button class="continue-btn" style="margin-top:8px;background:var(--bg3);color:var(--text2)" onclick="openWeakReview()">🎯 Review missed questions (' + getWeakSpots().length + ')</button>' : ''}
+    </div>
+  `;
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   WEAK-SPOT REVIEW — every missed question, collected for retry
+   ══════════════════════════════════════════════════════════════════ */
+var EXAM_TIMER = null;
+function weakStoreKey(){ return 'coding_weak_' + UID; }
+function getWeakSpots(){ try { return JSON.parse(localStorage.getItem(weakStoreKey()) || '[]'); } catch(e){ return []; } }
+function saveWeakSpots(a){ try { localStorage.setItem(weakStoreKey(), JSON.stringify(a)); } catch(e){} }
+function weakKeyFor(trackId, moduleId, q){ return trackId + '|' + moduleId + '|' + q.q; }
+function addWeakSpot(trackId, moduleId, q){
+  const list = getWeakSpots();
+  const key = weakKeyFor(trackId, moduleId, q);
+  if (list.some(w => w.key === key)) return;
+  list.push({ key, trackId, moduleId, q:q.q, opts:q.opts, correct:q.correct, explanation:q.explanation || '' });
+  saveWeakSpots(list);
+}
+function removeWeakSpot(key){
+  const list = getWeakSpots();
+  const next = list.filter(w => w.key !== key);
+  if (next.length !== list.length) {
+    saveWeakSpots(next);
+    const st = getStats();
+    st.cleared = (st.cleared || 0) + 1;
+    saveStats(st);
+  }
+}
+function renderQuickActionCounts(){
+  const w = getWeakSpots().length;
+  const wEl = document.getElementById('qa-weak-count');
+  wEl.textContent = w;
+  wEl.className = 'qa-count' + (w ? ' has-items' : '');
+  document.getElementById('qa-badge-count').textContent = computeEarnedBadges().filter(b => b.earned).length + '/' + BADGES.length;
+}
+
+let WR = { items:[], idx:0, fixed:0 };
+function openWeakReview(){
+  WR = { items:getWeakSpots().slice(), idx:0, fixed:0 };
+  showView('weakreview');
+  renderWeakReview();
+}
+function renderWeakReview(){
+  const runner = document.getElementById('weakreview-runner');
+  if (!WR.items.length) {
+    runner.innerHTML = `<div class="complete-screen"><div class="complete-emoji">✨</div><div class="complete-title">No weak spots!</div><div class="complete-sub">Questions you miss in quizzes and tests will show up here for retry.</div><button class="continue-btn" onclick="showView('tracks');renderTracks()">Back to tracks</button></div>`;
+    return;
+  }
+  if (WR.idx >= WR.items.length) {
+    const left = getWeakSpots().length;
+    runner.innerHTML = `<div class="complete-screen"><div class="complete-emoji">${WR.fixed ? '💪' : '📘'}</div><div class="complete-title">Review done</div><div class="complete-sub">${WR.fixed} of ${WR.items.length} cleared · ${left} still to work on</div><button class="continue-btn" onclick="showView('tracks');renderTracks()">Back to tracks</button></div>`;
+    return;
+  }
+  const w = WR.items[WR.idx];
+  let html = `<div class="qprog">REVIEW ${WR.idx+1} OF ${WR.items.length}</div><div class="q-title">${w.q}</div>`;
+  w.opts.forEach((o, i) => { html += `<button class="opt-btn" id="wr-opt-${i}" onclick="answerWeak(${i})">${o}</button>`; });
+  html += `<div class="feedback" id="wr-feedback"></div>`;
+  runner.innerHTML = html;
+}
+function answerWeak(oi){
+  const w = WR.items[WR.idx];
+  const ok = oi === w.correct;
+  w.opts.forEach((_, i) => {
+    const b = document.getElementById('wr-opt-' + i);
+    b.disabled = true;
+    if (i === w.correct) b.classList.add('correct'); else if (i === oi) b.classList.add('wrong');
+  });
+  if (ok) { WR.fixed++; removeWeakSpot(w.key); }
+  document.getElementById('wr-feedback').innerHTML =
+    (ok ? '<div class="feedback ok">✓ Correct — cleared from your weak spots!</div>' : '<div class="feedback bad">✗ Not yet — it stays on your list</div>')
+    + (w.explanation ? '<div class="explain-box">💡 ' + w.explanation + '</div>' : '')
+    + '<button class="continue-btn" style="margin-top:10px" onclick="WR.idx++;renderWeakReview()">Continue</button>';
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   ACHIEVEMENTS — derived live from progress + stats
+   ══════════════════════════════════════════════════════════════════ */
+function perfectKey(){ return 'coding_perfect_' + UID; }
+function getPerfectTests(){ try { return JSON.parse(localStorage.getItem(perfectKey()) || '[]'); } catch(e){ return []; } }
+function markPerfectTest(id){
+  const a = getPerfectTests();
+  if (a.indexOf(id) === -1) { a.push(id); try { localStorage.setItem(perfectKey(), JSON.stringify(a)); } catch(e){} }
+}
+function trackDone(p, trackId){
+  const t = TRACKS.find(x => x.id === trackId);
+  if (!t || !t.modules) return false;
+  const done = p[trackId] || [];
+  return t.modules.every(m => done.indexOf(m.id) !== -1);
+}
+const BADGES = [
+  { id:'first',   icon:'🌱', title:'First Steps',      desc:'Complete your first module',        test:(c)=>c.total>=1 },
+  { id:'ten',     icon:'📘', title:'Getting Serious',  desc:'Complete 10 modules',               test:(c)=>c.total>=10 },
+  { id:'fifty',   icon:'📚', title:'Half Century',     desc:'Complete 50 modules',               test:(c)=>c.total>=50 },
+  { id:'python',  icon:'🐍', title:'Python Master',    desc:'Finish every Python module',        test:(c)=>trackDone(c.p,'python') },
+  { id:'js',      icon:'🟨', title:'JavaScript Master',desc:'Finish every JavaScript module',    test:(c)=>trackDone(c.p,'javascript') },
+  { id:'web',     icon:'🌐', title:'Web Dev Master',   desc:'Finish every Web Dev module',       test:(c)=>trackDone(c.p,'webdev') },
+  { id:'sql',     icon:'🗄️', title:'SQL Master',       desc:'Finish every SQL module',           test:(c)=>trackDone(c.p,'sql') },
+  { id:'cli',     icon:'⌨️', title:'Terminal Master',  desc:'Finish every Command Line module',  test:(c)=>trackDone(c.p,'cli') },
+  { id:'git',     icon:'🔧', title:'Git Master',       desc:'Finish every Git & GitHub module',  test:(c)=>trackDone(c.p,'git') },
+  { id:'perfect', icon:'💯', title:'Perfectionist',    desc:'Score 100% on a practice test',     test:(c)=>c.perfect.length>=1 },
+  { id:'debug',   icon:'🐛', title:'Bug Squasher',     desc:'Fix both JavaScript debug challenges', test:(c)=>(c.p.javascript||[]).indexOf('j9')!==-1 && (c.p.javascript||[]).indexOf('j10')!==-1 },
+  { id:'exam',    icon:'⏱️', title:'Exam Ready',       desc:'Pass a test in Exam Mode',          test:(c)=>(c.stats.examPasses||0)>=1 },
+  { id:'slayer',  icon:'🎯', title:'Weak Spot Slayer', desc:'Clear 10 weak-spot questions',      test:(c)=>(c.stats.cleared||0)>=10 },
+  { id:'s3',      icon:'🔥', title:'3-Day Streak',     desc:'Code 3 days in a row',              test:(c)=>c.stats.streak>=3 },
+  { id:'s7',      icon:'🔥', title:'7-Day Streak',     desc:'Code 7 days in a row',              test:(c)=>c.stats.streak>=7 },
+  { id:'s30',     icon:'🌋', title:'30-Day Streak',    desc:'Code 30 days in a row',             test:(c)=>c.stats.streak>=30 },
+  { id:'xp100',   icon:'⭐', title:'Century Club',     desc:'Earn 100 Code XP',                  test:(c)=>c.stats.xp>=100 },
+  { id:'xp500',   icon:'🌟', title:'Rising Star',      desc:'Earn 500 Code XP',                  test:(c)=>c.stats.xp>=500 },
+  { id:'xp1000',  icon:'👑', title:'XP Legend',        desc:'Earn 1000 Code XP',                 test:(c)=>c.stats.xp>=1000 },
+];
+function computeEarnedBadges(){
+  const p = getProgress();
+  let total = 0; Object.keys(p).forEach(k => total += p[k].length);
+  const ctx = { p, total, stats:getStats(), perfect:getPerfectTests() };
+  return BADGES.map(b => ({ id:b.id, icon:b.icon, title:b.title, desc:b.desc, earned:!!b.test(ctx) }));
+}
+function renderAchievements(){
+  const list = computeEarnedBadges();
+  const grid = document.getElementById('badges-grid');
+  grid.className = 'badges-grid';
+  grid.innerHTML = list.map(b => `<div class="badge-card ${b.earned ? 'earned' : 'locked'}"><div class="badge-icon">${b.earned ? b.icon : '🔒'}</div><div class="badge-title">${b.title}</div><div class="badge-desc">${b.desc}</div></div>`).join('');
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   LOAD-TIME PREP — explanations for the hardest tests + option shuffling
+   ══════════════════════════════════════════════════════════════════ */
+const EXPLAIN = {
+  pt3: [
+    'A base case returns a value without another recursive call, so the chain of calls ends.',
+    'A lambda is a one-line anonymous function; here it takes x and returns x + 1.',
+    'filter() keeps only the items for which the function returns True.',
+    'A child class reuses the parent\'s code, so shared behaviour is written once.',
+    'Binary search halves the range using order, so it only works if the list is sorted.',
+    'factorial(1) hits the base case and returns 1, which stops the recursion.',
+    'The child (subclass) inherits from the parent, which is named in the brackets.',
+    'map() applies the function to every item and gives back the transformed results.',
+    'Linear search simply checks each item in turn until it finds a match.',
+    'A set stores each value once, so duplicates are dropped automatically.',
+    'Python uses the keyword lambda to define an anonymous function.',
+    '__init__ runs automatically when an object is created, setting up its starting data.'
+  ],
+  jt3: [
+    'A closure keeps access to the scope where the function was created, even after that scope has finished.',
+    '.then() registers code that runs once the Promise has successfully resolved.',
+    'await pauses the async function until the Promise settles, without blocking the whole page.',
+    'Classes are instantiated with the new keyword: new Car().',
+    'Inside a method, this points to the specific object the method was called on.',
+    'JSON.stringify turns a JavaScript object into a JSON text string.',
+    'JSON is plain text that any language can read, which makes it ideal for sending data between systems.',
+    'async/await lets asynchronous code read top-to-bottom like normal code instead of nested .then() chains.',
+    'Variables captured by a closure stay private but persist between calls, e.g. a counter.',
+    'Parsing the text "{}" produces an empty object.',
+    'A resolved Promise has its result ready, so .then() handlers can use it.',
+    'The constructor runs when an object is created and sets its initial properties.'
+  ],
+  wt3: [
+    'transition animates a property change over a set time instead of snapping instantly.',
+    ':hover applies styles only while the pointer is over the element.',
+    'position: fixed keeps the element in the same spot on screen while the page scrolls.',
+    'An absolutely positioned element is placed relative to its nearest positioned ancestor.',
+    '::before inserts generated content before an element using only CSS.',
+    'nth-child(odd) selects the 1st, 3rd, 5th... items within their parent.',
+    'linear-gradient() creates a smooth colour blend and is used as a background value.',
+    'The transition makes the :hover change smooth instead of abrupt.',
+    'Making the parent position: relative gives an absolute child a reference point to sit inside.',
+    'Pseudo-elements add decoration from CSS, so you don\'t need extra HTML tags for it.'
+  ],
+  sqt1: [
+    'SQL is the language for querying and managing data in relational databases.',
+    'The * means "all columns", so every column of every row is returned.',
+    'WHERE filters rows using a condition, e.g. WHERE grade = 12.',
+    'ASC sorts from smallest to largest, so lowest marks come first.',
+    'LIMIT caps the number of rows returned, e.g. the top 5.',
+    'INSERT INTO adds a brand-new row to a table.',
+    'UPDATE changes existing rows; the WHERE clause decides which rows.',
+    'JOIN links rows from different tables using a matching column.',
+    'COUNT(*) returns how many rows match.',
+    'AVG works out the mean of a numeric column.'
+  ],
+  clit1: [
+    'The command line lets you control the computer with typed commands instead of the mouse.',
+    'pwd = print working directory: it shows the folder you are currently in.',
+    'ls lists the files and folders in the current directory.',
+    'cd .. moves you up one level to the parent folder.',
+    'mkdir makes a new directory (folder).',
+    'cat prints a file\'s whole contents to the screen.',
+    'sudo runs a command with administrator (superuser) rights.',
+    'A pipe passes the output of one command in as the input of the next.',
+    '>> appends to the end of a file, while > overwrites it.',
+    'rm deletes immediately with no recycle bin, so a mistake can\'t be undone.'
+  ],
+  m1: ["Code is a list of instructions. The computer works through it line by line from the top and never skips ahead or guesses.", "Python's syntax uses plain words and little punctuation, so beginners spend less time fighting symbols."],
+  m2: ["Text wrapped in quotes is a string, so \"Thabo\" is stored as text, not a number.", "A float is a number with a decimal point. \"3.14\" in quotes would be a string, not a float.", "Variables can be reassigned, e.g. age = 17 and later age = 18. That ability to vary is where the name comes from."],
+  m3: ["Double equals asks a question (are these equal?). A single = assigns a value instead.", "Modulo gives the remainder after division: 10 divided by 3 is 3 with 1 left over."],
+  m5: ["When the if condition is False, Python skips its block and runs the else block instead.", "Python has no curly braces. The indentation itself marks which lines sit inside the if, loop or function."],
+  m6: ["A for loop suits a known collection or count, like every item in a list. A while loop suits \"keep going until something changes\".", "If nothing inside the loop ever makes the condition False, it keeps running forever. That is an infinite loop."],
+  m7: ["List positions start at 0, so [0] is Maths, [1] is Physics and [2] is Life Sciences.", ".append() adds one item to the end of a list."],
+  m8: ["A dictionary looks values up by key, so student[\"grade\"] returns the value stored under that key: 11.", "Lists use numbered positions (0, 1, 2). Dictionaries use names (keys) that you choose."],
+  m9: ["def is Python's keyword for defining a function, followed by a name and brackets.", "Writing logic once and calling it many times means one place to fix bugs and less repeated code."],
+  pt1: ["A single = assigns, so x = 10 stores 10 in x. == compares, and 10 = x is invalid.", "True and False are the two Boolean values.", "15 divided by 4 is 3 remainder 3, and % returns the remainder.", "5 > 10 is False, so the indented print is skipped and nothing appears.", "range(4) produces 0, 1, 2, 3, which is four values, so the loop runs four times.", ".append(5) puts 5 at the end of the list without removing anything.", "Dictionary values are read with square brackets and the key: student[\"grade\"].", "def starts every function definition in Python.", "Both are strings, so + joins them into \"55\" instead of adding numbers.", "Indentation is how Python knows which lines belong to an if, loop or function."],
+  pi1: [".strip() removes whitespace from both ends of a string, leaving \"hi\".", "An f-string swaps {score} for the variable's value, giving Score: 90.", ".split(\",\") cuts the string at every comma and returns the pieces as a list."],
+  pi2: ["try/except lets you handle an error gracefully instead of the program crashing.", "As soon as an error occurs inside try, Python skips the rest of that block and jumps to except."],
+  pi4: ["Tuples are immutable. Once created, their items can't be changed, unlike lists.", "A set keeps each value only once, so the repeated 1s and 3s collapse to {1, 2, 3}."],
+  pi5: ["A class is the blueprint. Each object you create from it follows that design.", "__init__ runs automatically for each new object and sets up its starting values."],
+  pt2: [".upper() returns the text in capital letters.", "except catches the error so you can respond to it and the program keeps running.", "range(3) yields 0, 1, 2, and the comprehension collects each one into a list.", "Tuples are immutable, so trying to change one raises an error.", "Sets store unique values only, so duplicates disappear automatically.", "Each object made from a class is called an instance, or simply an object.", "Splitting on a space breaks the text into separate words, returned as a list.", "f-strings put variables straight into the text, which reads better than joining pieces with +.", "class is the keyword that begins a class definition.", "len counts the items, and the tuple (1,2,3) has three."],
+  pa2: ["A lambda is a small function with no name, written on one line, e.g. lambda x: x * 2.", "map() takes a function and a list, applies the function to every item and returns the results."],
+  pa3: ["A child class gets its parent's attributes and methods for free, so shared code isn't repeated.", "The parent goes in the brackets after the class name, so Student is the parent of Learner."],
+  pa4: ["Binary search relies on order to decide which half to discard, so an unsorted list gives wrong results.", "Each check throws away half of what's left, so even huge lists need only a few steps."],
+  jt1: ["const declares a variable that can't be reassigned, while let can be.", "With a string involved, + joins instead of adds, so 2 + \"2\" becomes the string \"22\".", "=== compares both value and type, so 2 === \"2\" is false.", "i takes the values 0, 1 and 2, then the loop stops when i < 3 fails, so it runs three times.", "forEach calls your function once for every item in the array.", "Object properties are read with dot notation, like obj.name.", "return sends a value back to the caller, so add(2,3) gives back 5.", "Curly braces wrap the block of code that belongs to the if or else.", "A variable declared without a value holds undefined until you assign one.", "// starts a single-line comment, which JavaScript ignores."],
+  ji3: ["Destructuring pulls a property out into its own variable, so name is set to student.name.", "It replaces repeated student.name and student.grade lines with one short line."],
+  ji4: ["Spread unpacks each array's items into the new array, giving one flat array of four.", "The three dots are called spread when expanding values and rest when collecting them."],
+  jt2: ["map builds a brand new array by running the function on every item.", "filter keeps only the items that pass the test, here the ones greater than 10.", "Backticks create template literals, which allow expressions inside ${ } within a string.", "Destructuring reads properties a and b from obj into two variables in one line.", "Spreading an array into [...arr] makes a shallow copy of its items.", "catch only runs if something in the try block throws an error.", "reduce walks through the array and boils it down to a single result, like a total.", "Rest (...args) gathers any extra arguments into one array.", "JSON.parse turns JSON text into a real JavaScript object you can use.", "Template literals let you embed values and even calculations directly, which is clearer than chains of + signs."],
+  ja1: ["A closure keeps a live link to the variables around where it was defined, even after the outer function has returned.", "Closures keep data private inside a function while still letting it persist between calls, with no global variable."],
+  ja2: ["A Promise is a placeholder for a result that isn't ready yet, such as data coming from the internet.", "await pauses just that async function until the Promise settles, then continues with the result."],
+  wt1: ["h1 is the top-level, largest heading. Sizes shrink down to h6.", "Tags come in pairs, like <p> and </p>, so the browser knows where the element ends.", "The href attribute holds the address the link points to.", "alt text is read by screen readers and shown when the image can't load.", "A <style> tag holds CSS rules right inside the HTML page.", "Padding is the space between an element's content and its own border.", "Margin is the space outside the border, pushing other elements away.", "color sets the text colour, while background-color sets the background.", "<p> marks a paragraph of text.", "HTML is HyperText Markup Language: markup that structures a page's content."],
+  wt2: ["display: flex turns the container into a flexible layout where children line up in a row by default.", "space-between pushes the first and last items to the edges and spreads the rest evenly.", "1fr 1fr splits the width into two equal fractions, giving two equal columns.", "<form> groups inputs so they can be submitted together.", "Labels tell users, and screen readers, what each input is for, and tapping a label focuses its input.", "rem is relative to the root font size, so everything scales when that base changes.", "line-height sets the vertical space taken by each line of text.", "Percentages size an element relative to its parent, so layouts adapt as the parent changes.", "type=\"email\" gives basic email validation and shows an email keyboard on phones.", "Grid handles rows and columns together, which suits dashboards and card layouts."],
+  s1: ["A database keeps structured data organised so it can be searched, sorted and updated quickly.", "SQL stands for Structured Query Language, the standard way to talk to relational databases."],
+  s2: ["The * is a wildcard meaning every column, and with no WHERE every row comes back.", "Naming a column returns only that column, for all rows."],
+  s3: ["WHERE grade = 12 keeps only the rows where grade is 12, which are Naledi and Zanele.", ">= means greater than or equal to, so 80 and above pass the filter."],
+  s4: ["DESC means descending, so the highest marks appear first.", "LIMIT caps how many rows come back, which is handy for top-N lists."],
+  s6: ["INSERT INTO adds a new row. It doesn't change or remove existing ones.", "DELETE with WHERE id = 3 removes only the matching row. Leaving off WHERE would delete every row."],
+  s7: ["A JOIN lets one query pull related data from two tables at once.", "The ON condition names the linking columns: a row joins where school_id in students equals id in schools."],
+  c1: ["The command line is a text interface: you type commands and the computer runs them.", "The shell is the program that reads your typed commands and carries them out."],
+  c2: ["pwd stands for print working directory and tells you where you are in the file system.", "ls lists what's inside the current folder.", "cd .. means go to the parent folder, one level up."],
+  c3: ["mkdir means make directory, which creates a folder.", "touch creates an empty file if it doesn't exist yet.", "rm deletes straight away with no recycle bin, so double-check before using it."],
+  c4: ["cat prints the whole file to the screen.", "head shows the beginning of a file, and -n 5 asks for five lines."],
+  c6: ["sudo temporarily runs a command with administrator rights, so use it carefully.", "chmod +x adds the executable permission so the file can be run as a program."],
+  c7: ["A pipe feeds one command's output straight into the next command as its input.", "> sends output into a file and replaces whatever was in it.", ">> adds to the end of the file, while > wipes it first."]
+};
+function shuffleArr(a){ for (let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+function shuffleQuestion(q){
+  const correctText = q.opts[q.correct];
+  q.opts = shuffleArr(q.opts.slice());
+  q.correct = q.opts.indexOf(correctText);
+}
+function prepContent(){
+  TRACKS.forEach(t => { if (!t.modules) return; t.modules.forEach(m => {
+    if (m.questions) {
+      const ex = EXPLAIN[m.id];
+      m.questions.forEach((q, i) => {
+        if (ex && ex[i] && !q.explanation) q.explanation = ex[i];
+        shuffleQuestion(q);
+      });
+    }
+  }); });
+  DAILY_CHALLENGES.forEach(shuffleQuestion);
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   LEADERBOARD — opt-in, names shown as first name + last initial.
+   All reads/writes go through two database functions that identify the
+   caller from the signed token (see leaderboard-setup.sql). This page
+   never sends a name or user id.
+   ══════════════════════════════════════════════════════════════════ */
+const LB_URL = 'https://xdwexkmbhzkjivpayyrp.supabase.co';
+const LB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inhkd2V4a21iaHpraml2cGF5eXJwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIzNzI2NTMsImV4cCI6MjA4Nzk0ODY1M30.2GWkg-L86GL0mp0LCfmmW3waDHWiMcZhqzhuOTRpTJI';
+let LBS = { scope:'all' };
+let LB_JWT = null;   // in-memory only; the portal owns the stored token
+let LB_TIMER = null;
+
+function escHtml(t){ return String(t == null ? '' : t).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+function lbOptKey(){ return 'coding_lb_optin_' + UID; }
+function lbOptIn(){ try { return localStorage.getItem(lbOptKey()) === '1'; } catch(e){ return false; } }
+
+// Reuse the portal's signed token if it is still valid; otherwise ask the same
+// refresh endpoint the portal uses. The refreshed token is kept in memory only.
+async function lbToken(){
+  try {
+    if (LB_JWT && LB_JWT.exp > Date.now() + 60000) return LB_JWT.jwt;
+    const rec = JSON.parse(localStorage.getItem('ma_db_jwt') || 'null');
+    if (rec && rec.jwt && rec.exp > Date.now() + 60000) return rec.jwt;
+    let st = rec && rec.st;
+    if (!st) { const sess = JSON.parse(localStorage.getItem('matric_ace_session') || 'null'); st = sess && sess.sessionToken; }
+    if (!st) return null;
+    const r = await fetch(LB_URL + '/functions/v1/Verify-login-Index', {
+      method:'POST',
+      headers:{ 'Content-Type':'application/json', apikey:LB_KEY, Authorization:'Bearer ' + LB_KEY },
+      body: JSON.stringify({ action:'refresh', token:st })
+    });
+    const j = await r.json();
+    if (j && j.success && j.jwt) { LB_JWT = { jwt:j.jwt, exp: Date.now() + 10 * 3600 * 1000 }; return j.jwt; }
+  } catch(e) {}
+  return null;
+}
+async function lbRpc(name, args){
+  const jwt = await lbToken();
+  if (!jwt) return { error:'auth' };
+  try {
+    const r = await fetch(LB_URL + '/rest/v1/rpc/' + name, {
+      method:'POST',
+      headers:{ 'Content-Type':'application/json', apikey:LB_KEY, Authorization:'Bearer ' + jwt },
+      body: JSON.stringify(args || {})
+    });
+    if (r.status === 404) return { error:'setup' };
+    if (!r.ok) return { error:'http', status:r.status };
+    const txt = await r.text();
+    return { data: txt ? JSON.parse(txt) : null };
+  } catch(e) { return { error:'network' }; }
+}
+function lbScorePayload(visible){
+  const p = getProgress(); let total = 0; Object.keys(p).forEach(k => total += p[k].length);
+  const s = getStats();
+  return { p_xp: s.xp || 0, p_modules: total, p_streak: s.streak || 0, p_visible: visible };
+}
+async function syncLeaderboard(){ if (lbOptIn()) await lbRpc('submit_coding_score', lbScorePayload(true)); }
+function queueLbSync(){ if (!lbOptIn()) return; clearTimeout(LB_TIMER); LB_TIMER = setTimeout(syncLeaderboard, 4000); }
+
+function lbErrorText(e){
+  if (e === 'auth') return 'Sign in through the main MatricAce app first, then come back here.';
+  if (e === 'setup') return 'The leaderboard is not switched on yet.';
+  if (e === 'network') return 'Could not reach the server. Check your connection and try again.';
+  return 'Something went wrong loading the leaderboard. Please try again shortly.';
+}
+function openLeaderboard(){ showView('leaderboard'); renderLeaderboard(); }
+function setLbScope(scope){ LBS.scope = scope; renderLeaderboard(); }
+
+async function lbSetOptIn(on){
+  const box = document.getElementById('lb-optin');
+  box.innerHTML = '<div class="lb-card"><p>Saving...</p></div>';
+  const res = await lbRpc('submit_coding_score', lbScorePayload(on));
+  if (res.error) {
+    box.innerHTML = '<div class="lb-card"><p>' + escHtml(lbErrorText(res.error)) + '</p></div>';
+    return;
+  }
+  try { localStorage.setItem(lbOptKey(), on ? '1' : '0'); } catch(e) {}
+  renderLeaderboard();
+}
+async function renderLeaderboard(){
+  document.getElementById('lb-tab-all').classList.toggle('active', LBS.scope === 'all');
+  document.getElementById('lb-tab-school').classList.toggle('active', LBS.scope === 'school');
+  const on = lbOptIn();
+  document.getElementById('lb-optin').innerHTML = on
+    ? '<div class="lb-card"><p>You are on the leaderboard as a first name and last initial. Your Code XP updates automatically.</p><button class="pg-reset-btn" onclick="lbSetOptIn(false)">Hide me from the leaderboard</button></div>'
+    : '<div class="lb-card"><p>You are not on the leaderboard. Join to appear with your first name and last initial, and see how you compare. You can leave at any time.</p><button class="pg-run-btn" onclick="lbSetOptIn(true)">Join the leaderboard</button></div>';
+
+  const list = document.getElementById('lb-list');
+  if (UID === 'guest') { list.innerHTML = '<div class="lb-msg">Sign in to MatricAce to use the leaderboard.</div>'; return; }
+  list.innerHTML = '<div class="lb-msg">Loading...</div>';
+  if (on) await syncLeaderboard();
+  const scopeAtRequest = LBS.scope;
+  const res = await lbRpc('get_coding_leaderboard', { p_scope: scopeAtRequest });
+  if (scopeAtRequest !== LBS.scope || CUR.view !== 'leaderboard') return;   // user moved on
+  if (res.error) { list.innerHTML = '<div class="lb-msg">' + escHtml(lbErrorText(res.error)) + '</div>'; return; }
+  const rows = res.data || [];
+  if (!rows.length) {
+    list.innerHTML = '<div class="lb-msg">' + (scopeAtRequest === 'school' ? 'Nobody from your school has joined yet. Be the first!' : 'Nobody has joined yet. Be the first!') + '</div>';
+    return;
+  }
+  list.innerHTML = rows.map(r => {
+    const medal = r.rank === 1 ? '🥇' : r.rank === 2 ? '🥈' : r.rank === 3 ? '🥉' : r.rank;
+    return '<div class="lb-row' + (r.is_me ? ' me' : '') + '">'
+      + '<div class="lb-rank">' + medal + '</div>'
+      + '<div class="lb-name">' + escHtml(r.display_name) + (r.is_me ? ' (you)' : '')
+      + '<span class="lb-meta">' + escHtml(r.modules_done) + ' modules · ' + escHtml(r.streak) + '-day streak</span></div>'
+      + '<div class="lb-xp">' + escHtml(r.xp) + ' XP</div></div>';
+  }).join('');
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   INIT
+   ══════════════════════════════════════════════════════════════════ */
+document.getElementById('appHeader').querySelector('.back-btn').setAttribute('onclick','goBackInApp()');
+prepContent();
+initAuth();
+renderTracks();
+</script>
+</body>
+</html>
