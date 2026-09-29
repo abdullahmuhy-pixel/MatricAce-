@@ -1,0 +1,3701 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
+<title>Skills Academy — MatricAce SA</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --primary:#1D5FBF;--primary-dark:#0F3D73;--primary-light:#4C8DE0;--primary-dim:rgba(29,95,191,.10);--primary-glow:rgba(29,95,191,.22);
+  --accent:#B45309;--accent-dim:rgba(180,83,9,.10);
+  --green:#15803D;--green-dim:rgba(21,128,61,.10);
+  --teal:#0891B2;--teal-dim:rgba(8,145,178,.10);
+  --purple:#6366F1;--purple-dim:rgba(99,102,241,.10);
+  --red:#B91C1C;--red-dim:rgba(185,28,28,.09);
+  --bg:#F7F9FC;--bg2:#FFFFFF;--bg3:#EEF3FA;--surface:#FFFFFF;
+  --text:#0F172A;--text2:rgba(15,23,42,.68);--text3:rgba(15,23,42,.42);--text4:rgba(15,23,42,.26);
+  --border:#E3E9F2;--border2:#D3DCE9;
+  --shadow-sm:0 1px 6px rgba(15,23,42,.06);--shadow:0 4px 16px rgba(15,23,42,.07),0 2px 6px rgba(15,23,42,.04);
+  --r:10px;--r-lg:14px;--header-h:60px;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100dvh}
+.header{height:var(--header-h);background:var(--surface);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 16px;gap:10px;position:sticky;top:0;z-index:20;box-shadow:var(--shadow-sm)}
+.back-btn{display:flex;align-items:center;gap:6px;padding:7px 12px;border-radius:8px;background:var(--bg);border:1.5px solid var(--border2);color:var(--text2);font-size:.78rem;font-weight:700;cursor:pointer;white-space:nowrap;transition:all .15s}
+.back-btn:hover{border-color:var(--primary);color:var(--primary)}
+.header-title{font-family:'Source Serif 4',serif;font-size:1rem;font-weight:800;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.header-title span{color:var(--text3);font-weight:500;font-size:.8rem;margin-left:8px}
+.role-badge{padding:4px 10px;border-radius:20px;font-size:.62rem;font-weight:800;font-family:'JetBrains Mono',monospace;text-transform:uppercase;letter-spacing:.4px;white-space:nowrap;flex-shrink:0}
+.role-badge.student{background:var(--primary-dim);color:var(--primary)}
+
+.wrap{max-width:760px;margin:0 auto;padding:20px 16px 80px}
+.intro{margin-bottom:18px}
+.intro h1{font-family:'Source Serif 4',serif;font-size:1.35rem;font-weight:800;margin-bottom:6px}
+.intro p{font-size:.85rem;color:var(--text2);max-width:60ch;line-height:1.5}
+
+.gate{max-width:420px;margin:80px auto;text-align:center;padding:0 20px}
+.gate h2{font-family:'Source Serif 4',serif;font-size:1.15rem;margin-bottom:8px}
+.gate p{font-size:.85rem;color:var(--text2);margin-bottom:18px;line-height:1.5}
+.btn{padding:9px 14px;border-radius:9px;font-size:.78rem;font-weight:700;display:inline-flex;align-items:center;justify-content:center;gap:5px;cursor:pointer;transition:all .15s;font-family:'Inter',sans-serif}
+.btn-primary{background:linear-gradient(135deg,var(--primary),var(--primary-light));color:#fff;box-shadow:0 2px 8px var(--primary-glow);border:none}
+.btn-primary:hover{transform:translateY(-1px)}
+
+/* ---- Stats strip ---- */
+.stats-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:20px}
+.stat-box{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:12px 8px;text-align:center}
+.stat-val{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:1.05rem;color:var(--primary)}
+.stat-lbl{font-size:.62rem;color:var(--text3);margin-top:2px;font-weight:600}
+
+/* ---- Daily challenge ---- */
+.daily-card{background:linear-gradient(135deg,rgba(180,83,9,.08),rgba(180,83,9,.02));border:1.5px solid rgba(180,83,9,.3);border-radius:var(--r-lg);padding:16px;margin-bottom:16px}
+.daily-head{display:flex;align-items:center;gap:8px;font-size:.68rem;font-weight:800;color:var(--accent);text-transform:uppercase;letter-spacing:.5px;font-family:'JetBrains Mono',monospace;margin-bottom:10px}
+.daily-q{font-weight:700;font-size:.86rem;margin-bottom:12px}
+.daily-done{display:flex;align-items:center;gap:8px;font-size:.8rem;font-weight:700;color:var(--green)}
+
+/* ---- Quick actions (Weak Spots / Achievements) ---- */
+.quick-actions{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:18px}
+.qa-btn{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--r-lg);padding:10px 6px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:4px;cursor:pointer;transition:all .15s}
+.qa-btn:hover{border-color:var(--primary)}
+.qa-icon{font-size:1.3rem}
+.qa-label{font-size:.7rem;font-weight:700}
+.qa-count{background:var(--bg3);color:var(--text2);font-size:.68rem;font-weight:800;padding:2px 8px;border-radius:20px;font-family:'JetBrains Mono',monospace}
+.qa-count.has-items{background:var(--accent);color:#fff}
+
+/* ---- Badges grid ---- */
+.badges-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px}
+.badge-card{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--r-lg);padding:14px 10px;text-align:center;transition:all .15s}
+.badge-card.earned{border-color:rgba(180,83,9,.4);background:linear-gradient(145deg,rgba(180,83,9,.06),rgba(180,83,9,.01))}
+.badge-card.locked{opacity:.4}
+.badge-icon{font-size:1.8rem;margin-bottom:6px}
+.badge-title{font-size:.74rem;font-weight:800}
+.badge-desc{font-size:.62rem;color:var(--text3);margin-top:3px;line-height:1.4}
+
+
+/* ---- Exam mode timer ---- */
+.exam-timer{position:sticky;top:0;background:var(--surface);border:1.5px solid var(--accent);border-radius:10px;padding:8px 14px;margin-bottom:14px;text-align:center;font-family:'JetBrains Mono',monospace;font-weight:800;font-size:.95rem;color:var(--accent);z-index:5}
+.exam-timer.low{color:#B91C1C;border-color:#B91C1C;animation:pulse 1s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.55}}
+.mode-choice-btn{display:block;width:100%;text-align:left;padding:14px;margin-bottom:10px;border-radius:12px;border:1.5px solid var(--border2);background:var(--surface);cursor:pointer;font-family:inherit}
+.mode-choice-btn:hover{border-color:var(--primary)}
+.mode-choice-title{font-weight:800;font-size:.86rem}
+.mode-choice-desc{font-size:.7rem;color:var(--text3);margin-top:3px}
+.explain-box{background:var(--bg3);border-left:3px solid var(--primary);border-radius:6px;padding:10px 12px;margin-top:8px;font-size:.76rem;color:var(--text2);line-height:1.5}
+
+/* ---- Track cards ---- */
+.track-card{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--r-lg);padding:16px;margin-bottom:12px;display:flex;align-items:center;gap:14px;cursor:pointer;transition:all .15s;box-shadow:var(--shadow-sm)}.track-card:hover{border-color:var(--primary);transform:translateY(-1px);box-shadow:var(--shadow)}
+.track-card.locked{opacity:.55;cursor:default}
+.track-card.locked:hover{transform:none;box-shadow:var(--shadow-sm);border-color:var(--border)}
+.track-icon{width:48px;height:48px;border-radius:13px;display:flex;align-items:center;justify-content:center;font-size:1.5rem;flex-shrink:0}
+.track-icon.blue{background:var(--primary-dim)}
+.track-icon.gold{background:var(--accent-dim)}
+.track-icon.teal{background:var(--teal-dim)}
+.track-icon.purple{background:var(--purple-dim)}
+.track-body{flex:1;min-width:0}
+.track-name{font-family:'Source Serif 4',serif;font-weight:800;font-size:.98rem}
+.track-desc{font-size:.72rem;color:var(--text3);margin-top:3px;line-height:1.4}
+.track-progress-bar{height:5px;background:var(--bg3);border-radius:4px;overflow:hidden;margin-top:8px;max-width:200px}
+.track-progress-fill{height:100%;background:var(--green);border-radius:4px}
+.track-soon{font-size:.6rem;font-weight:800;color:var(--text3);font-family:'JetBrains Mono',monospace;flex-shrink:0}
+.chev{color:var(--text3);font-size:1.1rem;flex-shrink:0}
+
+/* ---- Skill-tree path (module list within a track) ---- */
+.path-wrap{position:relative;padding-left:8px}
+.path-line{position:absolute;left:29px;top:24px;bottom:24px;width:2px;background:var(--border2)}
+.node{position:relative;display:flex;align-items:center;gap:14px;padding:12px 0;cursor:pointer}
+.node-dot{width:36px;height:36px;border-radius:50%;background:var(--surface);border:2.5px solid var(--border2);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.8rem;color:var(--text3);flex-shrink:0;z-index:1;transition:all .15s}
+.node.done .node-dot{background:var(--green);border-color:var(--green);color:#fff}
+.node.current .node-dot{border-color:var(--primary);color:var(--primary);box-shadow:0 0 0 4px var(--primary-dim)}
+.node-body{flex:1;background:var(--surface);border:1.5px solid var(--border);border-radius:12px;padding:11px 14px;transition:all .15s}
+.node:hover .node-body{border-color:var(--primary)}
+.node.done .node-body{border-color:rgba(21,128,61,.35)}
+.node-title{font-weight:700;font-size:.84rem}
+.node-sub{font-size:.66rem;color:var(--text3);margin-top:2px}
+.node.test .node-dot{border-color:var(--accent);color:var(--accent)}
+.node.test.done .node-dot{background:var(--accent);border-color:var(--accent);color:#fff}
+.tier-header{font-size:.68rem;font-weight:800;color:var(--text3);letter-spacing:.6px;text-transform:uppercase;font-family:'JetBrains Mono',monospace;padding:14px 0 6px 46px}
+
+/* ---- Lesson / quiz runner ---- */
+.runner{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);box-shadow:var(--shadow);padding:18px;animation:fadeUp .2s ease both}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.lesson-box{background:var(--bg);border:1.5px solid var(--border);border-radius:var(--r);padding:14px 16px;margin-bottom:16px;font-size:.84rem;line-height:1.65;color:var(--text2)}
+.lesson-box code{background:var(--bg3);padding:1px 5px;border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:.82em;color:var(--primary-dark)}
+.q-title{font-weight:800;font-size:.92rem;margin-bottom:12px}
+.opt-btn{display:block;width:100%;text-align:left;padding:12px 14px;margin-bottom:9px;border-radius:10px;border:1.5px solid var(--border2);background:var(--bg);color:var(--text);font-size:.82rem;font-family:inherit;cursor:pointer;transition:all .12s}
+.opt-btn:hover:not(:disabled){border-color:var(--primary)}
+.opt-btn:disabled{cursor:default}
+.opt-btn.correct{border-color:var(--green);background:var(--green-dim)}
+.opt-btn.wrong{border-color:var(--red);background:var(--red-dim)}
+.feedback{margin-top:10px}
+.feedback.ok{color:var(--green);font-weight:800;font-size:.8rem;margin-bottom:10px}
+.feedback.bad{color:var(--red);font-weight:800;font-size:.8rem;margin-bottom:10px}
+.continue-btn{width:100%;padding:12px;border-radius:10px;border:none;background:linear-gradient(135deg,var(--primary),var(--primary-light));color:#fff;font-weight:800;font-size:.85rem;cursor:pointer;font-family:inherit}
+.qprog{font-size:.68rem;color:var(--text3);font-weight:700;margin-bottom:10px;font-family:'JetBrains Mono',monospace}
+
+/* ---- Predict-the-output card (Python — no live execution) ---- */
+.code-block{background:#0F172A;color:#E2E8F0;border-radius:10px;padding:14px 16px;font-family:'JetBrains Mono',monospace;font-size:.78rem;line-height:1.6;white-space:pre;overflow-x:auto;margin-bottom:12px}
+.predict-input{width:100%;padding:10px 12px;border:1.5px solid var(--border2);border-radius:9px;font-family:'JetBrains Mono',monospace;font-size:.82rem;margin-bottom:10px}
+
+/* ---- Live JS playground ---- */
+.pg-wrap{display:flex;flex-direction:column;gap:10px;margin-bottom:12px}
+.pg-editor{width:100%;min-height:120px;background:#0F172A;color:#E2E8F0;border:none;border-radius:10px;padding:14px;font-family:'JetBrains Mono',monospace;font-size:.78rem;line-height:1.55;resize:vertical}
+.pg-run-row{display:flex;gap:8px}
+.pg-run-btn{padding:9px 16px;border-radius:9px;border:none;background:var(--green);color:#fff;font-weight:800;font-size:.78rem;cursor:pointer;font-family:inherit}
+.pg-reset-btn{padding:9px 14px;border-radius:9px;border:1.5px solid var(--border2);background:var(--bg);color:var(--text2);font-weight:700;font-size:.78rem;cursor:pointer;font-family:inherit}
+.pg-console{background:#0F172A;color:#7EE787;border-radius:10px;padding:12px 14px;font-family:'JetBrains Mono',monospace;font-size:.76rem;min-height:40px;white-space:pre-wrap;word-break:break-word}
+.pg-console.err{color:#FF8A80}
+.pg-hint{font-size:.7rem;color:var(--text3);margin-top:-4px}
+
+.complete-screen{text-align:center;padding:30px 10px}
+.complete-emoji{font-size:2.6rem;margin-bottom:10px}
+.complete-title{font-size:1.1rem;font-weight:900;margin-bottom:6px;font-family:'Source Serif 4',serif}
+.complete-sub{font-size:.8rem;color:var(--text3);margin-bottom:22px}
+
+.attrib{margin-top:28px;font-size:.68rem;color:var(--text4);line-height:1.6;border-top:1px solid var(--border);padding-top:14px}
+</style>
+</head>
+<body>
+
+<div class="header" id="appHeader" style="display:none">
+  <button class="back-btn" onclick="goBack()">← Back</button>
+  <div class="header-title" id="headerTitle">Skills Academy<span id="headerSub"></span></div>
+  <div class="role-badge student">STUDENT</div>
+</div>
+
+<div id="gateView" class="gate" style="display:none">
+  <h2>Sign in to start coding</h2>
+  <p>You're viewing this as a guest. Learn to Code is part of your MatricAce account — log in to save your progress.</p>
+  <button class="btn btn-primary" style="width:100%" onclick="location.href='index.html'">Go to login</button>
+</div>
+
+<div id="mainView" class="wrap" style="display:none">
+
+  <!-- ══ TRACKS VIEW ══ -->
+  <div id="view-tracks">
+    <div class="intro">
+      <h1>Skills Academy 🎓</h1>
+      <p>Practical life skills for after school and beyond — money, tech tools, safety, AI and getting job-ready. Free, self-paced, with practice tests.</p>
+    </div>
+
+    <div class="stats-strip">
+      <div class="stat-box"><div class="stat-val" id="stat-modules">0</div><div class="stat-lbl">MODULES DONE</div></div>
+      <div class="stat-box"><div class="stat-val" id="stat-xp">0</div><div class="stat-lbl">CODE XP</div></div>
+      <div class="stat-box"><div class="stat-val" id="stat-streak">0</div><div class="stat-lbl">DAY STREAK</div></div>
+    </div>
+
+    <div id="daily-challenge-box"></div>
+
+    <div class="quick-actions">
+      <div class="qa-btn" onclick="openWeakReview()">
+        <div class="qa-icon">🎯</div>
+        <div class="qa-label">Weak Spots</div>
+        <div class="qa-count" id="qa-weak-count">0</div>
+      </div>
+      <div class="qa-btn" onclick="showView('achievements');renderAchievements();">
+        <div class="qa-icon">🏅</div>
+        <div class="qa-label">Badges</div>
+        <div class="qa-count" id="qa-badge-count">0</div>
+      </div>
+    </div>
+
+    <div id="tracks-list"></div>
+
+    <div class="attrib">
+      Built in-house for MatricAce SA, written for a South African student audience. This gives general education on money, tech tools, safety, AI and job-readiness — it is not financial, legal or professional advice.
+    </div>
+  </div>
+
+  <!-- ══ MODULE PATH VIEW (skill tree) ══ -->
+  <div id="view-path" style="display:none">
+    <div class="intro">
+      <h1 id="path-title"></h1>
+      <p id="path-desc"></p>
+    </div>
+    <div class="path-wrap">
+      <div class="path-line"></div>
+      <div id="path-nodes"></div>
+    </div>
+  </div>
+
+  <!-- ══ LESSON / QUIZ RUNNER VIEW ══ -->
+  <div id="view-lesson" style="display:none">
+    <div class="runner" id="lesson-runner"></div>
+  </div>
+
+  <!-- ══ WEAK-SPOT REVIEW VIEW ══ -->
+  <div id="view-weakreview" style="display:none">
+    <div class="intro">
+      <h1>🎯 Weak Spot Review</h1>
+      <p>Every question you've missed, collected in one place. Answer correctly to clear it from this list.</p>
+    </div>
+    <div class="runner" id="weakreview-runner"></div>
+  </div>
+
+  <!-- ══ ACHIEVEMENTS VIEW ══ -->
+  <div id="view-achievements" style="display:none">
+    <div class="intro">
+      <h1>🏅 Achievements</h1>
+      <p>Badges you've earned across every track.</p>
+    </div>
+    <div id="badges-grid"></div>
+  </div>
+
+</div>
+
+<script>
+/* ══════════════════════════════════════════════════════════════════
+   AUTH / ROLE DETECTION — reuses the existing MatricAce session
+   ══════════════════════════════════════════════════════════════════ */
+function getSession(){
+  let sess=null, users={};
+  for (const k of ['ma_session','matric_ace_session','matric_session']) {
+    try { const s = JSON.parse(localStorage.getItem(k)||'null'); if (s) { sess=s; break; } } catch(e){}
+  }
+  for (const k of ['matric_ace_users','matric_users']) {
+    try { const u = JSON.parse(localStorage.getItem(k)||'{}'); if (Object.keys(u).length) { users=u; break; } } catch(e){}
+  }
+  if (!sess || !sess.uid) return null;
+  const user = users[sess.uid] || { name: sess.name || 'Student' };
+  return { user, uid: sess.uid };
+}
+function goBack(){ location.href = 'app/student-portal.html'; }
+
+let SESSION = null;
+let UID = 'guest';
+
+function initAuth(){
+  SESSION = getSession();
+  if (!SESSION) {
+    // Allow guest use too — coding practice doesn't strictly need a MatricAce
+    // account, but progress won't sync. Show the app anyway with a guest uid.
+    UID = 'guest';
+  } else {
+    UID = SESSION.uid;
+  }
+  document.getElementById('appHeader').style.display = 'flex';
+  document.getElementById('mainView').style.display = 'block';
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   DAILY CHALLENGE — one question a day, same for everyone that day,
+   small bonus XP, encourages a daily open-the-app habit
+   ══════════════════════════════════════════════════════════════════ */
+const DAILY_CHALLENGES = [
+  {
+    "q": "What does a budget do?",
+    "opts": [
+      "Plans where your money will go",
+      "Records last year only",
+      "Replaces savings",
+      "Is a loan"
+    ],
+    "correct": 0,
+    "explanation": "A budget decides in advance where each rand goes."
+  },
+  {
+    "q": "What should every spreadsheet formula start with?",
+    "opts": [
+      "=",
+      "#",
+      "$",
+      "@"
+    ],
+    "correct": 0,
+    "explanation": "The equals sign marks it as a formula."
+  },
+  {
+    "q": "Who should you give your one-time PIN (OTP) to?",
+    "opts": [
+      "Nobody",
+      "The bank caller",
+      "A friend",
+      "A delivery driver"
+    ],
+    "correct": 0,
+    "explanation": "OTPs are for you to enter yourself."
+  },
+  {
+    "q": "What is a chatbot hallucination?",
+    "opts": [
+      "A confident answer that is false or invented",
+      "A drawing",
+      "A speed test",
+      "A virus"
+    ],
+    "correct": 0,
+    "explanation": "Fluent does not always mean true."
+  },
+  {
+    "q": "Which study method is strongest?",
+    "opts": [
+      "Testing yourself from memory",
+      "Re-reading only",
+      "Highlighting",
+      "Copying notes"
+    ],
+    "correct": 0,
+    "explanation": "Active recall builds memory."
+  },
+  {
+    "q": "Gross pay is...",
+    "opts": [
+      "Pay before deductions",
+      "Pay after tax",
+      "A bonus",
+      "Your savings"
+    ],
+    "correct": 0,
+    "explanation": "Net pay is what reaches your account."
+  },
+  {
+    "q": "What does $A$1 do in a formula?",
+    "opts": [
+      "Locks the reference to cell A1",
+      "Adds A1 twice",
+      "Deletes A1",
+      "Turns A1 into rands"
+    ],
+    "correct": 0,
+    "explanation": "Dollar signs stop the reference shifting when copied."
+  },
+  {
+    "q": "A \"job\" that needs an upfront fee is likely...",
+    "opts": [
+      "A scam",
+      "Normal",
+      "Government-approved",
+      "A bursary"
+    ],
+    "correct": 0,
+    "explanation": "Genuine employers do not charge you to get hired."
+  },
+  {
+    "q": "How long is a classic Pomodoro focus block?",
+    "opts": [
+      "25 minutes",
+      "5 minutes",
+      "2 hours",
+      "All day"
+    ],
+    "correct": 0,
+    "explanation": "Followed by a 5-minute break."
+  },
+  {
+    "q": "Compound interest is calculated on...",
+    "opts": [
+      "Original amount plus earned interest",
+      "Only the original amount",
+      "Only the interest",
+      "Nothing"
+    ],
+    "correct": 0,
+    "explanation": "Interest on interest grows faster."
+  },
+  {
+    "q": "Which chart best shows change over time?",
+    "opts": [
+      "Line chart",
+      "Pie chart",
+      "Donut chart",
+      "No chart"
+    ],
+    "correct": 0,
+    "explanation": "Lines show trends across time."
+  },
+  {
+    "q": "A padlock in the browser means...",
+    "opts": [
+      "The connection is encrypted",
+      "The site is honest",
+      "The site is fast",
+      "The site is government-run"
+    ],
+    "correct": 0,
+    "explanation": "Scam sites can have padlocks too."
+  },
+  {
+    "q": "What does STAR stand for in interviews?",
+    "opts": [
+      "Situation, Task, Action, Result",
+      "Skill, Time, Aim, Reward",
+      "Start, Talk, Ask, Rest",
+      "Strength, Trust, Ability, Respect"
+    ],
+    "correct": 0,
+    "explanation": "It structures answers as a story."
+  },
+  {
+    "q": "Why check AI answers?",
+    "opts": [
+      "They can be confident and wrong",
+      "They are always right",
+      "They are illegal",
+      "They are slow"
+    ],
+    "correct": 0,
+    "explanation": "Verify important facts with reliable sources."
+  }
+];
+
+function dailyKey(){ return 'skacad_daily_' + UID; }
+function todayIndex(){
+  const start = new Date(new Date().getFullYear(), 0, 0);
+  const diff = Date.now() - start.getTime();
+  const dayOfYear = Math.floor(diff / 86400000);
+  return dayOfYear % DAILY_CHALLENGES.length;
+}
+function getDailyState(){
+  try { return JSON.parse(localStorage.getItem(dailyKey()) || 'null'); } catch(e){ return null; }
+}
+function renderDailyChallenge(){
+  const box = document.getElementById('daily-challenge-box');
+  const today = new Date().toDateString();
+  const state = getDailyState();
+  const c = DAILY_CHALLENGES[todayIndex()];
+
+  if (state && state.date === today) {
+    box.innerHTML = `<div class="daily-card">
+      <div class="daily-head">🔥 DAILY CHALLENGE</div>
+      <div class="daily-done">✓ Done for today — come back tomorrow for a new one!</div>
+    </div>`;
+    return;
+  }
+
+  let html = `<div class="daily-card">
+    <div class="daily-head">🔥 DAILY CHALLENGE — +20 BONUS XP</div>
+    <div class="daily-q">${c.q}</div>
+    <div id="daily-opts"></div>
+    <div id="daily-feedback"></div>
+  </div>`;
+  box.innerHTML = html;
+  const optsEl = document.getElementById('daily-opts');
+  c.opts.forEach((opt, oi) => {
+    const b = document.createElement('button');
+    b.className = 'opt-btn';
+    b.id = 'daily-opt-' + oi;
+    b.textContent = opt;
+    b.onclick = () => answerDaily(oi, c);
+    optsEl.appendChild(b);
+  });
+}
+function answerDaily(oi, c){
+  const correct = oi === c.correct;
+  c.opts.forEach((_, i) => {
+    const btn = document.getElementById('daily-opt-' + i);
+    btn.disabled = true;
+    if (i === c.correct) btn.classList.add('correct');
+    else if (i === oi) btn.classList.add('wrong');
+  });
+  if (correct) addXP(20);
+  bumpStreak();
+  localStorage.setItem(dailyKey(), JSON.stringify({ date: new Date().toDateString() }));
+  document.getElementById('daily-feedback').innerHTML =
+    (correct ? '<div class="feedback ok">✓ Correct! +20 XP</div>' : '<div class="feedback bad">✗ Not quite — see you tomorrow for another one!</div>');
+  renderStatsStrip();
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   CONTENT — Python Fundamentals & JavaScript Fundamentals
+   ══════════════════════════════════════════════════════════════════ */
+
+const TRACKS = [
+  {
+    "id": "money",
+    "section": "skills",
+    "title": "Money Smart",
+    "icon": "💰",
+    "iconClass": "gold",
+    "desc": "Budgeting, saving, interest, debt and your first payslip. General education, not financial advice.",
+    "modules": [
+      {
+        "id": "mo1",
+        "title": "1. Budgets: Needs vs Wants",
+        "kind": "quiz",
+        "lesson": "A budget is a plan for your money: what comes in (income) and what goes out (expenses). Separate <b>needs</b> (rent, food, transport to school or work, essential data) from <b>wants</b> (takeaways, extra clothes, subscriptions). A common starting guide is 50/30/20: about 50% needs, 30% wants, 20% saving or paying off debt. Adjust it to your own situation.",
+        "questions": [
+          {
+            "q": "What is a budget?",
+            "opts": [
+              "A plan for how you will use the money that comes in",
+              "A record of money you spent last year",
+              "A type of bank account",
+              "A loan from a bank"
+            ],
+            "correct": 0,
+            "explanation": "A budget looks forward: it decides in advance where each rand will go."
+          },
+          {
+            "q": "Which of these is a need rather than a want?",
+            "opts": [
+              "Food for the week",
+              "A new pair of sneakers you like",
+              "A streaming subscription",
+              "Takeaways every weekend"
+            ],
+            "correct": 0,
+            "explanation": "Needs are things you must have to live and function. Wants are nice to have but optional."
+          }
+        ]
+      },
+      {
+        "id": "mo2",
+        "title": "2. Saving & Emergency Funds",
+        "kind": "quiz",
+        "lesson": "Saving means keeping money aside for later. <b>Pay yourself first</b>: move savings out as soon as money arrives instead of saving whatever is left. An <b>emergency fund</b> covers surprises like a broken phone, a medical cost or losing income. A common goal is 3 to 6 months of essential expenses, kept somewhere easy to reach but separate from your everyday spending money.",
+        "questions": [
+          {
+            "q": "What is an emergency fund for?",
+            "opts": [
+              "Unexpected costs or a sudden loss of income",
+              "Buying things on sale",
+              "Holiday spending",
+              "Paying for entertainment"
+            ],
+            "correct": 0,
+            "explanation": "It is a safety net so a surprise does not force you into debt."
+          },
+          {
+            "q": "What does \"pay yourself first\" mean?",
+            "opts": [
+              "Set aside your savings as soon as money comes in, before spending",
+              "Spend on yourself before paying any bills",
+              "Only save if there is money left at month end",
+              "Pay your friends back before anyone else"
+            ],
+            "correct": 0,
+            "explanation": "Saving first means it actually happens, instead of depending on what is left over."
+          }
+        ]
+      },
+      {
+        "id": "mo3",
+        "title": "3. Simple vs Compound Interest",
+        "kind": "quiz",
+        "lesson": "Interest is the price of using money. When you save, the bank pays you interest. When you borrow, you pay interest. <b>Simple interest</b> uses only the original amount: Interest = P × r × t (amount × rate × years). <b>Compound interest</b> is calculated on the amount plus the interest already earned, so it grows faster over time.",
+        "questions": [
+          {
+            "q": "You save R2 000 at 5% simple interest per year for 3 years. How much interest do you earn?",
+            "opts": [
+              "R300",
+              "R100",
+              "R3 000",
+              "R2 300"
+            ],
+            "correct": 0,
+            "explanation": "2000 × 0.05 × 3 = 300."
+          },
+          {
+            "q": "Why does compound interest grow faster than simple interest?",
+            "opts": [
+              "It earns interest on the interest already added",
+              "It uses a secret higher rate",
+              "It only works on large amounts",
+              "It is charged monthly instead of yearly"
+            ],
+            "correct": 0,
+            "explanation": "Each period the base gets bigger, so the next interest is bigger too."
+          }
+        ]
+      },
+      {
+        "id": "mo4",
+        "title": "4. Debt & Credit",
+        "kind": "quiz",
+        "lesson": "Borrowing lets you buy now and pay later, but you pay back more than you borrowed because of interest and fees. Credit cards and store accounts often carry high interest, and paying only the minimum keeps you in debt for a long time. Credit bureaus keep a record of how you borrow and repay. A good record helps you get loans and phone contracts.",
+        "questions": [
+          {
+            "q": "Why is paying only the minimum on a credit card costly?",
+            "opts": [
+              "Interest keeps being charged on what you still owe, so the debt lasts longer and costs more",
+              "The bank cancels your card",
+              "The minimum payment is always tiny and free of interest",
+              "It raises your salary"
+            ],
+            "correct": 0,
+            "explanation": "Most of a minimum payment can go to interest, so the balance barely shrinks."
+          },
+          {
+            "q": "What does a credit record show?",
+            "opts": [
+              "How you have borrowed and repaid money in the past",
+              "How much money is in your savings account today",
+              "Your school marks",
+              "Which shops you visit most"
+            ],
+            "correct": 0,
+            "explanation": "Lenders use it to judge how risky it is to lend to you."
+          }
+        ]
+      },
+      {
+        "id": "mo5",
+        "title": "5. Banking & Safe Payments",
+        "kind": "quiz",
+        "lesson": "A <b>debit card</b> spends money already in your account. A <b>credit card</b> spends the bank's money, which you must repay (with interest if you do not pay in full). Keep your PIN, password and one-time PIN (OTP) private. Your bank will never ask you for them. Check your statement regularly for fees or payments you do not recognise.",
+        "questions": [
+          {
+            "q": "What is the main difference between a debit card and a credit card?",
+            "opts": [
+              "Debit spends your own money; credit spends borrowed money you must repay",
+              "Debit cards cannot be used in shops",
+              "Credit cards never charge interest",
+              "There is no difference"
+            ],
+            "correct": 0,
+            "explanation": "With debit the money leaves your account; with credit you owe the bank afterwards."
+          },
+          {
+            "q": "A caller says they are from your bank and asks for the OTP you just received. What should you do?",
+            "opts": [
+              "Hang up, never share it, and call your bank on its official number",
+              "Read it out, they are from the bank",
+              "Send it by WhatsApp so it is recorded",
+              "Give half of it"
+            ],
+            "correct": 0,
+            "explanation": "An OTP proves it is you. Banks never need you to read it to them, and sharing it lets criminals in."
+          }
+        ]
+      },
+      {
+        "id": "mo6",
+        "title": "6. Payslips & Your First Job",
+        "kind": "quiz",
+        "lesson": "<b>Gross pay</b> is what you earn before deductions. <b>Net pay</b> is what lands in your bank account after deductions such as income tax (<b>PAYE</b>, Pay As You Earn) and <b>UIF</b> (the Unemployment Insurance Fund, which supports workers who lose income). Your employer must give you a payslip that shows these amounts.",
+        "questions": [
+          {
+            "q": "What is the difference between gross and net pay?",
+            "opts": [
+              "Gross is before deductions; net is what you actually receive after them",
+              "Gross is a bonus; net is your normal salary",
+              "They are always the same",
+              "Net is before tax; gross is after tax"
+            ],
+            "correct": 0,
+            "explanation": "Net pay is your take-home amount, so always plan your budget on net, not gross."
+          },
+          {
+            "q": "What does UIF stand for?",
+            "opts": [
+              "Unemployment Insurance Fund",
+              "Universal Income Fee",
+              "Union Investment Fund",
+              "Unpaid Income Form"
+            ],
+            "correct": 0,
+            "explanation": "It provides temporary support if you lose your job or income in certain situations."
+          }
+        ]
+      },
+      {
+        "id": "mo7",
+        "title": "7. Do the Numbers",
+        "kind": "predict",
+        "lesson": "Work these out like a real budget. Type just the number (for example 1200, no need for R).",
+        "ask": "What is the answer?",
+        "challenges": [
+          {
+            "code": "Salary (net): R6 000\nRent: R2 500\nFood: R1 500\nTransport: R700\nAirtime & data: R300\n\nHow much is left over?",
+            "answer": "1000",
+            "hint": "6000 minus (2500 + 1500 + 700 + 300) = 6000 - 5000 = 1000"
+          },
+          {
+            "code": "R1 000 saved at 10% SIMPLE interest per year for 3 years.\n\nHow much interest is earned?",
+            "answer": "300",
+            "hint": "1000 × 0.10 × 3 = 300"
+          },
+          {
+            "code": "R1 000 saved at 10% COMPOUND interest per year for 2 years.\n\nWhat is the total after 2 years?",
+            "answer": "1210",
+            "hint": "Year 1: 1000 × 1.10 = 1100. Year 2: 1100 × 1.10 = 1210."
+          }
+        ]
+      },
+      {
+        "id": "mot1",
+        "title": "✅ Practice Test: Money Smart",
+        "kind": "test",
+        "tier": "Beginner checkpoint",
+        "questions": [
+          {
+            "q": "Which best describes a budget?",
+            "opts": [
+              "A plan for your income and spending",
+              "A list of things you bought",
+              "A loan agreement",
+              "A savings account"
+            ],
+            "correct": 0,
+            "explanation": "A budget decides in advance where your money will go."
+          },
+          {
+            "q": "In the 50/30/20 guide, what is the 20% mainly for?",
+            "opts": [
+              "Saving or paying off debt",
+              "Takeaways and treats",
+              "Rent only",
+              "Airtime"
+            ],
+            "correct": 0,
+            "explanation": "Needs 50%, wants 30%, and 20% for your future self and debts."
+          },
+          {
+            "q": "Which is an example of paying yourself first?",
+            "opts": [
+              "Setting up a transfer to savings on payday",
+              "Saving whatever is left at month end",
+              "Buying a treat before paying bills",
+              "Lending money to a friend"
+            ],
+            "correct": 0,
+            "explanation": "It happens automatically before the money can be spent."
+          },
+          {
+            "q": "R500 at 10% simple interest for 2 years earns how much interest?",
+            "opts": [
+              "R100",
+              "R50",
+              "R1 000",
+              "R550"
+            ],
+            "correct": 0,
+            "explanation": "500 × 0.10 × 2 = 100."
+          },
+          {
+            "q": "Compound interest is calculated on...",
+            "opts": [
+              "The original amount plus interest already earned",
+              "Only the original amount",
+              "Only the interest",
+              "Nothing, it is a fixed fee"
+            ],
+            "correct": 0,
+            "explanation": "Interest on interest is what makes it grow faster."
+          },
+          {
+            "q": "Which action helps build a good credit record?",
+            "opts": [
+              "Paying your accounts on time",
+              "Ignoring reminders",
+              "Borrowing from many lenders at once",
+              "Never having any account at all"
+            ],
+            "correct": 0,
+            "explanation": "Reliable repayment is what lenders want to see."
+          },
+          {
+            "q": "Someone offers a guaranteed job if you first pay a R300 \"registration fee\". This is most likely...",
+            "opts": [
+              "A scam",
+              "A normal hiring process",
+              "A government rule",
+              "A bursary"
+            ],
+            "correct": 0,
+            "explanation": "Genuine employers and registered agencies do not charge you to get a job."
+          },
+          {
+            "q": "Net pay is...",
+            "opts": [
+              "What you receive after deductions",
+              "What you earn before deductions",
+              "Only your tax amount",
+              "Your yearly bonus"
+            ],
+            "correct": 0,
+            "explanation": "Net is the amount that reaches your bank account."
+          },
+          {
+            "q": "A debit card spends...",
+            "opts": [
+              "Money already in your account",
+              "Money the bank lends you",
+              "Money from your employer directly",
+              "Nothing, it is only for ID"
+            ],
+            "correct": 0,
+            "explanation": "Debit takes money you already have."
+          },
+          {
+            "q": "A common size goal for an emergency fund is...",
+            "opts": [
+              "3 to 6 months of essential expenses",
+              "One week of pocket money",
+              "Exactly R100",
+              "Ten years of salary"
+            ],
+            "correct": 0,
+            "explanation": "It should cover essentials while you sort out a problem."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "excel",
+    "section": "skills",
+    "title": "Excel & Spreadsheets",
+    "icon": "📊",
+    "iconClass": "teal",
+    "desc": "Cells, formulas, functions, IF, lookups and charts. Works in Excel and Google Sheets.",
+    "modules": [
+      {
+        "id": "ex1",
+        "title": "1. Cells, Rows & Ranges",
+        "kind": "quiz",
+        "lesson": "A spreadsheet is a grid. Columns are letters (A, B, C...) and rows are numbers (1, 2, 3...). A cell's address joins them, so <code>B3</code> is column B, row 3. A <b>range</b> is a block of cells, written like <code>A1:A5</code> (from A1 down to A5) or <code>A1:C1</code> (across).",
+        "questions": [
+          {
+            "q": "Which cell is in column C, row 4?",
+            "opts": [
+              "C4",
+              "4C",
+              "C:4",
+              "D3"
+            ],
+            "correct": 0,
+            "explanation": "The column letter comes first, then the row number."
+          },
+          {
+            "q": "What does A1:A5 refer to?",
+            "opts": [
+              "The five cells from A1 down to A5",
+              "Only cells A1 and A5",
+              "Five separate sheets",
+              "Column A and row 5 combined"
+            ],
+            "correct": 0,
+            "explanation": "The colon means \"from this cell to that cell\"."
+          }
+        ]
+      },
+      {
+        "id": "ex2",
+        "title": "2. Your First Formulas",
+        "kind": "quiz",
+        "lesson": "A formula always starts with <code>=</code>. It can use numbers or other cells: <code>=A1+B1</code> adds two cells. Because it points at cells, the answer updates automatically when the numbers change. Use <code>+ - * /</code> to add, subtract, multiply and divide.",
+        "questions": [
+          {
+            "q": "What must every formula start with?",
+            "opts": [
+              "An equals sign (=)",
+              "A plus sign (+)",
+              "A dollar sign ($)",
+              "A quotation mark"
+            ],
+            "correct": 0,
+            "explanation": "Without the equals sign the spreadsheet treats it as plain text."
+          },
+          {
+            "q": "Why write =A1+B1 instead of typing the total yourself?",
+            "opts": [
+              "The result updates automatically when A1 or B1 changes",
+              "It looks more professional",
+              "Typed totals are not allowed",
+              "It uses less memory"
+            ],
+            "correct": 0,
+            "explanation": "Formulas keep your totals correct when the data changes."
+          }
+        ]
+      },
+      {
+        "id": "ex3",
+        "title": "3. SUM, AVERAGE, MIN, MAX",
+        "kind": "quiz",
+        "lesson": "Functions are built-in formulas. <code>=SUM(A1:A3)</code> adds a range, <code>=AVERAGE(A1:A3)</code> finds the mean, <code>=MIN(...)</code> and <code>=MAX(...)</code> find the smallest and largest, and <code>=COUNT(...)</code> counts cells that contain numbers.",
+        "questions": [
+          {
+            "q": "A1 = 10, A2 = 20, A3 = 30. What does =SUM(A1:A3) show?",
+            "opts": [
+              "60",
+              "30",
+              "20",
+              "6"
+            ],
+            "correct": 0,
+            "explanation": "10 + 20 + 30 = 60."
+          },
+          {
+            "q": "Which function finds the largest value in a range?",
+            "opts": [
+              "MAX",
+              "TOP",
+              "BIG",
+              "HIGH"
+            ],
+            "correct": 0,
+            "explanation": "MAX returns the biggest number; MIN returns the smallest."
+          }
+        ]
+      },
+      {
+        "id": "ex4",
+        "title": "4. Predict the Result",
+        "kind": "predict",
+        "lesson": "Here is a small price list:<div class=\"code-block\">     A       B\n1   Item    Price\n2   Pens    20\n3   Book    45\n4   Bag     120</div>Work out what each formula shows. Type just the number.",
+        "ask": "What does the formula show?",
+        "challenges": [
+          {
+            "code": "=SUM(B2:B4)",
+            "answer": "185",
+            "hint": "20 + 45 + 120 = 185"
+          },
+          {
+            "code": "=MAX(B2:B4)",
+            "answer": "120",
+            "hint": "The largest price in the range is the Bag at 120"
+          },
+          {
+            "code": "=AVERAGE(B2:B3)",
+            "answer": "32.5",
+            "hint": "(20 + 45) / 2 = 32.5"
+          }
+        ]
+      },
+      {
+        "id": "ex5",
+        "title": "5. IF and Decisions",
+        "kind": "quiz",
+        "lesson": "<code>IF</code> makes a decision: <code>=IF(test, value_if_true, value_if_false)</code>. For example <code>=IF(B2&gt;=50,\"Pass\",\"Fail\")</code> shows Pass when B2 is 50 or more, and Fail otherwise. Text results go inside quotation marks.",
+        "questions": [
+          {
+            "q": "B2 holds 45. What does =IF(B2>=50,\"Pass\",\"Fail\") show?",
+            "opts": [
+              "Fail",
+              "Pass",
+              "45",
+              "An error"
+            ],
+            "correct": 0,
+            "explanation": "45 is not greater than or equal to 50, so the false result is used."
+          },
+          {
+            "q": "In an IF formula, what is the second part (after the first comma)?",
+            "opts": [
+              "The result when the test is true",
+              "The test itself",
+              "The result when the test is false",
+              "The cell to change"
+            ],
+            "correct": 0,
+            "explanation": "Order matters: test, value if true, value if false."
+          }
+        ]
+      },
+      {
+        "id": "ex6",
+        "title": "6. Relative vs Absolute References",
+        "kind": "quiz",
+        "lesson": "By default references are <b>relative</b>: copy <code>=A1*B1</code> down one row and it becomes <code>=A2*B2</code>. Put <code>$</code> in front to lock part of a reference: <code>$A$1</code> always points at A1 wherever you copy it. Use this for a fixed value such as a tax rate.",
+        "questions": [
+          {
+            "q": "You copy =A1*B1 from row 1 to row 2. What does the copy become?",
+            "opts": [
+              "=A2*B2",
+              "=A1*B1",
+              "=B2*C2",
+              "=A1*B2"
+            ],
+            "correct": 0,
+            "explanation": "Relative references shift by the same amount you moved the formula."
+          },
+          {
+            "q": "What does $A$1 do?",
+            "opts": [
+              "Keeps the reference locked on A1 when the formula is copied",
+              "Turns the cell into money",
+              "Deletes A1",
+              "Adds A1 to itself"
+            ],
+            "correct": 0,
+            "explanation": "The dollar signs stop the column and row from changing."
+          }
+        ]
+      },
+      {
+        "id": "ex7",
+        "title": "7. Lookups (VLOOKUP & XLOOKUP)",
+        "kind": "quiz",
+        "lesson": "A lookup finds a value in a table and brings back related information, like typing a product code and getting its price. <code>VLOOKUP</code> searches the first column of a table and returns a value from a column you choose: <code>=VLOOKUP(lookup_value, table, column_number, FALSE)</code>. The newer <code>XLOOKUP</code> does the same job more flexibly. <code>FALSE</code> means find an exact match.",
+        "questions": [
+          {
+            "q": "What does a lookup formula do?",
+            "opts": [
+              "Finds a value in a table and returns related information",
+              "Sorts a table alphabetically",
+              "Adds up a column",
+              "Draws a chart"
+            ],
+            "correct": 0,
+            "explanation": "It matches a key (like a code or name) and fetches the row's other details."
+          },
+          {
+            "q": "In VLOOKUP, what does the last argument FALSE ask for?",
+            "opts": [
+              "An exact match",
+              "A rounded answer",
+              "A sorted table",
+              "The last row"
+            ],
+            "correct": 0,
+            "explanation": "FALSE means only an exact match counts."
+          }
+        ]
+      },
+      {
+        "id": "ex8",
+        "title": "8. Charts & Clear Data",
+        "kind": "quiz",
+        "lesson": "Pick the chart to fit the story: <b>bar or column</b> charts compare categories, <b>line</b> charts show change over time, and <b>pie</b> charts show parts of a whole (best with only a few slices). Always add a clear title and label your axes.",
+        "questions": [
+          {
+            "q": "Which chart best shows how your marks changed over 6 months?",
+            "opts": [
+              "A line chart",
+              "A pie chart",
+              "A scatter of random dots",
+              "No chart is suitable"
+            ],
+            "correct": 0,
+            "explanation": "Lines are made for showing change across time."
+          },
+          {
+            "q": "Pie charts work best when...",
+            "opts": [
+              "You show parts of one whole, with only a few slices",
+              "You compare 15 different categories",
+              "You show change over time",
+              "You have negative numbers"
+            ],
+            "correct": 0,
+            "explanation": "Too many slices are hard to read; use a bar chart instead."
+          }
+        ]
+      },
+      {
+        "id": "ext1",
+        "title": "✅ Practice Test: Excel & Spreadsheets",
+        "kind": "test",
+        "tier": "Beginner checkpoint",
+        "questions": [
+          {
+            "q": "Which cell is in column B, row 7?",
+            "opts": [
+              "B7",
+              "7B",
+              "B:7",
+              "G2"
+            ],
+            "correct": 0,
+            "explanation": "Column letter first, then row number."
+          },
+          {
+            "q": "What does =SUM(A1:A4) do?",
+            "opts": [
+              "Adds the values in A1 to A4",
+              "Counts the cells",
+              "Multiplies A1 by A4",
+              "Shows the largest value"
+            ],
+            "correct": 0,
+            "explanation": "SUM adds every number in the range."
+          },
+          {
+            "q": "A formula begins with...",
+            "opts": [
+              "=",
+              "#",
+              "@",
+              "$"
+            ],
+            "correct": 0,
+            "explanation": "The equals sign tells the sheet this is a calculation."
+          },
+          {
+            "q": "Which function gives the mean of a range?",
+            "opts": [
+              "AVERAGE",
+              "MEAN",
+              "MIDDLE",
+              "TOTAL"
+            ],
+            "correct": 0,
+            "explanation": "AVERAGE adds the values and divides by how many there are."
+          },
+          {
+            "q": "B2 = 80. What does =IF(B2>=50,\"Pass\",\"Fail\") show?",
+            "opts": [
+              "Pass",
+              "Fail",
+              "80",
+              "50"
+            ],
+            "correct": 0,
+            "explanation": "80 is at least 50, so the true result is shown."
+          },
+          {
+            "q": "You copy =A1*B1 down to the next row. It becomes...",
+            "opts": [
+              "=A2*B2",
+              "=A1*B1",
+              "=$A$1*B1",
+              "=A2*B1"
+            ],
+            "correct": 0,
+            "explanation": "Relative references move with the formula."
+          },
+          {
+            "q": "How do you lock a tax rate in cell E1 so it does not move when copied?",
+            "opts": [
+              "Write it as $E$1",
+              "Write it as E1",
+              "Write it as (E1)",
+              "Write it as =E1"
+            ],
+            "correct": 0,
+            "explanation": "Dollar signs fix both the column and the row."
+          },
+          {
+            "q": "What is VLOOKUP mainly used for?",
+            "opts": [
+              "Finding a value in a table and returning related data",
+              "Making charts",
+              "Checking spelling",
+              "Counting blank cells"
+            ],
+            "correct": 0,
+            "explanation": "It looks up a key in the first column and returns from another column."
+          },
+          {
+            "q": "Which chart is best for showing change over time?",
+            "opts": [
+              "Line chart",
+              "Pie chart",
+              "Donut chart",
+              "Table only"
+            ],
+            "correct": 0,
+            "explanation": "Lines connect points in order, so trends are easy to see."
+          },
+          {
+            "q": "What does COUNT do?",
+            "opts": [
+              "Counts cells that contain numbers",
+              "Adds numbers",
+              "Finds the smallest number",
+              "Rounds numbers"
+            ],
+            "correct": 0,
+            "explanation": "COUNT tells you how many numeric entries are in a range."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "safety",
+    "section": "skills",
+    "title": "Digital Safety & Scams",
+    "icon": "🛡️",
+    "iconClass": "blue",
+    "desc": "Passwords, 2FA, phishing and the scams that target South African students.",
+    "modules": [
+      {
+        "id": "sf1",
+        "title": "1. Strong Passwords",
+        "kind": "quiz",
+        "lesson": "Length beats cleverness. A long <b>passphrase</b> of several random words (for example four unrelated words) is much stronger than a short password with a number swapped for a letter. Use a <b>different password for every account</b>, so one leak cannot open everything. A password manager can remember them for you.",
+        "questions": [
+          {
+            "q": "Which password is the strongest?",
+            "opts": [
+              "A long passphrase of several random words",
+              "password123",
+              "Your name and birthday",
+              "The same short password you use everywhere"
+            ],
+            "correct": 0,
+            "explanation": "Length and unpredictability make guessing much harder."
+          },
+          {
+            "q": "Why should each account have its own password?",
+            "opts": [
+              "If one site is hacked, your other accounts stay safe",
+              "Websites require it",
+              "It makes passwords shorter",
+              "It speeds up logging in"
+            ],
+            "correct": 0,
+            "explanation": "Attackers try leaked passwords on other sites, so reuse spreads the damage."
+          }
+        ]
+      },
+      {
+        "id": "sf2",
+        "title": "2. Two-Factor Authentication",
+        "kind": "quiz",
+        "lesson": "<b>Two-factor authentication (2FA)</b> asks for something extra besides your password, like a code sent to your phone or generated by an authenticator app. Even if someone learns your password, they still cannot get in. Codes and one-time PINs (OTPs) are for you only: <b>never read one out to anyone</b>, even someone claiming to be support.",
+        "questions": [
+          {
+            "q": "What is two-factor authentication?",
+            "opts": [
+              "A second proof it is you, in addition to your password",
+              "Using two passwords that are the same",
+              "Logging in on two phones",
+              "A type of antivirus"
+            ],
+            "correct": 0,
+            "explanation": "A stolen password alone is not enough when 2FA is on."
+          },
+          {
+            "q": "A \"support agent\" asks you to read out the code that was just sent to you. What is this?",
+            "opts": [
+              "A scam trying to take over your account",
+              "Normal verification",
+              "A prize check",
+              "A software update"
+            ],
+            "correct": 0,
+            "explanation": "Real support never needs your one-time code."
+          }
+        ]
+      },
+      {
+        "id": "sf3",
+        "title": "3. Phishing & Fake Messages",
+        "kind": "quiz",
+        "lesson": "<b>Phishing</b> messages pretend to be a bank, shop, school or friend to trick you into clicking or sharing details. Red flags: urgency (\"act in 1 hour!\"), threats, spelling mistakes, links that do not match the real website, and requests for passwords or PINs. Do not click. Open the official app or type the website yourself.",
+        "questions": [
+          {
+            "q": "Which is a common red flag in a phishing message?",
+            "opts": [
+              "Pressure to act immediately or lose something",
+              "A polite greeting",
+              "Your correct first name",
+              "A company logo"
+            ],
+            "correct": 0,
+            "explanation": "Urgency stops you from thinking. Scammers rely on it."
+          },
+          {
+            "q": "You get an SMS saying your account is blocked, with a link. What is the safest move?",
+            "opts": [
+              "Do not click; open the official app or website yourself",
+              "Click quickly to fix it",
+              "Reply with your PIN",
+              "Forward it to all your friends"
+            ],
+            "correct": 0,
+            "explanation": "Going to the official site yourself avoids fake look-alike pages."
+          }
+        ]
+      },
+      {
+        "id": "sf4",
+        "title": "4. Scams Targeting Students",
+        "kind": "quiz",
+        "lesson": "Watch for: <b>fake bursary or job offers</b> that ask you to pay a fee (genuine bursaries and NSFAS applications are free), <b>SIM swap</b> fraud (criminals move your number to a new SIM to receive your OTPs, so sudden loss of signal means call your provider straight away), <b>fake proof of payment</b> when selling online (a screenshot is not money, check your account), and prizes you never entered for.",
+        "questions": [
+          {
+            "q": "A \"bursary\" asks for a R250 processing fee before you can apply. What is this?",
+            "opts": [
+              "A scam",
+              "A normal cost",
+              "A government tax",
+              "A discount"
+            ],
+            "correct": 0,
+            "explanation": "Genuine bursary and NSFAS applications are free."
+          },
+          {
+            "q": "A buyer sends a screenshot saying they paid. What should you do before handing over the item?",
+            "opts": [
+              "Check that the money is actually in your account",
+              "Trust the screenshot",
+              "Send the item first, then check",
+              "Ask for their password"
+            ],
+            "correct": 0,
+            "explanation": "Screenshots are easy to fake. Only your own banking app shows real money."
+          }
+        ]
+      },
+      {
+        "id": "sf5",
+        "title": "5. Privacy & Your Digital Footprint",
+        "kind": "quiz",
+        "lesson": "Everything you post can be copied, screenshotted and found later, including by future universities and employers. Set accounts to private where you can, think before sharing your location, school uniform, ID or address, and never post photos of documents or bank cards. Your <b>digital footprint</b> is the trail you leave online.",
+        "questions": [
+          {
+            "q": "What is a digital footprint?",
+            "opts": [
+              "The trail of information you leave online",
+              "The size of your phone",
+              "A type of virus",
+              "Your Wi-Fi speed"
+            ],
+            "correct": 0,
+            "explanation": "Posts, comments, photos and searches all add to it."
+          },
+          {
+            "q": "Which is the riskiest thing to post?",
+            "opts": [
+              "A photo of your ID or bank card",
+              "A picture of your lunch",
+              "A book recommendation",
+              "A sports score"
+            ],
+            "correct": 0,
+            "explanation": "Documents give criminals what they need to steal your identity."
+          }
+        ]
+      },
+      {
+        "id": "sf6",
+        "title": "6. Safe Browsing & Public Wi-Fi",
+        "kind": "quiz",
+        "lesson": "A padlock and <code>https</code> in the address bar mean the connection is encrypted, not that the site is trustworthy: scam sites use them too. Keep your phone and apps updated, only install apps from official stores, and be careful on public Wi-Fi: avoid banking on it, or use your own mobile data instead.",
+        "questions": [
+          {
+            "q": "Does a padlock in the browser guarantee a website is honest?",
+            "opts": [
+              "No, it only means the connection is encrypted",
+              "Yes, it proves the site is safe",
+              "Yes, only banks can have it",
+              "No, it means the site is slow"
+            ],
+            "correct": 0,
+            "explanation": "Anyone can get a padlock for a fake site. Check the address itself too."
+          },
+          {
+            "q": "What is the safer choice for online banking away from home?",
+            "opts": [
+              "Your own mobile data",
+              "Free public Wi-Fi",
+              "A friend's shared computer",
+              "Any open network"
+            ],
+            "correct": 0,
+            "explanation": "Public networks can be watched or faked. Your mobile connection is private to you."
+          }
+        ]
+      },
+      {
+        "id": "sf7",
+        "title": "7. Cyberbullying & Getting Help",
+        "kind": "quiz",
+        "lesson": "If someone bullies or threatens you online: do not reply in anger, <b>screenshot the evidence</b>, block the person, report them on the platform, and tell a trusted adult, a teacher or your school counsellor. It is never your fault, and you do not have to handle it alone. If you see someone else being targeted, support them and report it.",
+        "questions": [
+          {
+            "q": "You are being bullied in a group chat. What is a good first step?",
+            "opts": [
+              "Take screenshots, then tell a trusted adult",
+              "Delete everything and say nothing",
+              "Bully them back",
+              "Share the chat with more people"
+            ],
+            "correct": 0,
+            "explanation": "Evidence and a trusted adult give you the best chance of getting it stopped."
+          },
+          {
+            "q": "Who is responsible when someone cyberbullies you?",
+            "opts": [
+              "The person doing the bullying",
+              "You, for being online",
+              "Your parents",
+              "The phone company"
+            ],
+            "correct": 0,
+            "explanation": "Bullying is the bully's behaviour, never the victim's fault."
+          }
+        ]
+      },
+      {
+        "id": "sft1",
+        "title": "✅ Practice Test: Digital Safety",
+        "kind": "test",
+        "tier": "Beginner checkpoint",
+        "questions": [
+          {
+            "q": "What makes a password strong?",
+            "opts": [
+              "Length and unpredictability",
+              "Using your birthday",
+              "Using capital letters only",
+              "Using the same one everywhere"
+            ],
+            "correct": 0,
+            "explanation": "Long random passphrases are hard to guess."
+          },
+          {
+            "q": "What does 2FA add?",
+            "opts": [
+              "A second proof of identity",
+              "A faster login",
+              "A second account",
+              "Free storage"
+            ],
+            "correct": 0,
+            "explanation": "Password plus a second factor is much harder to break."
+          },
+          {
+            "q": "Who should you give your OTP to?",
+            "opts": [
+              "Nobody",
+              "Bank staff on the phone",
+              "Your friends",
+              "Delivery drivers"
+            ],
+            "correct": 0,
+            "explanation": "OTPs are only for you to type in yourself."
+          },
+          {
+            "q": "A message says \"Your account closes in 1 hour, click here\". This is likely...",
+            "opts": [
+              "Phishing",
+              "A helpful reminder",
+              "A prize",
+              "A software update"
+            ],
+            "correct": 0,
+            "explanation": "Urgency plus a link is the classic phishing pattern."
+          },
+          {
+            "q": "Genuine bursary and NSFAS applications...",
+            "opts": [
+              "Are free to apply for",
+              "Require an upfront fee",
+              "Must be paid by EFT",
+              "Cost R500"
+            ],
+            "correct": 0,
+            "explanation": "Anyone asking for money to apply is likely a scammer."
+          },
+          {
+            "q": "Your phone suddenly loses signal and you get bank alerts you did not make. What could be happening?",
+            "opts": [
+              "A SIM swap",
+              "A software update",
+              "A free upgrade",
+              "A broken charger"
+            ],
+            "correct": 0,
+            "explanation": "Call your network provider and bank immediately."
+          },
+          {
+            "q": "What is the safest way to reach your bank after a suspicious SMS?",
+            "opts": [
+              "Use the official app or type the website yourself",
+              "Click the link in the SMS",
+              "Reply to the SMS",
+              "Call the number in the SMS"
+            ],
+            "correct": 0,
+            "explanation": "Do not trust contact details that arrive in the suspicious message."
+          },
+          {
+            "q": "What does the padlock in the browser show?",
+            "opts": [
+              "The connection is encrypted",
+              "The site is definitely honest",
+              "The site is government-run",
+              "The site is fast"
+            ],
+            "correct": 0,
+            "explanation": "Encryption is not the same as trustworthiness."
+          },
+          {
+            "q": "Which is safest to share online?",
+            "opts": [
+              "Your favourite book",
+              "Your ID number",
+              "A photo of your bank card",
+              "Your home address"
+            ],
+            "correct": 0,
+            "explanation": "The others can be used for fraud or stalking."
+          },
+          {
+            "q": "If you are bullied online, what should you do?",
+            "opts": [
+              "Save evidence, block, report and tell a trusted adult",
+              "Hide it and cope alone",
+              "Reply with insults",
+              "Delete your school account"
+            ],
+            "correct": 0,
+            "explanation": "Getting support early stops things escalating."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "ailit",
+    "section": "skills",
+    "title": "AI Literacy",
+    "icon": "🤖",
+    "iconClass": "purple",
+    "desc": "How AI tools work, how to prompt them well, and how to use them honestly.",
+    "modules": [
+      {
+        "id": "ai1",
+        "title": "1. What AI Is (and Is Not)",
+        "kind": "quiz",
+        "lesson": "Modern AI learns patterns from huge amounts of data, then uses them to produce answers, images or predictions. It is a tool, not a person: it does not have feelings, life experience or a guarantee of being right. It can be very useful, but you stay responsible for what you do with its output.",
+        "questions": [
+          {
+            "q": "How do modern AI tools mainly work?",
+            "opts": [
+              "They learn patterns from large amounts of data",
+              "They look up one correct answer in a book",
+              "They think exactly like humans",
+              "They copy the last person's question"
+            ],
+            "correct": 0,
+            "explanation": "Patterns learned from data let them generate likely, useful responses."
+          },
+          {
+            "q": "Who is responsible for how AI output is used?",
+            "opts": [
+              "You, the person using it",
+              "Nobody",
+              "The AI itself",
+              "Your phone"
+            ],
+            "correct": 0,
+            "explanation": "AI is a tool. The user decides what to trust and what to submit."
+          }
+        ]
+      },
+      {
+        "id": "ai2",
+        "title": "2. How Chatbots Work (Simply)",
+        "kind": "quiz",
+        "lesson": "A chatbot is trained on a very large amount of text and learns to predict which words are likely to come next. That is why its writing sounds fluent. But fluent is not the same as true: it can state a wrong fact confidently, invent a source, or get maths wrong. This is called a <b>hallucination</b>.",
+        "questions": [
+          {
+            "q": "What is an AI hallucination?",
+            "opts": [
+              "A confident answer that is wrong or made up",
+              "A picture the AI draws",
+              "A computer virus",
+              "A slow response"
+            ],
+            "correct": 0,
+            "explanation": "The text sounds right because it is fluent, even when the content is false."
+          },
+          {
+            "q": "Why can chatbots sound sure even when they are wrong?",
+            "opts": [
+              "They generate likely-sounding text, not verified facts",
+              "They always check the internet",
+              "They cannot make mistakes",
+              "They are trying to trick you"
+            ],
+            "correct": 0,
+            "explanation": "Fluent wording comes from pattern prediction, not from knowing the truth."
+          }
+        ]
+      },
+      {
+        "id": "ai3",
+        "title": "3. Writing Good Prompts",
+        "kind": "quiz",
+        "lesson": "Better prompts get better answers. Include: the <b>role</b> (\"act as a Grade 11 Physics tutor\"), the <b>context</b> (what you already know), the <b>task</b> (what you want), and the <b>format</b> (\"in 5 bullet points\", \"with one example\"). If the answer is not right, follow up: ask it to explain differently or check its steps.",
+        "questions": [
+          {
+            "q": "Which prompt is most likely to give a useful answer?",
+            "opts": [
+              "Explain Newton's second law to a Grade 10 learner in 5 bullet points with one example",
+              "Physics",
+              "Tell me everything",
+              "Do my homework"
+            ],
+            "correct": 0,
+            "explanation": "It gives audience, task and format so the response can be targeted."
+          },
+          {
+            "q": "What should you do if the first answer is confusing?",
+            "opts": [
+              "Ask a follow-up, such as to explain it in simpler steps",
+              "Give up on the topic",
+              "Trust it anyway",
+              "Type the same thing louder"
+            ],
+            "correct": 0,
+            "explanation": "Prompting is a conversation. You can refine as you go."
+          }
+        ]
+      },
+      {
+        "id": "ai4",
+        "title": "4. Checking AI's Answers",
+        "kind": "quiz",
+        "lesson": "Treat AI like a very quick but sometimes careless study partner. <b>Verify</b> anything important, especially numbers, dates, quotes, names and sources, using your textbook, your teacher or a reliable website. If it gives a reference, make sure the source really exists. Compare the answer with what you already know.",
+        "questions": [
+          {
+            "q": "What is the best way to check an important AI answer?",
+            "opts": [
+              "Compare it with a reliable source like your textbook or teacher",
+              "Ask the AI if it is sure and accept the reply",
+              "Assume it is correct if it sounds confident",
+              "Check only the spelling"
+            ],
+            "correct": 0,
+            "explanation": "Independent sources catch errors the AI cannot see in itself."
+          },
+          {
+            "q": "An AI gives you a book title and page number as a source. What should you do?",
+            "opts": [
+              "Confirm the book and page actually exist before using it",
+              "Copy it straight into your assignment",
+              "Ignore all sources",
+              "Change the page number"
+            ],
+            "correct": 0,
+            "explanation": "AI can invent convincing but non-existent references."
+          }
+        ]
+      },
+      {
+        "id": "ai5",
+        "title": "5. Bias, Privacy & Ethics",
+        "kind": "quiz",
+        "lesson": "AI learns from human-made data, so it can repeat unfair patterns or leave some groups out. Be careful about what you share: <b>never paste</b> passwords, ID numbers, bank details or private information about other people into an AI tool. Ask yourself whether an answer might be unfair to someone, and check with people who know the topic.",
+        "questions": [
+          {
+            "q": "Why can AI show bias?",
+            "opts": [
+              "It learns from human data that can contain unfair patterns",
+              "It is programmed to dislike people",
+              "It only speaks one language",
+              "It is always neutral"
+            ],
+            "correct": 0,
+            "explanation": "Biased inputs can lead to biased outputs."
+          },
+          {
+            "q": "Which should you never paste into an AI chat?",
+            "opts": [
+              "Your ID number or passwords",
+              "A poem you wrote",
+              "A maths question",
+              "A recipe"
+            ],
+            "correct": 0,
+            "explanation": "Private details could be stored or leaked, so keep them out."
+          }
+        ]
+      },
+      {
+        "id": "ai6",
+        "title": "6. AI and Schoolwork Honesty",
+        "kind": "quiz",
+        "lesson": "Use AI to <b>learn</b>: ask it to explain a concept, quiz you, or give feedback on your draft. Do not hand in its work as your own. Follow your school's rules and be open about how you used it. If you cannot explain your submitted answer without the AI, you have not really learned it.",
+        "questions": [
+          {
+            "q": "Which is a good, honest use of AI for school?",
+            "opts": [
+              "Asking it to explain a concept you are stuck on",
+              "Submitting its essay as your own work",
+              "Having it write your exam answers",
+              "Copying a classmate's AI answer"
+            ],
+            "correct": 0,
+            "explanation": "Using it to understand keeps the learning yours."
+          },
+          {
+            "q": "Why is submitting AI-written work as your own a problem?",
+            "opts": [
+              "It is dishonest and you skip the learning you need",
+              "It is impossible to do",
+              "It always gets full marks",
+              "Teachers cannot tell the difference ever"
+            ],
+            "correct": 0,
+            "explanation": "It counts as plagiarism, and you will still face the exam alone."
+          }
+        ]
+      },
+      {
+        "id": "ait1",
+        "title": "✅ Practice Test: AI Literacy",
+        "kind": "test",
+        "tier": "Beginner checkpoint",
+        "questions": [
+          {
+            "q": "Modern AI mainly works by...",
+            "opts": [
+              "Learning patterns from large amounts of data",
+              "Reading your mind",
+              "Searching a single dictionary",
+              "Copying a teacher"
+            ],
+            "correct": 0,
+            "explanation": "Learned patterns power what it produces."
+          },
+          {
+            "q": "A hallucination is...",
+            "opts": [
+              "A confident but false or invented answer",
+              "A visual effect",
+              "A sleep problem",
+              "A loading screen"
+            ],
+            "correct": 0,
+            "explanation": "Sounding right does not make it right."
+          },
+          {
+            "q": "Which prompt is stronger?",
+            "opts": [
+              "Explain photosynthesis for Grade 10 in 5 steps with a diagram description",
+              "Photosynthesis",
+              "Tell me stuff",
+              "Do it"
+            ],
+            "correct": 0,
+            "explanation": "Specific role, topic, level and format improve results."
+          },
+          {
+            "q": "Best way to verify an important fact from AI?",
+            "opts": [
+              "Cross-check with a reliable source",
+              "Ask the same AI again and accept it",
+              "Assume it is right",
+              "Check the font"
+            ],
+            "correct": 0,
+            "explanation": "Independent checking finds mistakes."
+          },
+          {
+            "q": "An AI cites a research paper. What next?",
+            "opts": [
+              "Confirm the paper actually exists",
+              "Use it without checking",
+              "Delete the citation",
+              "Add more fake ones"
+            ],
+            "correct": 0,
+            "explanation": "AI can generate references that look real but are not."
+          },
+          {
+            "q": "What should you never share with an AI chatbot?",
+            "opts": [
+              "Passwords and ID numbers",
+              "Study questions",
+              "General topics",
+              "Your favourite colour"
+            ],
+            "correct": 0,
+            "explanation": "Sensitive data should stay private."
+          },
+          {
+            "q": "Why can AI answers be biased?",
+            "opts": [
+              "Training data can contain human bias",
+              "AI hates some groups",
+              "AI is random",
+              "Bias is always intended"
+            ],
+            "correct": 0,
+            "explanation": "It reflects patterns in the data it learned from."
+          },
+          {
+            "q": "A fair use of AI in school is...",
+            "opts": [
+              "Getting a concept explained, then doing the work yourself",
+              "Submitting AI work as yours",
+              "Letting AI sit your test",
+              "Copying its answers blindly"
+            ],
+            "correct": 0,
+            "explanation": "The learning and the work stay yours."
+          },
+          {
+            "q": "If you cannot explain an answer without AI, it means...",
+            "opts": [
+              "You have not really learned it yet",
+              "You are ready for the exam",
+              "The AI is wrong",
+              "Nothing"
+            ],
+            "correct": 0,
+            "explanation": "Understanding shows when you can explain in your own words."
+          },
+          {
+            "q": "Who is accountable for work you submit using AI?",
+            "opts": [
+              "You",
+              "The AI company",
+              "Your friend",
+              "Nobody"
+            ],
+            "correct": 0,
+            "explanation": "You decide what to submit, so you carry responsibility."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "study",
+    "section": "skills",
+    "title": "Study Skills",
+    "icon": "🎓",
+    "iconClass": "gold",
+    "desc": "Methods that actually work: recall, spacing, focus, notes, past papers and planning.",
+    "modules": [
+      {
+        "id": "st1",
+        "title": "1. Active Recall",
+        "kind": "quiz",
+        "lesson": "Re-reading feels productive but is one of the weakest ways to study. <b>Active recall</b> means closing the book and pulling the answer out of your own memory: flashcards, past-paper questions, or explaining a topic aloud from nothing. The effort of remembering is what strengthens memory.",
+        "questions": [
+          {
+            "q": "Which is the strongest way to study?",
+            "opts": [
+              "Test yourself without looking at your notes",
+              "Re-read the chapter three times",
+              "Highlight every line",
+              "Copy the notes neatly"
+            ],
+            "correct": 0,
+            "explanation": "Pulling information out of memory strengthens it more than re-reading."
+          },
+          {
+            "q": "Why does active recall work?",
+            "opts": [
+              "The effort of retrieving an answer strengthens memory",
+              "It is quicker to set up",
+              "It feels easy",
+              "It avoids mistakes"
+            ],
+            "correct": 0,
+            "explanation": "Struggling a little to remember makes the memory stick."
+          }
+        ]
+      },
+      {
+        "id": "st2",
+        "title": "2. Spaced Repetition",
+        "kind": "quiz",
+        "lesson": "You forget quickly at first and more slowly later. <b>Spaced repetition</b> reviews material just as you are about to forget it, with gaps that grow: after a day, then three days, then a week, then longer. Short, spread-out sessions beat one long cram the night before.",
+        "questions": [
+          {
+            "q": "What is spaced repetition?",
+            "opts": [
+              "Reviewing material at gradually increasing gaps",
+              "Studying everything in one night",
+              "Reading the same page repeatedly in a row",
+              "Only studying on weekends"
+            ],
+            "correct": 0,
+            "explanation": "Spacing reviews lets you refresh memories right before they fade."
+          },
+          {
+            "q": "Which plan is better for remembering a topic in two weeks' time?",
+            "opts": [
+              "Short reviews on several different days",
+              "One 6-hour session the night before",
+              "Never review it",
+              "Only read it once"
+            ],
+            "correct": 0,
+            "explanation": "Repeated, spaced exposure builds longer-lasting memory."
+          }
+        ]
+      },
+      {
+        "id": "st3",
+        "title": "3. Focus & the Pomodoro Method",
+        "kind": "quiz",
+        "lesson": "Deep focus needs fewer distractions. The <b>Pomodoro method</b>: work with full attention for 25 minutes, take a 5-minute break, and after four rounds take a longer break. Put your phone out of reach or on silent, and decide what you will do in each block before you begin.",
+        "questions": [
+          {
+            "q": "In the classic Pomodoro method, how long is a focus block?",
+            "opts": [
+              "25 minutes",
+              "5 minutes",
+              "2 hours",
+              "All night"
+            ],
+            "correct": 0,
+            "explanation": "Twenty-five minutes of focus followed by a short break is the standard."
+          },
+          {
+            "q": "What helps most with staying focused while studying?",
+            "opts": [
+              "Putting your phone out of reach",
+              "Keeping notifications loud",
+              "Studying in bed with the TV on",
+              "Switching tasks every minute"
+            ],
+            "correct": 0,
+            "explanation": "Fewer interruptions means deeper concentration."
+          }
+        ]
+      },
+      {
+        "id": "st4",
+        "title": "4. Note-Taking Methods",
+        "kind": "quiz",
+        "lesson": "Good notes are shorter than the textbook and in your own words. <b>Cornell notes</b> split a page into notes, cue questions and a summary. <b>Mind maps</b> show how ideas connect. <b>Outlines</b> use headings and bullets. Whichever you use, review your notes soon after class and turn headings into questions to test yourself.",
+        "questions": [
+          {
+            "q": "Which is a good habit for notes?",
+            "opts": [
+              "Write in your own words and keep them short",
+              "Copy the textbook word for word",
+              "Write everything the teacher says",
+              "Never review them"
+            ],
+            "correct": 0,
+            "explanation": "Rewording forces understanding, which copying does not."
+          },
+          {
+            "q": "What are Cornell notes?",
+            "opts": [
+              "A page split into notes, cue questions and a summary",
+              "A type of flashcard game",
+              "A slide template",
+              "A textbook brand"
+            ],
+            "correct": 0,
+            "explanation": "The cue column makes self-testing easy later."
+          }
+        ]
+      },
+      {
+        "id": "st5",
+        "title": "5. Past Papers & Exam Technique",
+        "kind": "quiz",
+        "lesson": "Past papers are the closest practice to the real exam. Do them <b>timed</b>, then mark them against the memo and write down why you lost each mark. In the exam: read all instructions first, look at the marks for each question (as a rough guide, aim for about a minute per mark), start with questions you know, and leave time to check.",
+        "questions": [
+          {
+            "q": "What should you do after finishing a past paper?",
+            "opts": [
+              "Mark it with the memo and work out why you lost marks",
+              "Throw it away",
+              "Only look at the ones you got right",
+              "Wait a month"
+            ],
+            "correct": 0,
+            "explanation": "Learning from errors is where the improvement comes from."
+          },
+          {
+            "q": "How can marks help you manage exam time?",
+            "opts": [
+              "Spend more time on questions worth more marks",
+              "Spend the same time on every question",
+              "Ignore marks",
+              "Skip all long questions"
+            ],
+            "correct": 0,
+            "explanation": "Marks show where the most points are, so plan your minutes to match."
+          }
+        ]
+      },
+      {
+        "id": "st6",
+        "title": "6. Sleep, Breaks & Stress",
+        "kind": "quiz",
+        "lesson": "Your brain stores what you learned while you sleep, so an all-nighter usually costs more than it gives. Take short breaks, drink water, eat properly and move around. Nerves before exams are normal; slow breathing, preparation and talking to someone you trust help. If stress feels too big, speak to a parent, teacher or school counsellor.",
+        "questions": [
+          {
+            "q": "Why is sleep important for studying?",
+            "opts": [
+              "It helps your brain store what you learned",
+              "It replaces studying completely",
+              "It makes notes neater",
+              "It has no effect"
+            ],
+            "correct": 0,
+            "explanation": "Memory consolidation happens during sleep."
+          },
+          {
+            "q": "What is a healthy response to feeling overwhelmed before exams?",
+            "opts": [
+              "Talk to someone you trust and break the work into small steps",
+              "Ignore it and study all night",
+              "Hide it from everyone",
+              "Stop studying entirely"
+            ],
+            "correct": 0,
+            "explanation": "Support and small steps make the load manageable."
+          }
+        ]
+      },
+      {
+        "id": "st7",
+        "title": "7. Planning Your Week",
+        "kind": "quiz",
+        "lesson": "Write specific tasks, not vague goals: \"Do Maths Paper 1 Q1-4, 40 minutes\" beats \"study Maths\". Put the hardest subject in your best energy time, schedule breaks, and leave a buffer for surprises. Review the plan each Sunday and adjust. A plan you follow at 80% beats a perfect plan you abandon.",
+        "questions": [
+          {
+            "q": "Which is a better study goal?",
+            "opts": [
+              "Do Maths Paper 1 questions 1 to 4 in 40 minutes",
+              "Study Maths",
+              "Do well",
+              "Try harder"
+            ],
+            "correct": 0,
+            "explanation": "Specific, measurable tasks are easy to start and to check off."
+          },
+          {
+            "q": "When should you schedule your hardest subject?",
+            "opts": [
+              "When your energy and focus are highest",
+              "When you are most tired",
+              "Only the night before",
+              "Never"
+            ],
+            "correct": 0,
+            "explanation": "Hard work needs your best concentration."
+          }
+        ]
+      },
+      {
+        "id": "stt1",
+        "title": "✅ Practice Test: Study Skills",
+        "kind": "test",
+        "tier": "Beginner checkpoint",
+        "questions": [
+          {
+            "q": "Active recall means...",
+            "opts": [
+              "Pulling answers from memory without looking",
+              "Highlighting text",
+              "Listening to music",
+              "Copying notes"
+            ],
+            "correct": 0,
+            "explanation": "Retrieval effort strengthens memory."
+          },
+          {
+            "q": "Spaced repetition involves...",
+            "opts": [
+              "Reviewing at growing time gaps",
+              "Reading once",
+              "Cramming all night",
+              "Only studying one topic"
+            ],
+            "correct": 0,
+            "explanation": "Spacing refreshes memory just before you forget."
+          },
+          {
+            "q": "A Pomodoro focus block is normally...",
+            "opts": [
+              "25 minutes",
+              "90 minutes",
+              "5 hours",
+              "1 minute"
+            ],
+            "correct": 0,
+            "explanation": "It is followed by a 5-minute break."
+          },
+          {
+            "q": "Best place for your phone while studying?",
+            "opts": [
+              "Out of reach or silent",
+              "On the desk with alerts on",
+              "In your hand",
+              "Playing videos"
+            ],
+            "correct": 0,
+            "explanation": "Removing temptation protects focus."
+          },
+          {
+            "q": "Good notes are...",
+            "opts": [
+              "In your own words and concise",
+              "Copied word for word",
+              "As long as the textbook",
+              "Never revisited"
+            ],
+            "correct": 0,
+            "explanation": "Rewording and reviewing help learning."
+          },
+          {
+            "q": "After a past paper, you should...",
+            "opts": [
+              "Mark it and study your mistakes",
+              "Ignore the marks",
+              "Only celebrate the good bits",
+              "Do another without checking"
+            ],
+            "correct": 0,
+            "explanation": "Understanding mistakes is what improves your next score."
+          },
+          {
+            "q": "In an exam, how can marks guide your time?",
+            "opts": [
+              "More marks deserve more time",
+              "All questions get equal time",
+              "Ignore them",
+              "Start with the longest"
+            ],
+            "correct": 0,
+            "explanation": "Match effort to the marks available."
+          },
+          {
+            "q": "Why avoid an all-night cram?",
+            "opts": [
+              "Sleep helps memory and clear thinking",
+              "It is illegal",
+              "Nothing happens either way",
+              "You will run out of paper"
+            ],
+            "correct": 0,
+            "explanation": "Tired brains recall and reason worse."
+          },
+          {
+            "q": "Which is a specific study task?",
+            "opts": [
+              "Do Physics Paper 2 Q1 to 3 in 35 minutes",
+              "Study Physics",
+              "Get better",
+              "Learn everything"
+            ],
+            "correct": 0,
+            "explanation": "Specific tasks are easy to start and finish."
+          },
+          {
+            "q": "What should you do when stress feels too big?",
+            "opts": [
+              "Talk to a trusted adult or counsellor",
+              "Keep quiet",
+              "Study without rest",
+              "Skip the exam"
+            ],
+            "correct": 0,
+            "explanation": "Asking for support is a strength, and it helps."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "jobs",
+    "section": "skills",
+    "title": "Job Readiness",
+    "icon": "💼",
+    "iconClass": "teal",
+    "desc": "CVs, applications, interviews, workplace basics and your rights as a young worker.",
+    "modules": [
+      {
+        "id": "jb1",
+        "title": "1. Your CV",
+        "kind": "quiz",
+        "lesson": "A CV is a short summary of who you are and what you can do. Keep it to one or two pages with clear headings: contact details, a short profile, education, experience (including volunteering or school leadership), skills and references. Use a professional email address, be honest, check spelling, and tailor it to each role.",
+        "questions": [
+          {
+            "q": "Which detail belongs on a CV?",
+            "opts": [
+              "Your contact details and education",
+              "Your bank PIN",
+              "Your passwords",
+              "Photos of your ID document pages"
+            ],
+            "correct": 0,
+            "explanation": "Employers need to reach you and see your background. Never include secrets."
+          },
+          {
+            "q": "How long should a school-leaver CV usually be?",
+            "opts": [
+              "One to two pages",
+              "Ten pages",
+              "One sentence",
+              "As long as possible"
+            ],
+            "correct": 0,
+            "explanation": "Employers skim, so clear and short wins."
+          }
+        ]
+      },
+      {
+        "id": "jb2",
+        "title": "2. Applications & Cover Letters",
+        "kind": "quiz",
+        "lesson": "A cover letter is a short note that says which job you are applying for, why you are a good fit, and how to reach you. Name the role and the company, give one or two examples of relevant strengths, and keep it to a few short paragraphs. Follow the instructions in the advert exactly and apply before the closing date.",
+        "questions": [
+          {
+            "q": "What makes a good cover letter?",
+            "opts": [
+              "Short, specific to the role and clear about why you fit",
+              "A copy of the same letter for every job",
+              "Very long and vague",
+              "Only a greeting"
+            ],
+            "correct": 0,
+            "explanation": "Tailoring shows effort and relevance."
+          },
+          {
+            "q": "Why should you follow the application instructions exactly?",
+            "opts": [
+              "Employers often reject applications that ignore them",
+              "They do not matter",
+              "It slows you down",
+              "It is rude"
+            ],
+            "correct": 0,
+            "explanation": "Following instructions shows you can do what you are asked."
+          }
+        ]
+      },
+      {
+        "id": "jb3",
+        "title": "3. Interviews",
+        "kind": "quiz",
+        "lesson": "Prepare: learn about the organisation, practise answers to common questions, and think of examples. The <b>STAR</b> method structures a story: <b>S</b>ituation, <b>T</b>ask, <b>A</b>ction, <b>R</b>esult. Arrive early, dress neatly, listen carefully, be honest, and ask one or two questions at the end. Follow up with a short thank-you message.",
+        "questions": [
+          {
+            "q": "What does STAR stand for in interviews?",
+            "opts": [
+              "Situation, Task, Action, Result",
+              "Skill, Time, Answer, Reference",
+              "Start, Talk, Ask, Repeat",
+              "Strength, Trust, Ambition, Respect"
+            ],
+            "correct": 0,
+            "explanation": "It gives your answers a clear beginning, middle and end."
+          },
+          {
+            "q": "Which is a good way to prepare for an interview?",
+            "opts": [
+              "Research the organisation and practise your answers",
+              "Wing it completely",
+              "Memorise a script word for word",
+              "Arrive late on purpose"
+            ],
+            "correct": 0,
+            "explanation": "Preparation builds confidence and shows genuine interest."
+          }
+        ]
+      },
+      {
+        "id": "jb4",
+        "title": "4. Workplace Communication",
+        "kind": "quiz",
+        "lesson": "Be on time, tell someone early if you will be late, and ask questions when unsure. In emails use a clear subject line, greet politely, keep messages short and check before sending. Listen to feedback without getting defensive, and follow through on what you promise. Small habits build a strong reputation quickly.",
+        "questions": [
+          {
+            "q": "What makes a professional email?",
+            "opts": [
+              "A clear subject line and a short, polite message",
+              "No subject and all capital letters",
+              "Slang and emojis only",
+              "Very long paragraphs"
+            ],
+            "correct": 0,
+            "explanation": "Clear and courteous messages are easy to act on."
+          },
+          {
+            "q": "You will be late for work. What should you do?",
+            "opts": [
+              "Tell your manager as early as possible",
+              "Say nothing",
+              "Blame traffic afterwards",
+              "Skip the day without telling"
+            ],
+            "correct": 0,
+            "explanation": "Early communication shows respect and lets them plan."
+          }
+        ]
+      },
+      {
+        "id": "jb5",
+        "title": "5. Know Your Rights at Work",
+        "kind": "quiz",
+        "lesson": "In South Africa the Basic Conditions of Employment Act sets basic rules for workers. Among other things you should receive written details of your job and a payslip, and be registered for UIF. Genuine employers and registered agencies do not charge you to apply for or get a job. If something feels wrong, ask questions and speak to a trusted adult or the Department of Employment and Labour.",
+        "questions": [
+          {
+            "q": "Which is true about genuine job offers?",
+            "opts": [
+              "You should not have to pay a fee to get the job",
+              "You must always pay a registration fee",
+              "You should hand over your PIN",
+              "Payslips are illegal"
+            ],
+            "correct": 0,
+            "explanation": "Asking job seekers for money is a warning sign of a scam."
+          },
+          {
+            "q": "What should your employer give you every pay period?",
+            "opts": [
+              "A payslip showing your pay and deductions",
+              "Nothing in writing",
+              "A verbal number only",
+              "A blank page"
+            ],
+            "correct": 0,
+            "explanation": "A payslip lets you check that you were paid correctly."
+          }
+        ]
+      },
+      {
+        "id": "jb6",
+        "title": "6. Starting Small: Experience Pathways",
+        "kind": "quiz",
+        "lesson": "Your first step does not have to be a full-time job. <b>Volunteering</b>, <b>internships</b>, <b>learnerships</b> (structured programmes that combine classroom learning with workplace experience and lead to a qualification), short courses and small side projects all build experience, references and confidence. Keep a list of what you have done: it becomes your CV.",
+        "questions": [
+          {
+            "q": "What is a learnership?",
+            "opts": [
+              "A structured programme that mixes study with workplace experience",
+              "A type of bank loan",
+              "A school sports team",
+              "A tax"
+            ],
+            "correct": 0,
+            "explanation": "It leads to a recognised qualification while you gain real work experience."
+          },
+          {
+            "q": "Why is volunteering useful when you have no work experience yet?",
+            "opts": [
+              "It builds skills, references and confidence",
+              "It replaces all education",
+              "It pays a large salary",
+              "It is not allowed on a CV"
+            ],
+            "correct": 0,
+            "explanation": "It gives you real examples to talk about in applications and interviews."
+          }
+        ]
+      },
+      {
+        "id": "jbt1",
+        "title": "✅ Practice Test: Job Readiness",
+        "kind": "test",
+        "tier": "Beginner checkpoint",
+        "questions": [
+          {
+            "q": "A CV should usually be...",
+            "opts": [
+              "One to two clear pages",
+              "Ten pages",
+              "A single line",
+              "Only images"
+            ],
+            "correct": 0,
+            "explanation": "Concise CVs are easier to read."
+          },
+          {
+            "q": "Which should NOT appear on a CV?",
+            "opts": [
+              "Your bank PIN",
+              "Your email address",
+              "Your education",
+              "Your skills"
+            ],
+            "correct": 0,
+            "explanation": "Secrets like PINs and passwords never belong there."
+          },
+          {
+            "q": "A cover letter should be...",
+            "opts": [
+              "Specific to the role",
+              "Identical for every job",
+              "Very long",
+              "Empty"
+            ],
+            "correct": 0,
+            "explanation": "It shows why you fit that particular job."
+          },
+          {
+            "q": "STAR stands for...",
+            "opts": [
+              "Situation, Task, Action, Result",
+              "Speak, Think, Answer, Rest",
+              "Start, Talk, Ask, Rate",
+              "Skill, Team, Aim, Reward"
+            ],
+            "correct": 0,
+            "explanation": "It is a structure for telling interview stories."
+          },
+          {
+            "q": "Before an interview you should...",
+            "opts": [
+              "Research the organisation",
+              "Not prepare",
+              "Arrive late",
+              "Guess everything"
+            ],
+            "correct": 0,
+            "explanation": "Preparation improves both answers and confidence."
+          },
+          {
+            "q": "Running late for work: the best action is to...",
+            "opts": [
+              "Tell your manager early",
+              "Ignore it",
+              "Send no message",
+              "Blame others"
+            ],
+            "correct": 0,
+            "explanation": "Early honesty protects trust."
+          },
+          {
+            "q": "Which is a scam warning sign?",
+            "opts": [
+              "A job that asks you to pay a fee first",
+              "A clear job description",
+              "An interview appointment",
+              "A written contract"
+            ],
+            "correct": 0,
+            "explanation": "Genuine employers do not charge job seekers."
+          },
+          {
+            "q": "Your employer must provide...",
+            "opts": [
+              "A payslip",
+              "A fee invoice",
+              "Your passwords",
+              "A secret code"
+            ],
+            "correct": 0,
+            "explanation": "Payslips show how your pay was calculated."
+          },
+          {
+            "q": "A learnership is...",
+            "opts": [
+              "A study-plus-work programme leading to a qualification",
+              "A loan",
+              "A holiday",
+              "A sports club"
+            ],
+            "correct": 0,
+            "explanation": "It combines theory and workplace practice."
+          },
+          {
+            "q": "Why keep a list of volunteering and projects?",
+            "opts": [
+              "It becomes evidence for your CV and interviews",
+              "It replaces school",
+              "It is required by law",
+              "It has no use"
+            ],
+            "correct": 0,
+            "explanation": "Real examples make applications stronger."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "biz",
+    "title": "Entrepreneurship Basics",
+    "icon": "🚀",
+    "iconClass": "purple",
+    "desc": "Starting and running a small side hustle — ideas, pricing, marketing and basic record-keeping.",
+    "modules": [
+      {
+        "id": "bz1",
+        "title": "1. What Is Entrepreneurship?",
+        "kind": "quiz",
+        "lesson": "An entrepreneur spots a problem people have and builds something — a product or service — to solve it, usually for payment. A small \"side hustle\" (baking, tutoring, reselling, a small repair service) is entrepreneurship at a small scale. It takes initiative and a willingness to learn from mistakes, not necessarily a big loan or a fancy office.",
+        "questions": [
+          {
+            "q": "What does an entrepreneur fundamentally do?",
+            "opts": [
+              "Spots a problem and builds something to solve it, for payment",
+              "Only works for a large company",
+              "Only invests in the stock market",
+              "Waits for opportunities to arrive"
+            ],
+            "correct": 0,
+            "explanation": "Identifying and solving a real need is at the core of any business, big or small."
+          },
+          {
+            "q": "Is a small side hustle a form of entrepreneurship?",
+            "opts": [
+              "Yes, entrepreneurship happens at every scale, not just big companies",
+              "No, only registered companies count",
+              "No, it must involve a bank loan",
+              "Only if it makes over R1 million"
+            ],
+            "correct": 0,
+            "explanation": "Baking and selling snacks at school is entrepreneurship on a small scale."
+          }
+        ]
+      },
+      {
+        "id": "bz2",
+        "title": "2. Finding a Business Idea",
+        "kind": "quiz",
+        "lesson": "Good ideas usually start with a real problem you understand well: something you or people around you struggle with. Ask: What do people around me need or complain about? What am I good at or enjoy? Could I do a smaller, cheaper or more convenient version of something that already exists? Testing a small version cheaply (a \"minimum viable\" version) beats spending months planning before ever trying.",
+        "questions": [
+          {
+            "q": "A strong starting point for a business idea is...",
+            "opts": [
+              "A real problem you understand, that people around you have",
+              "A random guess with no connection to anyone's needs",
+              "Copying a big company exactly, in every detail",
+              "Waiting until you have a lot of money first"
+            ],
+            "correct": 0,
+            "explanation": "Ideas rooted in a real, understood problem are more likely to find real customers."
+          },
+          {
+            "q": "Why test a small, cheap version of an idea first?",
+            "opts": [
+              "It lets you learn quickly without risking a lot of time or money",
+              "It guarantees success",
+              "It is required by law",
+              "It skips the need for customers"
+            ],
+            "correct": 0,
+            "explanation": "Small tests reveal real feedback before you commit heavily."
+          }
+        ]
+      },
+      {
+        "id": "bz3",
+        "title": "3. Costs, Pricing & Profit",
+        "kind": "quiz",
+        "lesson": "Add up your <b>costs</b>: materials, transport, packaging, your time. <b>Price</b> must cover costs and leave a <b>profit</b> (price minus cost). A common mistake is pricing too low to \"be nice\" and ending up working for free. Also research what similar things sell for nearby, so your price is realistic for buyers.",
+        "questions": [
+          {
+            "q": "If your ingredients and packaging cost R25 per item and you sell for R40, what is your profit per item?",
+            "opts": [
+              "R15",
+              "R40",
+              "R25",
+              "R65"
+            ],
+            "correct": 0,
+            "explanation": "40 minus 25 equals 15 rand profit per item."
+          },
+          {
+            "q": "Why is pricing too low a risk, even if it feels generous?",
+            "opts": [
+              "You may not cover your real costs and end up working for free",
+              "Customers always prefer very cheap items",
+              "It always increases profit",
+              "It has no downside"
+            ],
+            "correct": 0,
+            "explanation": "If price barely covers cost, growth becomes very hard and effort goes unpaid."
+          }
+        ]
+      },
+      {
+        "id": "bz4",
+        "title": "4. Do the Numbers",
+        "kind": "predict",
+        "lesson": "Work out each answer, just the number.",
+        "ask": "What is the answer?",
+        "challenges": [
+          {
+            "code": "You spend R180 on ingredients and make 12 cupcakes.\nWhat is your cost per cupcake?",
+            "answer": "15",
+            "hint": "180 divided by 12 = 15 rand per cupcake"
+          },
+          {
+            "code": "Cost per cupcake: R15. You sell each for R25.\nWhat is your profit per cupcake?",
+            "answer": "10",
+            "hint": "25 minus 15 = 10 rand profit each"
+          },
+          {
+            "code": "You sell 20 cupcakes at R25 each.\nWhat is your total profit?",
+            "answer": "200",
+            "hint": "20 cupcakes × R10 profit each = R200"
+          }
+        ]
+      },
+      {
+        "id": "bz5",
+        "title": "5. Basic Marketing",
+        "kind": "quiz",
+        "lesson": "Marketing means telling the right people about what you offer, clearly and honestly. Know your <b>target customer</b> (who specifically needs this?), have clear photos or a clear description, and use word of mouth, social media, or a school/community notice board. Consistency (posting or telling people regularly) matters more than one perfect post.",
+        "questions": [
+          {
+            "q": "What does \"target customer\" mean?",
+            "opts": [
+              "The specific group of people most likely to want what you offer",
+              "Everyone in the country, without exception",
+              "Only people you already know personally",
+              "A government department"
+            ],
+            "correct": 0,
+            "explanation": "Focusing on who actually needs your offer makes marketing far more effective."
+          },
+          {
+            "q": "What matters more for small-business marketing: one perfect post or regular consistent effort?",
+            "opts": [
+              "Regular consistent effort",
+              "One perfect post, then stop",
+              "Neither matters",
+              "Only paid advertising works"
+            ],
+            "correct": 0,
+            "explanation": "Staying visible over time builds more trust and reach than a single post."
+          }
+        ]
+      },
+      {
+        "id": "bz6",
+        "title": "6. Record-Keeping & Basic Cash Flow",
+        "kind": "quiz",
+        "lesson": "Keep a simple record of money in and money out — a notebook or spreadsheet is enough to start. <b>Cash flow</b> is the timing of money moving in and out: even a profitable business can struggle if expenses are due before customers pay. Keep some money aside for restocking, and do not mix personal spending money with business money.",
+        "questions": [
+          {
+            "q": "Why keep a simple record of money in and out?",
+            "opts": [
+              "To know if you are actually making a profit and to plan ahead",
+              "It is only needed for very large companies",
+              "It replaces the need to sell anything",
+              "It guarantees profit automatically"
+            ],
+            "correct": 0,
+            "explanation": "Without records, it is easy to lose track of whether the business is really working."
+          },
+          {
+            "q": "Why is it risky to mix personal and business money?",
+            "opts": [
+              "It becomes hard to tell if the business is actually profitable",
+              "It is illegal to have a bank account",
+              "It makes marketing harder",
+              "It has no real effect"
+            ],
+            "correct": 0,
+            "explanation": "Mixed funds make it unclear what the business truly earned or spent."
+          }
+        ]
+      },
+      {
+        "id": "bz7",
+        "title": "7. Basic Legal & Ethical Basics",
+        "kind": "quiz",
+        "lesson": "Honesty builds a reputation that keeps customers coming back: describe products accurately, deliver what you promised, and price fairly. As a business grows, things like registering it, opening a separate bank account, or understanding simple tax rules become relevant — worth researching or asking an adult or the Small Enterprise Development Agency about, rather than guessing.",
+        "questions": [
+          {
+            "q": "What most directly builds a returning customer base?",
+            "opts": [
+              "Honesty and consistently delivering what you promised",
+              "The fanciest possible packaging only",
+              "Never talking to customers",
+              "Copying a competitor exactly"
+            ],
+            "correct": 0,
+            "explanation": "Trust, earned through reliability, is what brings customers back."
+          },
+          {
+            "q": "As a side hustle grows, who is a sensible resource for legal/registration questions?",
+            "opts": [
+              "A trusted adult or an organisation like the Small Enterprise Development Agency",
+              "Guessing based on rumours",
+              "Nobody, it is not necessary ever",
+              "A random online stranger"
+            ],
+            "correct": 0,
+            "explanation": "Getting real guidance avoids costly mistakes as things get more serious."
+          }
+        ]
+      },
+      {
+        "id": "bzt1",
+        "title": "✅ Practice Test: Entrepreneurship Basics",
+        "kind": "test",
+        "tier": "Beginner checkpoint",
+        "questions": [
+          {
+            "q": "An entrepreneur mainly...",
+            "opts": [
+              "Spots a problem and builds something to solve it",
+              "Only manages other people's money",
+              "Only works in banking",
+              "Avoids all risk entirely"
+            ],
+            "correct": 0,
+            "explanation": "This defines entrepreneurship at any scale."
+          },
+          {
+            "q": "A good starting point for a business idea is...",
+            "opts": [
+              "A real problem you understand well",
+              "A guess with no connection to real needs",
+              "Something nobody has ever wanted",
+              "Whatever costs the most to start"
+            ],
+            "correct": 0,
+            "explanation": "Understanding the problem improves the odds of a idea actually working."
+          },
+          {
+            "q": "Profit is calculated as...",
+            "opts": [
+              "Price minus cost",
+              "Price plus cost",
+              "Cost minus price",
+              "Price divided by two"
+            ],
+            "correct": 0,
+            "explanation": "Whatever is left after covering your costs is the profit."
+          },
+          {
+            "q": "Pricing too low as a \"nice\" gesture risks...",
+            "opts": [
+              "Not covering your real costs, working for free",
+              "Nothing at all",
+              "Always increasing sales",
+              "Guaranteed profit"
+            ],
+            "correct": 0,
+            "explanation": "If price barely covers cost, the effort goes largely unpaid."
+          },
+          {
+            "q": "Cost R15, ingredients for 1 item; sell at R22. Profit per item?",
+            "opts": [
+              "R7",
+              "R15",
+              "R22",
+              "R37"
+            ],
+            "correct": 0,
+            "explanation": "22 minus 15 equals 7."
+          },
+          {
+            "q": "\"Target customer\" means...",
+            "opts": [
+              "The specific people most likely to want your offer",
+              "Every person on Earth",
+              "Only your family",
+              "A government office"
+            ],
+            "correct": 0,
+            "explanation": "Focus makes marketing far more effective."
+          },
+          {
+            "q": "For small-business marketing, what matters more than one perfect post?",
+            "opts": [
+              "Regular, consistent effort over time",
+              "Nothing, one post is enough",
+              "Spending the most money possible",
+              "Avoiding all social media"
+            ],
+            "correct": 0,
+            "explanation": "Staying visible consistently builds more trust than a single post."
+          },
+          {
+            "q": "Why keep simple records of money in and out?",
+            "opts": [
+              "To know if the business is really making a profit",
+              "Only large companies need this",
+              "It replaces selling anything",
+              "It guarantees success"
+            ],
+            "correct": 0,
+            "explanation": "Without records, it is hard to judge real performance."
+          },
+          {
+            "q": "Why avoid mixing personal and business money?",
+            "opts": [
+              "It becomes unclear what the business actually earned",
+              "It is illegal to have any bank account",
+              "It slows down marketing",
+              "It has no effect"
+            ],
+            "correct": 0,
+            "explanation": "Separating funds keeps the real picture of business performance clear."
+          },
+          {
+            "q": "What builds a returning customer base most directly?",
+            "opts": [
+              "Honesty and reliably delivering what was promised",
+              "The most expensive packaging",
+              "Ignoring customer questions",
+              "Copying a competitor exactly"
+            ],
+            "correct": 0,
+            "explanation": "Trust earned through consistency is what brings people back."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "civic",
+    "title": "Life Orientation & Civic Knowledge",
+    "icon": "⚖️",
+    "iconClass": "blue",
+    "desc": "The Constitution, your rights, voting and being an informed South African citizen.",
+    "modules": [
+      {
+        "id": "cv1",
+        "title": "1. The Constitution",
+        "kind": "quiz",
+        "lesson": "South Africa's Constitution is the country's highest law — every other law must align with it, and it protects the rights of everyone. It includes a <b>Bill of Rights</b>, which lists the fundamental rights all people in South Africa have, such as equality, dignity and freedom of expression.",
+        "questions": [
+          {
+            "q": "What is the Constitution's status among South African laws?",
+            "opts": [
+              "It is the highest law; other laws must align with it",
+              "It is just a suggestion",
+              "It only applies to government workers",
+              "It can be ignored by any court"
+            ],
+            "correct": 0,
+            "explanation": "No other law is allowed to contradict the Constitution."
+          },
+          {
+            "q": "What is the Bill of Rights?",
+            "opts": [
+              "The section of the Constitution listing fundamental rights for everyone",
+              "A list of government spending",
+              "A tax form",
+              "A type of court case"
+            ],
+            "correct": 0,
+            "explanation": "It sets out the basic rights protected for all people in South Africa."
+          }
+        ]
+      },
+      {
+        "id": "cv2",
+        "title": "2. Key Rights & Responsibilities",
+        "kind": "quiz",
+        "lesson": "Rights in the Bill of Rights include equality (not being unfairly discriminated against), human dignity, freedom of expression, and the right to basic education, among others. Rights usually come with responsibilities too — for example, freedom of expression does not include a right to harm or defame others.",
+        "questions": [
+          {
+            "q": "What does the right to equality protect against?",
+            "opts": [
+              "Unfair discrimination",
+              "Having any opinions at all",
+              "Paying any taxes",
+              "Voting"
+            ],
+            "correct": 0,
+            "explanation": "It means people should not be treated unfairly because of things like race, gender or religion."
+          },
+          {
+            "q": "Do rights come with responsibilities?",
+            "opts": [
+              "Yes, for example free expression does not permit harming others",
+              "No, rights have no limits at all",
+              "Only government officials have responsibilities",
+              "Responsibilities only apply to adults over 60"
+            ],
+            "correct": 0,
+            "explanation": "Most rights are balanced against not unfairly harming other people's rights."
+          }
+        ]
+      },
+      {
+        "id": "cv3",
+        "title": "3. The Three Branches of Government",
+        "kind": "quiz",
+        "lesson": "Government power is divided into three branches: the <b>Executive</b> (the President and Cabinet, who run the country day-to-day), the <b>Legislature</b> (Parliament, which makes laws), and the <b>Judiciary</b> (the courts, which interpret the law and settle disputes, including the Constitutional Court, the highest court on constitutional matters). Splitting power this way helps prevent any one part from having too much control.",
+        "questions": [
+          {
+            "q": "Which branch of government makes laws?",
+            "opts": [
+              "The Legislature (Parliament)",
+              "The Executive",
+              "The Judiciary",
+              "The police"
+            ],
+            "correct": 0,
+            "explanation": "Parliament's main role is passing and amending laws."
+          },
+          {
+            "q": "Why divide government into three branches?",
+            "opts": [
+              "To prevent any one part from having too much unchecked power",
+              "To make government slower for no reason",
+              "It is only a tradition with no purpose",
+              "To reduce the number of civil servants"
+            ],
+            "correct": 0,
+            "explanation": "Splitting power creates checks and balances between the branches."
+          }
+        ]
+      },
+      {
+        "id": "cv4",
+        "title": "4. Voting & Elections",
+        "kind": "quiz",
+        "lesson": "South African citizens 18 and older can register to vote and take part in national, provincial and local elections. Elections let citizens choose their representatives and hold government accountable. The Electoral Commission of South Africa (IEC) runs elections and keeps the voters' roll.",
+        "questions": [
+          {
+            "q": "From what age can South African citizens register to vote?",
+            "opts": [
+              "18",
+              "16",
+              "21",
+              "25"
+            ],
+            "correct": 0,
+            "explanation": "Eighteen is the minimum voting age in South Africa."
+          },
+          {
+            "q": "What is the IEC responsible for?",
+            "opts": [
+              "Running elections and maintaining the voters' roll",
+              "Writing all new laws",
+              "Running the courts",
+              "Collecting taxes"
+            ],
+            "correct": 0,
+            "explanation": "The Electoral Commission of South Africa organises and oversees elections."
+          }
+        ]
+      },
+      {
+        "id": "cv5",
+        "title": "5. Local Government & Public Services",
+        "kind": "quiz",
+        "lesson": "Local (municipal) government is closest to daily life: it typically handles things like refuse collection, local roads, water and electricity delivery, and clinics in many areas. Provincial government usually handles things like provincial roads, and areas such as health and education are shared with national government under the Constitution's arrangement.",
+        "questions": [
+          {
+            "q": "Which level of government is generally closest to everyday local services?",
+            "opts": [
+              "Local (municipal) government",
+              "Only national government",
+              "Only the judiciary",
+              "Only Parliament"
+            ],
+            "correct": 0,
+            "explanation": "Municipalities are closest to residents' day-to-day service needs."
+          },
+          {
+            "q": "Which is a typical local government service?",
+            "opts": [
+              "Refuse collection",
+              "Declaring war",
+              "Printing national currency",
+              "Setting the national budget"
+            ],
+            "correct": 0,
+            "explanation": "Waste collection is a classic municipal-level responsibility."
+          }
+        ]
+      },
+      {
+        "id": "cv6",
+        "title": "6. Being an Informed Citizen",
+        "kind": "quiz",
+        "lesson": "Being informed means checking news from more than one reliable source, understanding basic how-government-works facts (like the ones in this track), and knowing where to raise a concern (a ward councillor, a school governing body, or a relevant government department). Healthy societies rely on citizens who ask questions rather than accept every claim without checking.",
+        "questions": [
+          {
+            "q": "Why check news from more than one reliable source?",
+            "opts": [
+              "To avoid being misled by an inaccurate or biased single source",
+              "It is required by law",
+              "It makes news load faster",
+              "It replaces the need for elections"
+            ],
+            "correct": 0,
+            "explanation": "Cross-checking reduces the risk of being misinformed by any one source."
+          },
+          {
+            "q": "Who is a typical first point of contact for a local community concern?",
+            "opts": [
+              "A ward councillor",
+              "The Constitutional Court directly",
+              "The President personally",
+              "A foreign embassy"
+            ],
+            "correct": 0,
+            "explanation": "Ward councillors represent residents at the local government level."
+          }
+        ]
+      },
+      {
+        "id": "cvt1",
+        "title": "✅ Practice Test: Life Orientation & Civic Knowledge",
+        "kind": "test",
+        "tier": "Beginner checkpoint",
+        "questions": [
+          {
+            "q": "What is the Constitution's role in South African law?",
+            "opts": [
+              "It is the highest law; all other laws must align with it",
+              "It is optional guidance only",
+              "It only applies during elections",
+              "It can be overruled by any municipality"
+            ],
+            "correct": 0,
+            "explanation": "Every other law is measured against the Constitution."
+          },
+          {
+            "q": "What does the Bill of Rights contain?",
+            "opts": [
+              "The fundamental rights of everyone in South Africa",
+              "A list of taxes",
+              "Municipal boundaries",
+              "Only rights for government workers"
+            ],
+            "correct": 0,
+            "explanation": "It sets out core protections for all people."
+          },
+          {
+            "q": "The right to equality mainly protects against...",
+            "opts": [
+              "Unfair discrimination",
+              "Having to pay for services",
+              "Voting requirements",
+              "School attendance rules"
+            ],
+            "correct": 0,
+            "explanation": "It is about not being unfairly treated because of who you are."
+          },
+          {
+            "q": "Which branch of government interprets the law and settles disputes?",
+            "opts": [
+              "The Judiciary",
+              "The Executive",
+              "The Legislature",
+              "Local government only"
+            ],
+            "correct": 0,
+            "explanation": "Courts, including the Constitutional Court, fulfil this role."
+          },
+          {
+            "q": "Which branch makes new laws?",
+            "opts": [
+              "The Legislature (Parliament)",
+              "The Judiciary",
+              "The Executive alone",
+              "The IEC"
+            ],
+            "correct": 0,
+            "explanation": "Parliament's core function is passing and amending legislation."
+          },
+          {
+            "q": "Minimum voting age for South African citizens?",
+            "opts": [
+              "18",
+              "16",
+              "21",
+              "30"
+            ],
+            "correct": 0,
+            "explanation": "Eighteen and older citizens may register to vote."
+          },
+          {
+            "q": "What does the IEC do?",
+            "opts": [
+              "Runs elections and maintains the voters' roll",
+              "Runs the courts",
+              "Writes the national budget",
+              "Manages municipal water supply"
+            ],
+            "correct": 0,
+            "explanation": "It is the body responsible for organising elections."
+          },
+          {
+            "q": "Which is typically a local (municipal) government responsibility?",
+            "opts": [
+              "Refuse collection",
+              "Setting national interest rates",
+              "Declaring a state of war",
+              "Printing currency"
+            ],
+            "correct": 0,
+            "explanation": "Waste collection is a common municipal service."
+          },
+          {
+            "q": "Why check more than one reliable news source?",
+            "opts": [
+              "To reduce the risk of being misled by one biased or wrong source",
+              "It is legally required before voting",
+              "It replaces having to vote at all",
+              "It guarantees a story is 100% true"
+            ],
+            "correct": 0,
+            "explanation": "Cross-checking improves the odds of an accurate picture."
+          },
+          {
+            "q": "A good first point of contact for a local community issue is...",
+            "opts": [
+              "A ward councillor",
+              "The Constitutional Court directly",
+              "A foreign embassy",
+              "The national Cabinet directly"
+            ],
+            "correct": 0,
+            "explanation": "Ward councillors represent residents at the local level."
+          }
+        ]
+      }
+    ]
+  }
+];
+
+/* ══════════════════════════════════════════════════════════════════
+   PROGRESS / XP / STREAK — localStorage, keyed per student
+   ══════════════════════════════════════════════════════════════════ */
+function progKey(){ return 'skacad_progress_' + UID; }
+function statsKey(){ return 'skacad_stats_' + UID; }
+
+function getProgress(){
+  try { return JSON.parse(localStorage.getItem(progKey()) || '{}'); } catch(e){ return {}; }
+}
+function saveProgress(p){ try { localStorage.setItem(progKey(), JSON.stringify(p)); } catch(e){} }
+
+function getStats(){
+  try { return JSON.parse(localStorage.getItem(statsKey()) || 'null') || { xp:0, streak:0, lastDay:null }; }
+  catch(e){ return { xp:0, streak:0, lastDay:null }; }
+}
+function saveStats(s){ try { localStorage.setItem(statsKey(), JSON.stringify(s)); } catch(e){} }
+
+function bumpStreak(){
+  const s = getStats();
+  const today = new Date().toDateString();
+  if (s.lastDay === today) return s; // already counted today
+  const yesterday = new Date(Date.now() - 86400000).toDateString();
+  s.streak = (s.lastDay === yesterday) ? (s.streak + 1) : 1;
+  s.lastDay = today;
+  saveStats(s);
+  return s;
+}
+function addXP(amount){
+  const s = getStats();
+  s.xp = (s.xp || 0) + amount;
+  saveStats(s);
+  return s;
+}
+
+function markModuleComplete(trackId, moduleId, xpAmount){
+  const p = getProgress();
+  if (!p[trackId]) p[trackId] = [];
+  if (p[trackId].indexOf(moduleId) === -1) p[trackId].push(moduleId);
+  saveProgress(p);
+  addXP(typeof xpAmount === 'number' ? xpAmount : 15);
+  bumpStreak();
+}
+
+function renderStatsStrip(){
+  const p = getProgress();
+  let totalDone = 0;
+  Object.keys(p).forEach(k => totalDone += p[k].length);
+  const s = getStats();
+  document.getElementById('stat-modules').textContent = totalDone;
+  document.getElementById('stat-xp').textContent = s.xp || 0;
+  document.getElementById('stat-streak').textContent = s.streak || 0;
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   NAVIGATION STATE
+   ══════════════════════════════════════════════════════════════════ */
+let CUR = { view:'tracks', trackId:null, moduleIdx:null, qIdx:0, correct:0 };
+
+function showView(name){
+  document.getElementById('view-tracks').style.display = name==='tracks' ? 'block' : 'none';
+  document.getElementById('view-path').style.display = name==='path' ? 'block' : 'none';
+  document.getElementById('view-lesson').style.display = name==='lesson' ? 'block' : 'none';
+  document.getElementById('view-weakreview').style.display = name==='weakreview' ? 'block' : 'none';
+  document.getElementById('view-achievements').style.display = name==='achievements' ? 'block' : 'none';
+  if (name !== 'lesson') clearExamTimer();
+  CUR.view = name;
+}
+
+function goBackInApp(){
+  if (CUR.view === 'lesson') { showView('path'); renderPath(); }
+  else if (CUR.view === 'path') { showView('tracks'); renderTracks(); }
+  else if (CUR.view === 'weakreview' || CUR.view === 'achievements' ) { showView('tracks'); renderTracks(); }
+  else { goBack(); }
+}
+
+function renderTracks(){
+  renderStatsStrip();
+  renderDailyChallenge();
+  renderQuickActionCounts();
+  const p = getProgress();
+  const list = document.getElementById('tracks-list');
+  list.innerHTML = '';
+  TRACKS.forEach(track => {
+    const locked = !track.modules;
+    const done = (p[track.id] || []).length;
+    const total = track.modules ? track.modules.length : 0;
+    const pct = total ? Math.round(done/total*100) : 0;
+    const div = document.createElement('div');
+    div.className = 'track-card' + (locked ? ' locked' : '');
+    div.innerHTML = `
+      <div class="track-icon ${track.iconClass}">${track.icon}</div>
+      <div class="track-body">
+        <div class="track-name">${track.title}</div>
+        <div class="track-desc">${locked ? track.desc : (done + '/' + total + ' modules complete')}</div>
+        ${locked ? '' : `<div class="track-progress-bar"><div class="track-progress-fill" style="width:${pct}%"></div></div>`}
+      </div>
+      ${locked ? '<div class="track-soon">SOON</div>' : '<div class="chev">›</div>'}
+    `;
+    if (!locked) div.onclick = () => { CUR.trackId = track.id; showView('path'); renderPath(); };
+    list.appendChild(div);
+  });
+}
+
+function currentTrack(){ return TRACKS.find(t => t.id === CUR.trackId); }
+
+function renderPath(){
+  const track = currentTrack();
+  if (!track) { showView('tracks'); renderTracks(); return; }
+  document.getElementById('path-title').textContent = track.icon + ' ' + track.title;
+  document.getElementById('path-desc').textContent = 'Tap a module to start. Complete them in order for the best experience.';
+  document.getElementById('headerSub').textContent = ' · ' + track.title;
+
+  const p = getProgress();
+  const doneList = p[track.id] || [];
+  const container = document.getElementById('path-nodes');
+  container.innerHTML = '';
+  let lastTier = null;
+  track.modules.forEach((mod, i) => {
+    const done = doneList.indexOf(mod.id) !== -1;
+    const isNext = !done && (i === 0 || doneList.indexOf(track.modules[i-1].id) !== -1);
+    const tierLabel = mod.tier && !mod.tier.includes('checkpoint') ? mod.tier : null;
+    if (tierLabel && tierLabel !== lastTier) {
+      lastTier = tierLabel;
+      const header = document.createElement('div');
+      header.className = 'tier-header';
+      header.textContent = '📚 ' + tierLabel + ' TIER';
+      container.appendChild(header);
+    }
+    const node = document.createElement('div');
+    node.className = 'node' + (done ? ' done' : '') + (isNext ? ' current' : '') + (mod.kind === 'test' ? ' test' : '');
+    node.innerHTML = `
+      <div class="node-dot">${done ? '✓' : (mod.kind === 'test' ? '★' : (i+1))}</div>
+      <div class="node-body">
+        <div class="node-title">${mod.title}</div>
+        <div class="node-sub">${mod.kind === 'test' ? 'Practice test — mixed questions' : mod.kind === 'playground' ? 'Live code practice' : mod.kind === 'webpreview' ? 'Live preview — HTML/CSS' : mod.kind === 'predict' ? 'Predict the output' : 'Lesson + quiz'}</div>
+      </div>
+    `;
+    node.onclick = () => openModule(i);
+    container.appendChild(node);
+  });
+}
+
+function openModule(idx){
+  CUR.moduleIdx = idx;
+  CUR.qIdx = 0;
+  CUR.correct = 0;
+  CUR.exam = { on:false };
+  showView('lesson');
+  const mod = currentTrack().modules[idx];
+  if (mod.kind === 'test') return renderModeChooser(mod);
+  renderLesson();
+}
+
+/* ---- Practice test: choose untimed practice or timed Exam Mode ---- */
+function renderModeChooser(mod){
+  const n = mod.questions.length;
+  const mins = Math.ceil(n * 45 / 60);
+  document.getElementById('lesson-runner').innerHTML = `
+    <div class="q-title" style="margin-bottom:4px">${mod.title.replace('✅ ','')}</div>
+    <div style="font-size:.74rem;color:var(--text3);margin-bottom:14px">${n} questions · 70% to pass</div>
+    <button class="mode-choice-btn" onclick="startTest(false)">
+      <div class="mode-choice-title">📝 Practice mode</div>
+      <div class="mode-choice-desc">No timer. Take your time and learn from each answer.</div>
+    </button>
+    <button class="mode-choice-btn" onclick="startTest(true)">
+      <div class="mode-choice-title">⏱️ Exam mode</div>
+      <div class="mode-choice-desc">${mins} minutes total, like a real exam. Unanswered questions count as wrong when time runs out.</div>
+    </button>`;
+}
+function startTest(exam){
+  const mod = currentTrack().modules[CUR.moduleIdx];
+  CUR.qIdx = 0; CUR.correct = 0;
+  clearExamTimer();
+  if (exam) {
+    const total = mod.questions.length * 45;
+    CUR.exam = { on:true, left:total, total:total };
+    EXAM_TIMER = setInterval(examTick, 1000);
+  } else {
+    CUR.exam = { on:false };
+  }
+  renderLesson();
+}
+function fmtTime(s){ s = Math.max(0, s); return Math.floor(s/60) + ':' + String(s%60).padStart(2,'0'); }
+function examTick(){
+  if (!CUR.exam || !CUR.exam.on) return clearExamTimer();
+  CUR.exam.left--;
+  const el = document.getElementById('exam-timer');
+  if (el) { el.textContent = '⏱️ ' + fmtTime(CUR.exam.left); el.classList.toggle('low', CUR.exam.left <= 30); }
+  if (CUR.exam.left <= 0) {
+    clearExamTimer();
+    const track = currentTrack();
+    const mod = track.modules[CUR.moduleIdx];
+    finishTest(track, mod, document.getElementById('lesson-runner'), CUR.correct, mod.questions.length, true);
+  }
+}
+function clearExamTimer(){ if (EXAM_TIMER) { clearInterval(EXAM_TIMER); EXAM_TIMER = null; } }
+
+function renderLesson(){
+  const track = currentTrack();
+  const mod = track.modules[CUR.moduleIdx];
+  const runner = document.getElementById('lesson-runner');
+  document.getElementById('headerSub').textContent = ' · ' + mod.title;
+
+  if (mod.kind === 'quiz') return renderQuiz(track, mod, runner);
+  if (mod.kind === 'test') return renderQuiz(track, mod, runner);
+  if (mod.kind === 'predict') return renderPredict(track, mod, runner);
+  if (mod.kind === 'playground') return renderPlayground(track, mod, runner);
+  if (mod.kind === 'webpreview') return renderWebPreview(track, mod, runner);
+}
+
+/* ---- Quiz & practice-test modules (MCQ — tests get a scored pass/fail screen) ---- */
+function renderQuiz(track, mod, runner){
+  if (CUR.qIdx >= mod.questions.length) {
+    if (mod.kind === 'test') return renderTestComplete(track, mod, runner, CUR.correct, mod.questions.length);
+    return renderComplete(track, mod, runner, CUR.correct, mod.questions.length);
+  }
+  const q = mod.questions[CUR.qIdx];
+  let html = '';
+  if (mod.kind === 'test' && CUR.exam && CUR.exam.on) html += `<div class="exam-timer${CUR.exam.left <= 30 ? ' low' : ''}" id="exam-timer">⏱️ ${fmtTime(CUR.exam.left)}</div>`;
+  html += `<div class="qprog">${mod.kind === 'test' ? 'TEST QUESTION' : 'QUESTION'} ${CUR.qIdx+1} OF ${mod.questions.length}</div>`;
+  if (CUR.qIdx === 0 && mod.lesson) html += `<div class="lesson-box">${mod.lesson}</div>`;
+  html += `<div class="q-title">${q.q}</div>`;
+  q.opts.forEach((opt, oi) => {
+    html += `<button class="opt-btn" onclick="answerQuiz(${oi})" id="opt-${oi}">${opt}</button>`;
+  });
+  html += `<div class="feedback" id="quiz-feedback"></div>`;
+  runner.innerHTML = html;
+}
+function answerQuiz(oi){
+  const track = currentTrack();
+  const mod = track.modules[CUR.moduleIdx];
+  const q = mod.questions[CUR.qIdx];
+  const correct = oi === q.correct;
+  if (correct) { CUR.correct++; removeWeakSpot(weakKeyFor(track.id, mod.id, q)); }
+  else addWeakSpot(track.id, mod.id, q);
+  q.opts.forEach((_, i) => {
+    const btn = document.getElementById('opt-'+i);
+    btn.disabled = true;
+    if (i === q.correct) btn.classList.add('correct');
+    else if (i === oi) btn.classList.add('wrong');
+  });
+  const fb = document.getElementById('quiz-feedback');
+  fb.innerHTML = (correct ? '<div class="feedback ok">✓ Correct!</div>' : '<div class="feedback bad">✗ Not quite — correct answer highlighted above</div>')
+    + (q.explanation ? '<div class="explain-box">💡 ' + q.explanation + '</div>' : '')
+    + '<button class="continue-btn" style="margin-top:10px" onclick="nextQuizQ()">Continue</button>';
+}
+function nextQuizQ(){ CUR.qIdx++; renderLesson(); }
+
+/* ---- Predict-the-output modules (Python, no live execution) ---- */
+function renderPredict(track, mod, runner){
+  if (CUR.qIdx >= mod.challenges.length) return renderComplete(track, mod, runner, CUR.correct, mod.challenges.length);
+  const c = mod.challenges[CUR.qIdx];
+  let html = `<div class="qprog">CHALLENGE ${CUR.qIdx+1} OF ${mod.challenges.length}</div>`;
+  if (CUR.qIdx === 0) html += `<div class="lesson-box">${mod.lesson}</div>`;
+  html += `<div class="q-title">What will this print?</div>`;
+  html += `<div class="code-block">${c.code.replace(/</g,'&lt;')}</div>`;
+  html += `<input type="text" class="predict-input" id="predict-input" placeholder="Type what you think it prints...">`;
+  html += `<button class="continue-btn" onclick="checkPredict()">Check answer</button>`;
+  html += `<div class="feedback" id="predict-feedback"></div>`;
+  runner.innerHTML = html;
+  document.getElementById('predict-input').focus();
+}
+function checkPredict(){
+  const track = currentTrack();
+  const mod = track.modules[CUR.moduleIdx];
+  const c = mod.challenges[CUR.qIdx];
+  const val = (document.getElementById('predict-input').value || '').trim();
+  const correct = val.toLowerCase() === c.answer.toLowerCase();
+  if (correct) CUR.correct++;
+  document.getElementById('predict-input').disabled = true;
+  const fb = document.getElementById('predict-feedback');
+  fb.innerHTML = (correct
+      ? '<div class="feedback ok">✓ Correct! It prints: ' + c.answer + '</div>'
+      : '<div class="feedback bad">✗ Not quite — it actually prints: <b>' + c.answer + '</b><br><span style="font-weight:400;color:var(--text3)">' + c.hint + '</span></div>')
+    + '<button class="continue-btn" onclick="nextPredict()">Continue</button>';
+  runner.querySelector('.continue-btn.pending')?.remove();
+}
+function nextPredict(){ CUR.qIdx++; renderLesson(); }
+
+/* ---- Live JS playground modules — real execution, sandboxed to console.log ---- */
+function renderPlayground(track, mod, runner){
+  let html = `<div class="lesson-box">${mod.lesson}</div>`;
+  if (mod.taskLabel) html += `<div class="q-title" style="margin-bottom:10px">${mod.taskLabel}</div>`;
+  html += `<div class="pg-wrap">
+    <textarea class="pg-editor" id="pg-editor" spellcheck="false">${mod.starter}</textarea>
+    <div class="pg-run-row">
+      <button class="pg-run-btn" onclick="runPlayground()">▶ Run code</button>
+      <button class="pg-reset-btn" onclick="resetPlayground()">Reset</button>
+    </div>
+    <div class="pg-hint">Output (from console.log) appears below:</div>
+    <div class="pg-console" id="pg-console">Click "Run code" to see the output.</div>
+  </div>`;
+  html += `<button class="continue-btn" id="pg-continue-btn" style="display:none" onclick="completePlayground()">Continue</button>`;
+  runner.innerHTML = html;
+}
+function runPlayground(){
+  const code = document.getElementById('pg-editor').value;
+  const out = [];
+  const fakeConsole = { log: (...args) => out.push(args.map(a => typeof a === 'object' ? JSON.stringify(a) : String(a)).join(' ')) };
+  const consoleEl = document.getElementById('pg-console');
+  try {
+    // Sandboxed to a fake console — student's own code, runs in their own browser tab.
+    const fn = new Function('console', code);
+    fn(fakeConsole);
+    consoleEl.className = 'pg-console';
+    consoleEl.textContent = out.length ? out.join('\n') : '(no output — try a console.log(...) line)';
+    const track = currentTrack();
+    const mod = track.modules[CUR.moduleIdx];
+    if (mod.expectedIncludes && out.join('\n').includes(mod.expectedIncludes)) {
+      document.getElementById('pg-continue-btn').style.display = 'block';
+    }
+  } catch(e) {
+    consoleEl.className = 'pg-console err';
+    consoleEl.textContent = '⚠ ' + e.message;
+  }
+}
+function resetPlayground(){
+  const track = currentTrack();
+  const mod = track.modules[CUR.moduleIdx];
+  document.getElementById('pg-editor').value = mod.starter;
+  document.getElementById('pg-console').textContent = 'Click "Run code" to see the output.';
+  document.getElementById('pg-console').className = 'pg-console';
+  document.getElementById('pg-continue-btn').style.display = 'none';
+}
+function completePlayground(){
+  const track = currentTrack();
+  const mod = track.modules[CUR.moduleIdx];
+  markModuleComplete(track.id, mod.id);
+  const runner = document.getElementById('lesson-runner');
+  renderCompleteScreen(runner, null);
+}
+
+/* ---- Live HTML/CSS preview modules (webdev track) ---- */
+function renderWebPreview(track, mod, runner){
+  let html = `<div class="lesson-box">${mod.lesson}</div>`;
+  html += `<div class="pg-wrap">
+    <textarea class="pg-editor" id="pg-editor" spellcheck="false" style="min-height:150px">${mod.starter}</textarea>
+    <div class="pg-run-row">
+      <button class="pg-run-btn" onclick="runWebPreview()">▶ Preview</button>
+      <button class="pg-reset-btn" onclick="resetWebPreview()">Reset</button>
+    </div>
+    <div class="pg-hint">Live preview:</div>
+    <iframe id="pg-iframe" style="width:100%;min-height:180px;border:1.5px solid var(--border2);border-radius:10px;background:#fff"></iframe>
+  </div>`;
+  html += `<button class="continue-btn" id="pg-continue-btn" style="display:none" onclick="completeWebPreview()">Continue</button>`;
+  runner.innerHTML = html;
+  runWebPreview();
+}
+function runWebPreview(){
+  const code = document.getElementById('pg-editor').value;
+  document.getElementById('pg-iframe').srcdoc = code;
+  const track = currentTrack();
+  const mod = track.modules[CUR.moduleIdx];
+  if (mod.expectedIncludes && code.toLowerCase().includes(mod.expectedIncludes.toLowerCase())) {
+    document.getElementById('pg-continue-btn').style.display = 'block';
+  }
+}
+function resetWebPreview(){
+  const track = currentTrack();
+  const mod = track.modules[CUR.moduleIdx];
+  document.getElementById('pg-editor').value = mod.starter;
+  document.getElementById('pg-continue-btn').style.display = 'none';
+  runWebPreview();
+}
+function completeWebPreview(){
+  const track = currentTrack();
+  const mod = track.modules[CUR.moduleIdx];
+  markModuleComplete(track.id, mod.id);
+  renderCompleteScreen(document.getElementById('lesson-runner'), null);
+}
+
+/* ---- Completion screen (shared) ---- */
+function renderComplete(track, mod, runner, correct, total){
+  markModuleComplete(track.id, mod.id, 15);
+  const pct = total ? Math.round(correct/total*100) : 100;
+  renderCompleteScreen(runner, correct + '/' + total + ' right (' + pct + '%)');
+}
+function renderCompleteScreen(runner, scoreLine){
+  runner.innerHTML = `
+    <div class="complete-screen">
+      <div class="complete-emoji">🎉</div>
+      <div class="complete-title">Module complete!</div>
+      <div class="complete-sub">${scoreLine ? scoreLine + ' · +15 XP' : '+15 XP earned'}</div>
+      <button class="continue-btn" onclick="showView('path');renderPath();renderStatsStrip();">Back to modules</button>
+    </div>
+  `;
+}
+
+/* ---- Practice test completion — scored, pass/fail, retakeable ---- */
+function renderTestComplete(track, mod, runner, correct, total){
+  finishTest(track, mod, runner, correct, total, false);
+}
+function finishTest(track, mod, runner, correct, total, timedOut){
+  const wasExam = !!(CUR.exam && CUR.exam.on);
+  const timeUsed = wasExam ? (CUR.exam.total - Math.max(0, CUR.exam.left)) : 0;
+  clearExamTimer();
+  const pct = total ? Math.round(correct/total*100) : 100;
+  const passed = pct >= 70;
+  const xp = passed ? (wasExam ? 40 : 30) : 10;
+  markModuleComplete(track.id, mod.id, xp);
+  const st = getStats();
+  if (wasExam && passed) st.examPasses = (st.examPasses || 0) + 1;
+  saveStats(st);
+  if (pct === 100) markPerfectTest(mod.id);
+  runner.innerHTML = `
+    <div class="complete-screen">
+      <div class="complete-emoji">${passed ? '🏆' : '📘'}</div>
+      <div class="complete-title">${timedOut ? "Time's up! " : ''}${passed ? 'Test passed!' : 'Keep practising'}</div>
+      <div class="complete-sub" style="font-size:1.3rem;font-weight:800;color:${passed ? 'var(--green)' : 'var(--accent)'};margin-bottom:4px">${pct}%</div>
+      <div class="complete-sub">${correct}/${total} correct · +${xp} XP ${passed ? '' : '· 70% needed to pass'}${wasExam && !timedOut ? ' · finished in ' + fmtTime(timeUsed) : ''}</div>
+      <div style="display:flex;gap:8px;margin-top:6px">
+        <button class="continue-btn" onclick="openModule(${CUR.moduleIdx})" style="background:${passed ? 'var(--bg3)' : 'linear-gradient(135deg,var(--primary),var(--primary-light))'};color:${passed ? 'var(--text2)' : '#fff'}">Retake test</button>
+        <button class="continue-btn" onclick="showView('path');renderPath();renderStatsStrip();">Back to modules</button>
+      </div>
+      ${getWeakSpots().length ? '<button class="continue-btn" style="margin-top:8px;background:var(--bg3);color:var(--text2)" onclick="openWeakReview()">🎯 Review missed questions (' + getWeakSpots().length + ')</button>' : ''}
+    </div>
+  `;
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   WEAK-SPOT REVIEW — every missed question, collected for retry
+   ══════════════════════════════════════════════════════════════════ */
+var EXAM_TIMER = null;
+function weakStoreKey(){ return 'skacad_weak_' + UID; }
+function getWeakSpots(){ try { return JSON.parse(localStorage.getItem(weakStoreKey()) || '[]'); } catch(e){ return []; } }
+function saveWeakSpots(a){ try { localStorage.setItem(weakStoreKey(), JSON.stringify(a)); } catch(e){} }
+function weakKeyFor(trackId, moduleId, q){ return trackId + '|' + moduleId + '|' + q.q; }
+function addWeakSpot(trackId, moduleId, q){
+  const list = getWeakSpots();
+  const key = weakKeyFor(trackId, moduleId, q);
+  if (list.some(w => w.key === key)) return;
+  list.push({ key, trackId, moduleId, q:q.q, opts:q.opts, correct:q.correct, explanation:q.explanation || '' });
+  saveWeakSpots(list);
+}
+function removeWeakSpot(key){
+  const list = getWeakSpots();
+  const next = list.filter(w => w.key !== key);
+  if (next.length !== list.length) {
+    saveWeakSpots(next);
+    const st = getStats();
+    st.cleared = (st.cleared || 0) + 1;
+    saveStats(st);
+  }
+}
+function renderQuickActionCounts(){
+  const w = getWeakSpots().length;
+  const wEl = document.getElementById('qa-weak-count');
+  wEl.textContent = w;
+  wEl.className = 'qa-count' + (w ? ' has-items' : '');
+  document.getElementById('qa-badge-count').textContent = computeEarnedBadges().filter(b => b.earned).length + '/' + BADGES.length;
+}
+
+let WR = { items:[], idx:0, fixed:0 };
+function openWeakReview(){
+  WR = { items:getWeakSpots().slice(), idx:0, fixed:0 };
+  showView('weakreview');
+  renderWeakReview();
+}
+function renderWeakReview(){
+  const runner = document.getElementById('weakreview-runner');
+  if (!WR.items.length) {
+    runner.innerHTML = `<div class="complete-screen"><div class="complete-emoji">✨</div><div class="complete-title">No weak spots!</div><div class="complete-sub">Questions you miss in quizzes and tests will show up here for retry.</div><button class="continue-btn" onclick="showView('tracks');renderTracks()">Back to tracks</button></div>`;
+    return;
+  }
+  if (WR.idx >= WR.items.length) {
+    const left = getWeakSpots().length;
+    runner.innerHTML = `<div class="complete-screen"><div class="complete-emoji">${WR.fixed ? '💪' : '📘'}</div><div class="complete-title">Review done</div><div class="complete-sub">${WR.fixed} of ${WR.items.length} cleared · ${left} still to work on</div><button class="continue-btn" onclick="showView('tracks');renderTracks()">Back to tracks</button></div>`;
+    return;
+  }
+  const w = WR.items[WR.idx];
+  let html = `<div class="qprog">REVIEW ${WR.idx+1} OF ${WR.items.length}</div><div class="q-title">${w.q}</div>`;
+  w.opts.forEach((o, i) => { html += `<button class="opt-btn" id="wr-opt-${i}" onclick="answerWeak(${i})">${o}</button>`; });
+  html += `<div class="feedback" id="wr-feedback"></div>`;
+  runner.innerHTML = html;
+}
+function answerWeak(oi){
+  const w = WR.items[WR.idx];
+  const ok = oi === w.correct;
+  w.opts.forEach((_, i) => {
+    const b = document.getElementById('wr-opt-' + i);
+    b.disabled = true;
+    if (i === w.correct) b.classList.add('correct'); else if (i === oi) b.classList.add('wrong');
+  });
+  if (ok) { WR.fixed++; removeWeakSpot(w.key); }
+  document.getElementById('wr-feedback').innerHTML =
+    (ok ? '<div class="feedback ok">✓ Correct — cleared from your weak spots!</div>' : '<div class="feedback bad">✗ Not yet — it stays on your list</div>')
+    + (w.explanation ? '<div class="explain-box">💡 ' + w.explanation + '</div>' : '')
+    + '<button class="continue-btn" style="margin-top:10px" onclick="WR.idx++;renderWeakReview()">Continue</button>';
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   ACHIEVEMENTS — derived live from progress + stats
+   ══════════════════════════════════════════════════════════════════ */
+function perfectKey(){ return 'skacad_perfect_' + UID; }
+function getPerfectTests(){ try { return JSON.parse(localStorage.getItem(perfectKey()) || '[]'); } catch(e){ return []; } }
+function markPerfectTest(id){
+  const a = getPerfectTests();
+  if (a.indexOf(id) === -1) { a.push(id); try { localStorage.setItem(perfectKey(), JSON.stringify(a)); } catch(e){} }
+}
+function trackDone(p, trackId){
+  const t = TRACKS.find(x => x.id === trackId);
+  if (!t || !t.modules) return false;
+  const done = p[trackId] || [];
+  return t.modules.every(m => done.indexOf(m.id) !== -1);
+}
+const BADGES = [
+  { id:'first',   icon:'🌱', title:'First Steps',      desc:'Complete your first module',        test:(c)=>c.total>=1 },
+  { id:'ten',     icon:'📘', title:'Getting Serious',  desc:'Complete 10 modules',               test:(c)=>c.total>=10 },
+  { id:'thirty',  icon:'📚', title:'Well Rounded',     desc:'Complete 30 modules',               test:(c)=>c.total>=30 },
+  { id:'money',   icon:'💰', title:'Money Smart',      desc:'Finish the Money Smart track',      test:(c)=>trackDone(c.p,'money') },
+  { id:'excel',   icon:'📊', title:'Spreadsheet Pro',  desc:'Finish the Excel & Spreadsheets track', test:(c)=>trackDone(c.p,'excel') },
+  { id:'safety',  icon:'🛡️', title:'Safety First',     desc:'Finish the Digital Safety track',   test:(c)=>trackDone(c.p,'safety') },
+  { id:'ailit',   icon:'🤖', title:'AI Literate',      desc:'Finish the AI Literacy track',      test:(c)=>trackDone(c.p,'ailit') },
+  { id:'study',   icon:'🎓', title:'Study Pro',        desc:'Finish the Study Skills track',     test:(c)=>trackDone(c.p,'study') },
+  { id:'jobs',    icon:'💼', title:'Job Ready',        desc:'Finish the Job Readiness track',    test:(c)=>trackDone(c.p,'jobs') },
+  { id:'biz',     icon:'🚀', title:'Young Entrepreneur',desc:'Finish the Entrepreneurship Basics track', test:(c)=>trackDone(c.p,'biz') },
+  { id:'civic',   icon:'⚖️', title:'Informed Citizen', desc:'Finish the Life Orientation & Civic track', test:(c)=>trackDone(c.p,'civic') },
+  { id:'perfect', icon:'💯', title:'Perfectionist',    desc:'Score 100% on a practice test',     test:(c)=>c.perfect.length>=1 },
+  { id:'exam',    icon:'⏱️', title:'Exam Ready',       desc:'Pass a test in Exam Mode',          test:(c)=>(c.stats.examPasses||0)>=1 },
+  { id:'slayer',  icon:'🎯', title:'Weak Spot Slayer', desc:'Clear 10 weak-spot questions',      test:(c)=>(c.stats.cleared||0)>=10 },
+  { id:'s3',      icon:'🔥', title:'3-Day Streak',     desc:'3 days in a row',                   test:(c)=>c.stats.streak>=3 },
+  { id:'s7',      icon:'🔥', title:'7-Day Streak',     desc:'7 days in a row',                   test:(c)=>c.stats.streak>=7 },
+  { id:'s30',     icon:'🌋', title:'30-Day Streak',    desc:'30 days in a row',                  test:(c)=>c.stats.streak>=30 },
+  { id:'xp100',   icon:'⭐', title:'Century Club',     desc:'Earn 100 XP',                       test:(c)=>c.stats.xp>=100 },
+  { id:'xp500',   icon:'🌟', title:'Rising Star',      desc:'Earn 500 XP',                       test:(c)=>c.stats.xp>=500 },
+  { id:'complete',icon:'👑', title:'Academy Graduate', desc:'Finish every track',                test:(c)=>['money','excel','safety','ailit','study','jobs','biz','civic'].every(t=>trackDone(c.p,t)) },
+];
+function computeEarnedBadges(){
+  const p = getProgress();
+  let total = 0; Object.keys(p).forEach(k => total += p[k].length);
+  const ctx = { p, total, stats:getStats(), perfect:getPerfectTests() };
+  return BADGES.map(b => ({ id:b.id, icon:b.icon, title:b.title, desc:b.desc, earned:!!b.test(ctx) }));
+}
+function renderAchievements(){
+  const list = computeEarnedBadges();
+  const grid = document.getElementById('badges-grid');
+  grid.className = 'badges-grid';
+  grid.innerHTML = list.map(b => `<div class="badge-card ${b.earned ? 'earned' : 'locked'}"><div class="badge-icon">${b.earned ? b.icon : '🔒'}</div><div class="badge-title">${b.title}</div><div class="badge-desc">${b.desc}</div></div>`).join('');
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   LOAD-TIME PREP — explanations for the hardest tests + option shuffling
+   ══════════════════════════════════════════════════════════════════ */
+const EXPLAIN = {}; // every Skills Academy question already ships its own explanation
+function shuffleArr(a){ for (let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+function shuffleQuestion(q){
+  const correctText = q.opts[q.correct];
+  q.opts = shuffleArr(q.opts.slice());
+  q.correct = q.opts.indexOf(correctText);
+}
+function prepContent(){
+  TRACKS.forEach(t => { if (!t.modules) return; t.modules.forEach(m => {
+    if (m.questions) {
+      const ex = EXPLAIN[m.id];
+      m.questions.forEach((q, i) => {
+        if (ex && ex[i] && !q.explanation) q.explanation = ex[i];
+        shuffleQuestion(q);
+      });
+    }
+  }); });
+  DAILY_CHALLENGES.forEach(shuffleQuestion);
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   INIT
+   ══════════════════════════════════════════════════════════════════ */
+document.getElementById('appHeader').querySelector('.back-btn').setAttribute('onclick','goBackInApp()');
+prepContent();
+initAuth();
+renderTracks();
+</script>
+</body>
+</html>
