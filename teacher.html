@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="ma ma-staff" data-ma="teacher">
 <head>
 <meta charset="UTF-8">
   <meta name="robots" content="noindex, nofollow">
@@ -120,6 +120,9 @@ body{font-family:'Inter',sans-serif!important;background:var(--bg)!important;col
 <!-- Client-side PDF generation for downloadable reports (Monthly Activity Report, etc.) -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<!-- MatricAce UI 2026: shared design layer (see /ma-ui.css and /ma-ui.js) -->
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400..800&family=Fraunces:opsz,wght,SOFT@9..144,600..800,50..100&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/ma-ui.css">
 </head>
 <body>
 <div style="display:flex;height:100dvh;overflow:hidden;width:100%">
@@ -9109,5 +9112,6 @@ async function teacherGraduateClass() {
   }
 }
 </script>
+<script src="/ma-ui.js" defer></script>
 </body>
 </html>

@@ -11,7 +11,9 @@ var STATIC = [
   './',
   'student-portal.html',
   'manifest.json',
-  'icon.svg'
+  'icon.svg',
+  '../ma-ui.css',
+  '../ma-ui.js'
 ];
 
 self.addEventListener('install', e => {
