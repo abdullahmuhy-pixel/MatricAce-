@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="ma ma-staff" data-ma="subject">
 <head>
 <meta charset="UTF-8">
   <meta name="robots" content="noindex, nofollow">
@@ -151,7 +151,10 @@ body{font-family:'Inter',sans-serif!important;background:var(--bg)!important;col
 .card,.panel-card{background:var(--bg2)!important;border:1px solid var(--border)!important;box-shadow:var(--shadow)!important}
 .content,.main-content{background:transparent!important}
 input,select,textarea{background:var(--bg2)!important;border-color:var(--border2)!important;color:var(--text)!important}
-</style></head>
+</style><!-- MatricAce UI 2026: shared design layer (see /ma-ui.css and /ma-ui.js) -->
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400..800&family=Fraunces:opsz,wght,SOFT@9..144,600..800,50..100&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/ma-ui.css">
+</head>
 <body>
 <div class="sb-overlay" id="sbOverlay" onclick="closeSidebar()"></div>
 <div class="wrap">
@@ -4308,5 +4311,6 @@ window.addEventListener('DOMContentLoaded', function() {
   }).observe(document.documentElement, { childList: true, subtree: true });
 })();
 </script>
+<script src="/ma-ui.js" defer></script>
 </body>
 </html>

@@ -1,0 +1,266 @@
+/* MatricAce UI (2026): the design layer for every MatricAce page.
+   Idea: "jacaranda season". In South Africa the jacarandas bloom in October and November, during the matric exams,
+   and the old saying goes that if a blossom lands on you, you will pass. So: confident Matric blue for actions, the
+   brand's Ace orange for streaks and highlights, jacaranda purple for celebration (falling petals when you do well),
+   Fraunces for headings, Figtree for reading, tactile "ledge" buttons and pick-then-check questions.
+   Loaded last on each page (after the page's own styles) and scoped to html.ma, so it wins without editing old rules.
+   Pages: html[data-ma=student|teacher|subject|school|founder|skills|coding|site]. Behaviour lives in ma-ui.js. */
+
+html.ma{
+ --ma-bg:#F4F6FB;--ma-surface:#FFFFFF;--ma-tint:#ECF1FB;--ma-tint2:#E1E9F8;
+ --ma-ink:#0F1E3D;--ma-text2:rgba(15,30,61,.72);--ma-text3:rgba(15,30,61,.52);--ma-border:#D8E0EF;--ma-ledge:#C8D2E6;
+ --ma-blue:#1E5BD8;--ma-blue-2:#3B77EE;--ma-blue-dk:#1645A8;--ma-blue-ledge:#103985;
+ --ma-orange:#F07A14;--ma-orange-ledge:#B45906;--ma-jac:#8B5FD6;--ma-jac-soft:#F0E9FC;
+ --ma-green:#0B8A55;--ma-green-ledge:#076640;--ma-ok-bg:#DDF5E9;--ma-red:#D3373F;--ma-no-bg:#FDE7E8;
+ --ma-navy:#0E2147;--ma-navy-2:#173269;
+ --ma-r-panel:24px;--ma-r-tile:18px;--ma-r-ctl:14px;
+ --ma-shadow:0 12px 32px -16px rgba(16,57,133,.35);
+ --ma-spring:cubic-bezier(.34,1.56,.64,1);--ma-out:cubic-bezier(.22,1,.36,1);
+ --ma-fd:'Fraunces','Source Serif 4',Georgia,serif;--ma-fb:'Figtree','Inter',system-ui,-apple-system,'Segoe UI',sans-serif;
+ /* the page's own tokens, re-pointed */
+ --primary:var(--ma-blue);--primary-light:var(--ma-blue-2);--primary-dark:var(--ma-navy);--primary-glow:rgba(30,91,216,.25);--primary-dim:rgba(30,91,216,.10);--blue-dim:rgba(30,91,216,.10);
+ --bg:var(--ma-bg);--bg2:var(--ma-surface);--bg3:var(--ma-tint);--bg4:var(--ma-tint2);--surface:var(--ma-surface);
+ --text:var(--ma-ink);--text2:var(--ma-text2);--text3:var(--ma-text3);--border:var(--ma-border);--border2:#C7D2E8;
+ --gold:var(--ma-orange);--accent:var(--ma-orange);--green:var(--ma-green);--red:var(--ma-red);
+ --green-dim:var(--ma-ok-bg);--red-dim:var(--ma-no-bg);--nav-bg:var(--ma-navy);
+ color-scheme:light;
+}
+html.ma body{font-family:var(--ma-fb)!important;-webkit-font-smoothing:antialiased;color:var(--ma-ink);background-color:var(--ma-bg)}
+html.ma :is(h1,h2,h3){font-family:var(--ma-fd);font-optical-sizing:auto;letter-spacing:-.015em;text-wrap:balance}
+html.ma :focus-visible{outline:3px solid var(--ma-orange)!important;outline-offset:2px}
+html.ma ::selection{background:color-mix(in srgb,var(--ma-jac) 30%,transparent)}
+@media (prefers-reduced-motion:reduce){html.ma *,html.ma *::before,html.ma *::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
+
+/* ---------- shared controls ---------- */
+html.ma :is(.btn-primary,.hbtn-primary,.auth-btn,.nav-cta,.goal-cta,.continue-btn,.pg-run-btn,.flw-pay-btn,.ma-check){
+ background:var(--ma-blue)!important;color:#fff!important;border:0!important;border-radius:var(--ma-r-ctl)!important;
+ box-shadow:0 4px 0 var(--ma-blue-ledge)!important;font-family:var(--ma-fb)!important;font-weight:800!important;letter-spacing:.01em;
+ transition:transform .12s var(--ma-out),box-shadow .12s,filter .15s!important;filter:none}
+html.ma :is(.btn-primary,.hbtn-primary,.auth-btn,.nav-cta,.goal-cta,.continue-btn,.pg-run-btn,.flw-pay-btn,.ma-check):hover:not(:disabled){filter:brightness(1.07)}
+html.ma :is(.btn-primary,.hbtn-primary,.auth-btn,.nav-cta,.goal-cta,.continue-btn,.pg-run-btn,.flw-pay-btn,.ma-check):active:not(:disabled){transform:translateY(3px);box-shadow:0 1px 0 var(--ma-blue-ledge)!important}
+html.ma :is(.btn-primary,.auth-btn,.continue-btn,.ma-check):disabled{background:var(--ma-tint2)!important;color:var(--ma-text3)!important;box-shadow:0 4px 0 var(--ma-ledge)!important;opacity:1!important}
+html.ma :is(.btn-secondary,.btn-ghost,.hbtn-ghost,.back-btn,.quiz-back,.guide-back-btn){
+ background:var(--ma-surface)!important;border:2px solid var(--ma-border)!important;color:var(--ma-ink)!important;border-radius:var(--ma-r-ctl)!important;
+ box-shadow:0 3px 0 var(--ma-ledge)!important;font-weight:700!important;transition:transform .12s,box-shadow .12s!important}
+html.ma :is(.btn-secondary,.btn-ghost,.hbtn-ghost,.back-btn,.quiz-back,.guide-back-btn):active{transform:translateY(2px);box-shadow:0 1px 0 var(--ma-ledge)!important}
+html.ma :is(input[type=text],input[type=email],input[type=password],input[type=search],input[type=number],input[type=tel],input[type=date],input:not([type]),select,textarea):not(.ma-raw){
+ border-radius:12px;border-color:var(--ma-border);font-family:var(--ma-fb)}
+html.ma :is(input,select,textarea):focus{border-color:var(--ma-blue)!important;box-shadow:0 0 0 4px rgba(30,91,216,.14)!important;outline:none}
+html.ma .toast{border-radius:16px!important;background:var(--ma-ink)!important;color:#fff!important;font-family:var(--ma-fb)!important;font-weight:700!important;box-shadow:var(--ma-shadow)!important;border:0!important}
+
+/* ---------- mascot: Jaca, a jacaranda blossom (drawn by ma-ui.js) ---------- */
+.ma-jaca{display:inline-block;width:64px;line-height:0;flex:none}
+.ma-jaca svg{width:100%;height:auto;overflow:visible}
+.ma-jaca .jp{transform-origin:50px 52px;animation:jacaSway 4s ease-in-out infinite}
+.ma-jaca[data-mood=cheer] .jp{animation:jacaHop .6s var(--ma-spring) 2}
+.ma-jaca[data-mood=oops] .jp{animation:jacaShake .5s ease 1}
+.ma-jaca .mo{opacity:0}.ma-jaca[data-mood=idle] .m-smile,.ma-jaca[data-mood=wave] .m-smile,.ma-jaca:not([data-mood]) .m-smile,.ma-jaca[data-mood=cheer] .m-open,.ma-jaca[data-mood=oops] .m-oops,.ma-jaca[data-mood=think] .m-think{opacity:1}
+.ma-jaca .eye{transform-box:fill-box;transform-origin:center;animation:jacaBlink 5s infinite}
+@keyframes jacaSway{0%,100%{transform:rotate(-3deg)}50%{transform:rotate(3deg)}}
+@keyframes jacaHop{0%{transform:translateY(0)}40%{transform:translateY(-12px) rotate(-6deg)}100%{transform:translateY(0)}}
+@keyframes jacaShake{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+@keyframes jacaBlink{0%,96%,100%{transform:scaleY(1)}98%{transform:scaleY(.1)}}
+
+/* falling jacaranda petals (celebration) */
+.ma-petal{position:fixed;top:-30px;z-index:99999;pointer-events:none;width:16px;height:13px;border-radius:60% 60% 50% 50%/70% 70% 40% 40%;background:radial-gradient(circle at 40% 30%,#C9B0F5,var(--ma-jac) 60%,#6D44B8);animation:maFall linear forwards;opacity:.95}
+@keyframes maFall{to{transform:translate(var(--dx),110vh) rotate(var(--rot));opacity:.85}}
+
+/* bottom feedback sheet after Check (student quiz, skills, coding) */
+.ma-sheet{position:fixed;left:0;right:0;bottom:0;z-index:10050;padding:16px 18px calc(16px + env(safe-area-inset-bottom,0px));display:flex;align-items:center;gap:14px;
+ background:var(--ma-ok-bg);border-top:3px solid var(--ma-green);transform:translateY(110%);transition:transform .35s var(--ma-out);font-family:var(--ma-fb)}
+.ma-sheet.no{background:var(--ma-no-bg);border-top-color:var(--ma-red)}
+.ma-sheet.on{transform:none}
+.ma-sheet .ma-jaca{width:56px}
+.ma-sheet .ma-sh-t{flex:1;min-width:0}.ma-sheet h3{margin:0;font:800 1.15rem/1.2 var(--ma-fd);color:var(--ma-green)}.ma-sheet.no h3{color:var(--ma-red)}
+.ma-sheet p{margin:3px 0 0;font-size:.85rem;color:var(--ma-text2)}
+.ma-sheet .ma-sh-act{display:flex;gap:8px;align-items:center}
+.ma-sheet .ma-cont{border:0;border-radius:14px;padding:13px 22px;font:800 .95rem var(--ma-fb);color:#fff;background:var(--ma-green);box-shadow:0 4px 0 var(--ma-green-ledge);cursor:pointer}
+.ma-sheet.no .ma-cont{background:var(--ma-red);box-shadow:0 4px 0 #9E2027}
+.ma-sheet .ma-say{border:2px solid rgba(0,0,0,.08);background:rgba(255,255,255,.6);border-radius:12px;width:44px;height:44px;font-size:1.1rem;cursor:pointer}
+@media (min-width:900px){.ma-sheet{left:50%;right:auto;width:min(760px,92vw);transform:translate(-50%,130%);bottom:18px;border-radius:22px;border:3px solid var(--ma-green);box-shadow:var(--ma-shadow)}.ma-sheet.no{border-color:var(--ma-red)}.ma-sheet.on{transform:translate(-50%,0)}}
+
+/* pick-then-check on multiple choice */
+html.ma .opt-btn.ma-pick{border-color:var(--ma-blue)!important;background:rgba(30,91,216,.08)!important;box-shadow:0 4px 0 var(--ma-blue)!important;transform:translateY(-1px)}
+html.ma .opt-btn.ma-pick .opt-letter{background:var(--ma-blue)!important;color:#fff!important}
+.ma-check{display:block;width:100%;padding:15px!important;margin:10px 0 6px;font-size:1rem!important;cursor:pointer}
+.ma-check[hidden]{display:none!important}
+
+/* sound toggle */
+.ma-snd{position:fixed;z-index:880;right:14px;bottom:calc(150px + env(safe-area-inset-bottom,0px));width:40px;height:40px;border-radius:50%;border:2px solid var(--ma-border);background:var(--ma-surface);box-shadow:0 3px 0 var(--ma-ledge);font-size:1rem;cursor:pointer;display:grid;place-items:center}
+
+/* ================= STUDENT PORTAL (app/student-portal.html) ================= */
+html[data-ma=student] body{background:var(--ma-bg)!important}
+html[data-ma=student] #app{background:transparent}
+html[data-ma=student] .topbar{background:color-mix(in srgb,var(--ma-surface) 92%,transparent)!important;backdrop-filter:blur(10px);border-bottom:2px solid var(--ma-border)!important;box-shadow:none!important;height:56px!important;padding:0 14px!important}
+html[data-ma=student] :is(.topbar-logo,#splash-logo,.auth-logo,.nd-logo-name){font-family:var(--ma-fd)!important;font-weight:800!important;letter-spacing:-.02em!important;color:var(--ma-navy)!important}
+html[data-ma=student] :is(.topbar-logo,.auth-logo,#splash-logo) .ace{color:var(--ma-orange)!important;-webkit-text-fill-color:var(--ma-orange)!important}
+html[data-ma=student] .topbar-icon-btn,html[data-ma=student] .avatar-btn{border-radius:12px!important;border:2px solid var(--ma-border)!important;background:var(--ma-surface)!important;box-shadow:0 2px 0 var(--ma-ledge);width:34px!important;height:34px!important;flex-basis:34px!important}
+html[data-ma=student] .pill{border-radius:99px!important;font-family:var(--ma-fb)!important;font-weight:800!important}
+html[data-ma=student] .pill-streak{background:#FFF1E3!important;border:2px solid #FFD2A8!important;color:var(--ma-orange-ledge)!important}
+
+/* home hero: a calm card, not a gradient slab */
+html[data-ma=student] .home-hero{margin:14px 14px 0;border-radius:var(--ma-r-panel);background:var(--ma-navy)!important;padding:22px 18px 18px!important;box-shadow:0 6px 0 #081530}
+html[data-ma=student] .home-hero::before{background:radial-gradient(120% 90% at 100% 0%,rgba(139,95,214,.45),transparent 55%),radial-gradient(80% 70% at 0% 100%,rgba(30,91,216,.5),transparent 60%)!important}
+html[data-ma=student] .home-hero::after{display:none}
+html[data-ma=student] .hero-greeting{letter-spacing:.02em!important;text-transform:none!important;font-size:.85rem!important;opacity:.85}
+html[data-ma=student] .hero-name{font-family:var(--ma-fd)!important;font-size:clamp(1.6rem,6vw,2.2rem)!important;font-weight:800!important;letter-spacing:-.02em}
+html[data-ma=student] .cd-unit,html[data-ma=student] .hero-stat{background:rgba(255,255,255,.1)!important;border:1.5px solid rgba(255,255,255,.18)!important;border-radius:16px!important;backdrop-filter:none!important}
+html[data-ma=student] .cd-num,html[data-ma=student] .hero-stat-n{font-family:var(--ma-fd)!important;font-variant-numeric:tabular-nums;font-weight:800!important}
+html[data-ma=student] .cd-unit:first-child .cd-num{color:#FFC48A!important}
+html[data-ma=student] .sec-title{font-family:var(--ma-fd)!important;text-transform:none!important;letter-spacing:-.01em!important;font-size:1.05rem!important;color:var(--ma-ink)!important;font-weight:800!important}
+html[data-ma=student] .sec-action{color:var(--ma-blue)!important;font-weight:800!important}
+
+/* subject tiles, list items, tool cards: one tactile card language */
+html[data-ma=student] .subject-tile{border-radius:var(--ma-r-tile)!important;box-shadow:0 5px 0 rgba(8,21,48,.28)!important;transition:transform .15s var(--ma-out),box-shadow .15s!important}
+html[data-ma=student] .subject-tile:active{transform:translateY(4px)!important;box-shadow:0 1px 0 rgba(8,21,48,.28)!important}
+html[data-ma=student] .tile-name{font-family:var(--ma-fd)!important;font-weight:800!important}
+html[data-ma=student] :is(.tool-card,.track-card,.career-card,.paper-card,.pv-year-card,.pv-subj-card,.overall-card,.activity-item,.badge-card,.planner-task){
+ background:var(--ma-surface)!important;border:2px solid var(--ma-border)!important;border-radius:var(--ma-r-tile)!important;box-shadow:0 4px 0 var(--ma-ledge)!important;transition:transform .15s var(--ma-out),box-shadow .15s,border-color .15s!important}
+html[data-ma=student] :is(.tool-card,.track-card,.career-card,.paper-card):hover{transform:translateY(-2px)!important;border-color:color-mix(in srgb,var(--ma-blue) 45%,var(--ma-border))!important}
+html[data-ma=student] :is(.tool-card,.track-card,.career-card,.paper-card):active{transform:translateY(3px)!important;box-shadow:0 1px 0 var(--ma-ledge)!important}
+html[data-ma=student] .subject-list-item{border-radius:16px;margin:0 10px 8px;border:2px solid var(--ma-border)!important;background:var(--ma-surface);box-shadow:0 3px 0 var(--ma-ledge)}
+html[data-ma=student] .sli-name{font-family:var(--ma-fd);font-weight:800!important;font-size:.98rem!important}
+html[data-ma=student] .sli-icon,html[data-ma=student] .tile-icon{border-radius:14px!important}
+html[data-ma=student] :is(.sli-prog,.tile-prog-track,.quiz-prog-track,.bd-prog){height:8px!important;border-radius:99px!important;background:var(--ma-tint2)!important}
+html[data-ma=student] :is(.sli-prog-fill,.quiz-prog-fill,.bd-prog-fill){border-radius:99px!important;background:var(--ma-green)!important;transition:width .5s var(--ma-out)!important}
+html[data-ma=student] .setting-row{padding:15px 16px!important}
+html[data-ma=student] .badge-card.earned{border-color:#FFD2A8!important;background:#FFF7EF!important}
+html[data-ma=student] .goal-ring-n{color:var(--ma-orange)!important;font-family:var(--ma-fd)!important}
+
+/* quiz: one question, big type, tactile options */
+html[data-ma=student] .q-text{font-family:var(--ma-fd)!important;font-size:clamp(1.15rem,4.6vw,1.5rem)!important;line-height:1.35!important;font-weight:700!important;color:var(--ma-ink)!important;letter-spacing:-.01em}
+html[data-ma=student] .opt-btn{border:2px solid var(--ma-border)!important;background:var(--ma-surface)!important;border-radius:16px!important;box-shadow:0 4px 0 var(--ma-ledge)!important;padding:15px 16px!important;font-size:.98rem!important;font-weight:600!important;color:var(--ma-ink)!important;transition:transform .12s var(--ma-out),box-shadow .12s,border-color .12s,background .12s!important}
+html[data-ma=student] .opt-btn:hover:not(:disabled){transform:translateY(-1px)!important;border-color:color-mix(in srgb,var(--ma-blue) 45%,var(--ma-border))!important;background:var(--ma-surface)!important}
+html[data-ma=student] .opt-btn:active:not(:disabled){transform:translateY(3px)!important;box-shadow:0 1px 0 var(--ma-ledge)!important}
+html[data-ma=student] .opt-letter{border-radius:10px!important;background:var(--ma-tint)!important;color:var(--ma-ink)!important;font-family:var(--ma-fb)!important;width:32px!important;height:32px!important;font-size:.85rem!important}
+html[data-ma=student] .opt-btn.selected-correct,html[data-ma=student] .opt-btn.show-correct{border-color:var(--ma-green)!important;background:var(--ma-ok-bg)!important;box-shadow:0 4px 0 var(--ma-green)!important;animation:maPop .35s var(--ma-spring)}
+html[data-ma=student] .opt-btn.selected-wrong{border-color:var(--ma-red)!important;background:var(--ma-no-bg)!important;box-shadow:0 4px 0 var(--ma-red)!important;animation:maShake .4s}
+html[data-ma=student] .opt-btn.selected-correct .opt-letter,html[data-ma=student] .opt-btn.show-correct .opt-letter{background:var(--ma-green)!important;color:#fff!important}
+html[data-ma=student] .opt-btn.selected-wrong .opt-letter{background:var(--ma-red)!important;color:#fff!important}
+html[data-ma=student] .opt-btn:disabled:not(.selected-correct):not(.selected-wrong):not(.show-correct){opacity:.55}
+@keyframes maPop{0%{transform:scale(1)}40%{transform:scale(1.03)}100%{transform:scale(1)}}
+@keyframes maShake{0%,100%{transform:translateX(0)}20%{transform:translateX(-6px)}40%{transform:translateX(6px)}60%{transform:translateX(-4px)}80%{transform:translateX(4px)}}
+html[data-ma=student] .explanation-card{border:2px solid var(--ma-border)!important;background:var(--ma-surface)!important;border-radius:var(--ma-r-tile)!important;box-shadow:0 4px 0 var(--ma-ledge)}
+html[data-ma=student] .qtype-chip{border:2px solid var(--ma-border)!important;border-radius:99px!important;background:var(--ma-surface)!important;font-weight:800!important;color:var(--ma-text2)!important}
+html[data-ma=student] .qtype-chip.active{background:var(--ma-navy)!important;border-color:var(--ma-navy)!important;color:#fff!important}
+html[data-ma=student] .quiz-timer-badge{border-radius:12px!important;font-family:var(--ma-fb)!important;font-variant-numeric:tabular-nums;border:2px solid var(--ma-border)!important;background:var(--ma-surface)!important}
+html[data-ma=student] .q-diff{border-radius:99px!important}
+html[data-ma=student] .ma-qhead{display:flex;align-items:flex-end;gap:10px;margin:2px 0 8px}
+html[data-ma=student] .ma-qhead .ma-jaca{width:54px}
+html[data-ma=student] .ma-bub{position:relative;background:var(--ma-navy);color:#fff;border-radius:16px 16px 16px 4px;padding:9px 13px;font-size:.84rem;font-weight:700;line-height:1.35;max-width:80%;animation:maBub .35s var(--ma-spring)}
+@keyframes maBub{from{opacity:0;transform:translateY(6px) scale(.96)}to{opacity:1;transform:none}}
+
+/* results: big score, petals */
+html[data-ma=student] .result-overlay{background:rgba(14,33,71,.55)!important;backdrop-filter:blur(8px)!important}
+html[data-ma=student] .result-card{border:2px solid var(--ma-border)!important;border-radius:28px!important;box-shadow:0 8px 0 var(--ma-ledge)!important;max-width:420px}
+html[data-ma=student] .result-score{font-family:var(--ma-fd)!important;font-weight:800!important;font-size:4rem!important;color:var(--ma-navy)!important;font-variant-numeric:tabular-nums}
+html[data-ma=student] .result-pill{border-radius:99px!important;font-weight:800!important}
+html[data-ma=student] .result-card .ma-jaca{width:96px;margin:0 auto 4px;display:block}
+html[data-ma=student] .result-card .ma-luck{font-size:.8rem;color:var(--ma-jac);font-weight:700;margin:6px 0 10px}
+
+/* sign-in */
+html[data-ma=student] #auth-screen{background:var(--ma-bg)!important}
+html[data-ma=student] .auth-card{border:2px solid var(--ma-border)!important;border-radius:28px!important;box-shadow:0 8px 0 var(--ma-ledge)!important}
+html[data-ma=student] .auth-tab{border-radius:12px!important;font-weight:800!important}
+html[data-ma=student] .auth-tab.active{background:var(--ma-navy)!important;color:#fff!important;box-shadow:0 3px 0 #081530}
+html[data-ma=student] .auth-card .ma-jaca{display:block;width:76px;margin:0 auto 6px}
+
+/* AI study buddy chat */
+html[data-ma=student] .chat-bubble.user{background:var(--ma-blue)!important;color:#fff!important;font-weight:600!important}
+html[data-ma=student] .chat-bubble.ai{background:var(--ma-surface)!important;border:2px solid var(--ma-border)}
+html[data-ma=student] #ace-fab-btn{background:var(--ma-jac)!important;box-shadow:0 5px 0 #5E3AA0,0 10px 24px -8px rgba(91,52,160,.7)!important}
+
+/* navigation by device: phone dock, tablet rail, desktop sidebar (html[data-device] is set by ma-ui.js) */
+html[data-ma=student] .bottom-nav{background:var(--ma-surface)!important;border-top:2px solid var(--ma-border)!important}
+html[data-ma=student] .bottom-nav .nav-item{color:var(--ma-text3)!important}
+html[data-ma=student] .bottom-nav .nav-item.active{color:var(--ma-blue)!important}
+html[data-ma=student] .bottom-nav .nav-item.active::before{background:var(--ma-tint)!important;border-radius:12px!important}
+html[data-ma=student] .bottom-nav .nav-item span{font-family:var(--ma-fb)!important}
+html[data-ma=student][data-device=tablet] #app,html[data-ma=student][data-device=desktop] #app{padding-left:var(--ma-rail,92px)}
+html[data-ma=student][data-device=tablet] .bottom-nav,html[data-ma=student][data-device=desktop] .bottom-nav{position:fixed!important;left:0;top:0;bottom:0;height:auto!important;width:var(--ma-rail,92px);flex-direction:column;justify-content:flex-start;gap:6px;padding:76px 10px 16px!important;border-top:0!important;border-right:2px solid var(--ma-border)!important;z-index:60;overflow-y:auto}
+html[data-ma=student][data-device=tablet] .bottom-nav .nav-item{flex:none!important;padding:10px 0 8px!important;border-radius:16px}
+html[data-ma=student][data-device=tablet] .bottom-nav .nav-item span{font-size:.66rem!important}
+html[data-ma=student][data-device=tablet] .bottom-nav .nav-item svg{width:22px!important;height:22px!important}
+html[data-ma=student][data-device=tablet] .bottom-nav .nav-item.active,html[data-ma=student][data-device=desktop] .bottom-nav .nav-item.active{background:var(--ma-tint)!important}
+html[data-ma=student][data-device=tablet] .bottom-nav .nav-item::before,html[data-ma=student][data-device=desktop] .bottom-nav .nav-item::before,html[data-ma=student][data-device=tablet] .nav-active-dot,html[data-ma=student][data-device=desktop] .nav-active-dot{display:none!important}
+html[data-ma=student][data-device=desktop]{--ma-rail:248px}
+html[data-ma=student][data-device=desktop] .bottom-nav{padding:22px 14px!important}
+html[data-ma=student][data-device=desktop] .bottom-nav .nav-item{flex:none!important;flex-direction:row!important;justify-content:flex-start!important;gap:14px!important;padding:11px 14px!important;border-radius:14px}
+html[data-ma=student][data-device=desktop] .bottom-nav .nav-item span{font-size:.92rem!important;font-weight:700!important;letter-spacing:0!important}
+html[data-ma=student][data-device=desktop] .bottom-nav .nav-item svg{width:21px!important;height:21px!important}
+html[data-ma=student] .ma-brand{display:none}
+html[data-ma=student][data-device=desktop] .ma-brand{display:flex;align-items:center;gap:10px;padding:0 6px 22px;font:800 1.35rem var(--ma-fd);color:var(--ma-navy);letter-spacing:-.02em}
+html[data-ma=student][data-device=desktop] .ma-brand b{color:var(--ma-orange)}
+html[data-ma=student][data-device=desktop] .ma-brand .ma-jaca{width:34px}
+html[data-ma=student][data-device=desktop] .topbar-logo{visibility:hidden}
+html[data-ma=student][data-device=desktop] .main-scroll{padding-bottom:40px!important}
+html[data-ma=student][data-device=desktop] .screen.active{max-width:980px;margin:0 auto}
+html[data-ma=student][data-device=tablet] .main-scroll,html[data-ma=student][data-device=desktop] .main-scroll{padding-bottom:30px!important}
+html[data-ma=student][data-device=tablet] .toast,html[data-ma=student][data-device=desktop] .toast{bottom:28px!important}
+html[data-ma=student][data-device=tablet] #ace-fab,html[data-ma=student][data-device=desktop] #ace-fab{bottom:28px!important}
+
+/* ================= STAFF PORTALS (teacher, subject teacher, school admin, founder) ================= */
+html.ma-staff body{background:var(--ma-bg)!important}
+html.ma-staff .sidebar{background:var(--ma-navy)!important;border-right:0}
+html.ma-staff :is(.sidebar-logo-name,.sb-name){font-family:var(--ma-fd)!important;font-size:1.15rem!important;letter-spacing:-.02em}
+html.ma-staff :is(.sidebar-role-badge,.sb-badge){border-radius:99px!important;background:rgba(240,122,20,.16)!important;border:1.5px solid rgba(240,122,20,.35)!important;color:#FFB877!important;font-family:var(--ma-fb)!important;letter-spacing:.02em}
+html.ma-staff .nav-section-label,html.ma-staff .nav-sec{font-family:var(--ma-fb)!important;letter-spacing:.06em!important;color:rgba(255,255,255,.42)!important;font-size:.64rem!important;margin-top:18px!important}
+html.ma-staff .sidebar .nav-item{color:rgba(255,255,255,.72)!important;border-radius:12px!important;padding:9px 12px!important;font-size:.86rem!important;font-weight:600!important;margin-bottom:3px!important;transition:background .15s,color .15s,transform .15s var(--ma-out)!important}
+html.ma-staff .sidebar .nav-item:hover{background:rgba(255,255,255,.07)!important;color:#fff!important;transform:translateX(2px)}
+html.ma-staff .sidebar .nav-item.active{background:#fff!important;color:var(--ma-navy)!important;font-weight:800!important;box-shadow:0 3px 0 rgba(0,0,0,.25)!important}
+html.ma-staff .sidebar .nav-item.active::before,html.ma-staff .sidebar .nav-item.active::after{display:none!important}
+html.ma-staff :is(.nav-badge){border-radius:99px!important;background:var(--ma-orange)!important;color:#fff!important}
+html.ma-staff .header{background:color-mix(in srgb,var(--ma-surface) 92%,transparent)!important;backdrop-filter:blur(10px);border-bottom:2px solid var(--ma-border)!important;box-shadow:none!important}
+html.ma-staff :is(.header-title,.hdr-title){font-family:var(--ma-fd)!important;font-size:1.25rem!important;font-weight:800!important;letter-spacing:-.02em}
+html.ma-staff :is(.card,.mc,.metric,.box,.subj-card,.reg-card,.sub-card){background:var(--ma-surface)!important;border:2px solid var(--ma-border)!important;border-radius:var(--ma-r-tile)!important;box-shadow:0 4px 0 var(--ma-ledge)!important}
+html.ma-staff :is(.card-title){font-family:var(--ma-fd)!important;font-size:1.05rem!important;letter-spacing:-.01em}
+html.ma-staff :is(.mc-val,.metric-val,.s-stat-val,.t-stat-val,.pp-stat-val,.an-kpi-val){font-family:var(--ma-fd)!important;font-variant-numeric:tabular-nums;font-weight:800!important;color:var(--ma-navy)!important}
+html.ma-staff .mc-icon{border-radius:14px!important}
+html.ma-staff :is(.btn,.hbtn){border-radius:12px!important;font-family:var(--ma-fb)!important}
+html.ma-staff :is(.std-row,.teacher-row,.school-row,.lib-item,.qna-item,.mock-item,.cw-item,.stream-item){border:2px solid var(--ma-border)!important;border-radius:16px!important;background:var(--ma-surface)!important;box-shadow:0 3px 0 var(--ma-ledge)}
+html.ma-staff :is(.std-av,.user-av,.t-av,.reg-av){border-radius:12px!important}
+html.ma-staff :is(.tbl,.gb-table,.sba-table) th{font-family:var(--ma-fb)!important;letter-spacing:.03em;color:var(--ma-text3)!important;background:var(--ma-tint)!important}
+html.ma-staff :is(.tbl,.gb-table,.sba-table) td{border-color:var(--ma-border)!important}
+html.ma-staff .pill{border-radius:99px!important;font-family:var(--ma-fb)!important;font-weight:800!important}
+html.ma-staff :is(.perf-bar,.bar-wrap,.prov-bar){height:9px!important;border-radius:99px!important;background:var(--ma-tint2)!important}
+html.ma-staff :is(.perf-fill,.bar-fill,.prov-fill){border-radius:99px!important}
+html.ma-staff .content{background:transparent!important}
+html.ma-staff .ma-login{background:var(--ma-bg)!important;font-family:var(--ma-fb)!important}
+html.ma-staff .ma-login-card{border:2px solid var(--ma-border)!important;border-radius:28px!important;box-shadow:0 8px 0 var(--ma-ledge)!important;padding:30px!important}
+html.ma-staff .ma-login :is(input){border:2px solid var(--ma-border)!important;border-radius:12px!important;background:var(--ma-surface)!important;padding:12px 14px!important;font-family:var(--ma-fb)!important;font-size:1rem!important}
+html.ma-staff .ma-login .ma-go{background:var(--ma-blue)!important;border-radius:14px!important;box-shadow:0 4px 0 var(--ma-blue-ledge)!important;font-family:var(--ma-fb)!important;padding:14px!important}
+html.ma-staff .ma-login .ma-go:active{transform:translateY(3px);box-shadow:0 1px 0 var(--ma-blue-ledge)!important}
+html.ma-staff .ma-login [style*="Source Serif"]{font-family:var(--ma-fd)!important;font-size:1.4rem!important}
+html.ma-staff #guestModeBanner{background:var(--ma-navy)!important;border-bottom:3px solid var(--ma-orange)}
+
+/* ================= SKILLS ACADEMY + LEARN TO CODE ================= */
+html:is([data-ma=skills],[data-ma=coding]) body{background:var(--ma-bg)!important}
+html:is([data-ma=skills],[data-ma=coding]) .header{background:color-mix(in srgb,var(--ma-surface) 92%,transparent)!important;backdrop-filter:blur(10px);border-bottom:2px solid var(--ma-border)!important}
+html:is([data-ma=skills],[data-ma=coding]) :is(.header-title,.intro h1,.intro h2,.complete-title,.track-name,.node-title,.q-title){font-family:var(--ma-fd)!important;letter-spacing:-.015em}
+html:is([data-ma=skills],[data-ma=coding]) :is(.track-card,.stat-box,.qa-btn,.badge-card,.lb-card,.mode-choice-btn,.lesson-box,.explain-box,.daily-card){background:var(--ma-surface)!important;border:2px solid var(--ma-border)!important;border-radius:var(--ma-r-tile)!important;box-shadow:0 4px 0 var(--ma-ledge)!important}
+html:is([data-ma=skills],[data-ma=coding]) .daily-card{border-color:#FFD2A8!important;background:#FFF8F1!important;box-shadow:0 4px 0 #F5C99C!important}
+html:is([data-ma=skills],[data-ma=coding]) :is(.track-card,.qa-btn,.mode-choice-btn):active{transform:translateY(3px);box-shadow:0 1px 0 var(--ma-ledge)!important}
+html:is([data-ma=skills],[data-ma=coding]) .stat-val{font-family:var(--ma-fd)!important;font-size:1.6rem!important;color:var(--ma-navy)!important;font-variant-numeric:tabular-nums}
+html:is([data-ma=skills],[data-ma=coding]) .opt-btn{border:2px solid var(--ma-border)!important;background:var(--ma-surface)!important;border-radius:14px!important;box-shadow:0 3px 0 var(--ma-ledge)!important;font-size:.95rem!important;padding:13px 15px!important;font-weight:600;transition:transform .12s,box-shadow .12s,border-color .12s!important}
+html:is([data-ma=skills],[data-ma=coding]) .opt-btn:active:not(:disabled){transform:translateY(2px);box-shadow:0 1px 0 var(--ma-ledge)!important}
+html:is([data-ma=skills],[data-ma=coding]) .opt-btn.correct{border-color:var(--ma-green)!important;background:var(--ma-ok-bg)!important;box-shadow:0 3px 0 var(--ma-green)!important;animation:maPop .35s var(--ma-spring)}
+html:is([data-ma=skills],[data-ma=coding]) .opt-btn.wrong{border-color:var(--ma-red)!important;background:var(--ma-no-bg)!important;box-shadow:0 3px 0 var(--ma-red)!important;animation:maShake .4s}
+html:is([data-ma=skills],[data-ma=coding]) :is(.track-progress-bar,.qprog){height:8px!important;border-radius:99px!important;background:var(--ma-tint2)!important}
+html:is([data-ma=skills],[data-ma=coding]) .track-progress-fill{border-radius:99px!important;background:var(--ma-green)!important}
+html:is([data-ma=skills],[data-ma=coding]) .node-dot{box-shadow:0 4px 0 var(--ma-ledge)}
+html:is([data-ma=skills],[data-ma=coding]) :is(.pg-editor,.code-block){border-radius:14px!important}
+
+/* ================= WEBSITE (index.html) ================= */
+html[data-ma=site] body{background:var(--ma-bg)}
+html[data-ma=site] :is(.hero-title,.section-title,.cta-title,.feature-title,.pricing-price,.faq-q,.about-hero-inner h1){font-family:var(--ma-fd)!important;letter-spacing:-.02em}
+html[data-ma=site] :is(.feature-card,.pricing-card,.blog-card,.testimonials-grid>*,.values-grid>*,.feat-card,.faq-item){border:2px solid var(--ma-border)!important;border-radius:var(--ma-r-tile)!important;box-shadow:0 4px 0 var(--ma-ledge)!important;background:var(--ma-surface)}
+html[data-ma=site] :is(.btn-primary,.portal-btn,.sp-btn,.nav-cta){border-radius:14px!important}
+html[data-ma=site] .btn-secondary{border-radius:14px!important}
+html[data-ma=site] .hero-badge{border-radius:99px!important}
+html[data-ma=site] .ma-site-jaca{display:block;width:88px;margin:0 auto 10px}
+html.ma-sheet-on[data-ma=student] .main-scroll,html.ma-sheet-on:is([data-ma=skills],[data-ma=coding]) body{padding-bottom:150px!important}
+html[data-ma=student] .ma-snd{right:auto;left:14px;bottom:calc(70px + env(safe-area-inset-bottom,0px))}
+html[data-ma=student]:is([data-device=tablet],[data-device=desktop]) .ma-snd{left:auto;right:90px;bottom:28px}
+html[data-ma=student] #btn-next-q:disabled{display:none!important}
+html.ma-staff[data-device=mobile] :is(.metrics-row,.metrics){grid-template-columns:repeat(2,minmax(0,1fr))!important}
+html.ma-staff[data-device=tablet] :is(.metrics-row,.metrics){grid-template-columns:repeat(3,minmax(0,1fr))!important}
